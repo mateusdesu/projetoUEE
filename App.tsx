@@ -1,11 +1,11 @@
-import { GluestackUIProvider} from '@gluestack-ui/themed';
-import { Home } from './src/screens/Home';
+import { NavigationContainer } from '@react-navigation/native';
+import { Routes } from './src/routes/routes';
 
 
 export default function App() {
   return (
-    <GluestackUIProvider>
-      <Home />
-    </GluestackUIProvider>
+    <NavigationContainer>
+      <Routes />
+    </NavigationContainer>
   );
 }
