@@ -1,12 +1,10 @@
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { MainButton } from "../../components/MainButton";
 import { BoxContainer } from "../../components/BoxContainer";
-import { Alert } from "react-native";
+import { DefaultInput } from "../../components/DefaultInput";
 
 import { NavigationProp } from "@react-navigation/native";
-const TestAlert = () => {
-  Alert.alert("Funcionou!");
-};
+
 export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <GluestackUIProvider>
@@ -18,6 +16,7 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
         <MainButton text="CADASTRAR CANDIDATOS" />
         <MainButton text="REALIZAR ELEIÇÃO" />
         <MainButton text="RESULTADO ELEIÇÃO" />
+        <DefaultInput text="Teste" />
       </BoxContainer>
     </GluestackUIProvider>
   );
