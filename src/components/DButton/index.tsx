@@ -4,7 +4,7 @@ type MainButtonProps = {
   text: string;
   onPress?: () => void;
 };
-export const MainButton = (props: MainButtonProps) => {
+export const DButton = (props: MainButtonProps) => {
   return (
     <GluestackUIProvider>
       <Button

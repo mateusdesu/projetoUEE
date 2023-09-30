@@ -1,7 +1,7 @@
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { MainButton } from "../../components/MainButton";
+import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
-import { DefaultInput } from "../../components/DefaultInput";
+import { DInput } from "../../components/DInput";
 
 import { NavigationProp } from "@react-navigation/native";
 
@@ -9,14 +9,14 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <GluestackUIProvider>
       <BoxContainer>
-        <MainButton
+        <DButton
           text="CADASTRAR ELEIÇÃO"
           onPress={() => navigation.navigate("CadastrarEleicao")}
         />
-        <MainButton text="CADASTRAR CANDIDATOS" />
-        <MainButton text="REALIZAR ELEIÇÃO" />
-        <MainButton text="RESULTADO ELEIÇÃO" />
-        <DefaultInput text="Teste" />
+        <DButton text="CADASTRAR CANDIDATOS" />
+        <DButton text="REALIZAR ELEIÇÃO" />
+        <DButton text="RESULTADO ELEIÇÃO" />
+        <DInput text="Teste" />
       </BoxContainer>
     </GluestackUIProvider>
   );

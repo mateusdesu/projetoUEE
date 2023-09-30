@@ -4,7 +4,7 @@ type DefaultInputProps = {
     text: string;
 }
 
-export const DefaultInput = (props: DefaultInputProps) => {
+export const DInput = (props: DefaultInputProps) => {
     return (
     <GluestackUIProvider>
         <Input>
