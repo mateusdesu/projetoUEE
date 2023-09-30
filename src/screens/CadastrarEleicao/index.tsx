@@ -1,5 +1,5 @@
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { MainButton } from "../../components/MainButton";
+import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
 
 
@@ -7,7 +7,7 @@ export const CadastrarEleicao = () => {
   return (
     <GluestackUIProvider>
         <BoxContainer>
-      <MainButton text="Cadastrar Eleição" />
+      <DButton text="Cadastrar Eleição" />
       </BoxContainer>
     </GluestackUIProvider>
     
