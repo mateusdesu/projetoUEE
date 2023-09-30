@@ -8,7 +8,7 @@ export const DInput = (props: DefaultInputProps) => {
     return (
     <GluestackUIProvider>
         <Input>
-        <InputField placeholder={props.text} />
+        <InputField placeholder={props.text} accessibilityElementsHidden={true}/>
         </Input>
     </GluestackUIProvider>
     )

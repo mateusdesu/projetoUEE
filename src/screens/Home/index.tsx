@@ -1,13 +1,28 @@
-import { GluestackUIProvider } from "@gluestack-ui/themed";
+import { AlertText, GluestackUIProvider } from "@gluestack-ui/themed";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
-import { DInput } from "../../components/DInput";
+import { Header } from "../../components/Header";
+import { Image,} from "@gluestack-ui/themed";
 
 import { NavigationProp } from "@react-navigation/native";
 
 export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <GluestackUIProvider>
+      <Header>
+        <Image
+          ml="$4"
+          size="md"
+          alt="Logo Urna Eletrônica Escolar"
+          source={require("../../assets/icon.png")}
+        />
+        <Image
+          ml="$4"
+          size="md"
+          alt="Logo Urna Eletrônica Escolar"
+          source={require("../../assets/uni.png")}
+        />
+      </Header>
       <BoxContainer>
         <DButton
           text="CADASTRAR ELEIÇÃO"
@@ -16,7 +31,6 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
         <DButton text="CADASTRAR CANDIDATOS" />
         <DButton text="REALIZAR ELEIÇÃO" />
         <DButton text="RESULTADO ELEIÇÃO" />
-        <DInput text="Teste" />
       </BoxContainer>
     </GluestackUIProvider>
   );

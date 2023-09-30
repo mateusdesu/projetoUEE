@@ -1,12 +1,12 @@
 import { GluestackUIProvider, Box } from "@gluestack-ui/themed";
 
-type BoxProps = {
+type HeaderProps = {
     children: React.ReactNode;
   };
-export const BoxContainer = (props: BoxProps) => {
+export const Header = (props: HeaderProps) => {
   return (
     <GluestackUIProvider>
-        <Box flex={2} p={"$4"} justifyContent="center" alignItems="center">
+        <Box  flex={1} px={"$2"} pt={"$6"} justifyContent="space-between" alignItems="flex-start" flexDirection="row">
           {props.children}
         </Box>
     </GluestackUIProvider>

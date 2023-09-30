@@ -12,7 +12,7 @@ export const DButton = (props: MainButtonProps) => {
         borderColor="$black"
         borderWidth={"$1"}
         width={"80%"}
-        height={"$16"}
+        height={"$12"}
         mx={"auto"}
         p={"$1"}
         my={"$1"}
