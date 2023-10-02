@@ -23,7 +23,7 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
           source={require("../../assets/uni.png")}
         />
       </Header>
-      <BoxContainer>
+      <BoxContainer alignItems={"center"}>
         <DButton
           text="CADASTRAR ELEIÇÃO"
           onPress={() => navigation.navigate("CadastrarEleicao")}

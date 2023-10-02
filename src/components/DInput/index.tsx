@@ -1,15 +1,21 @@
 import { GluestackUIProvider, Input, InputField } from "@gluestack-ui/themed";
 
 type DefaultInputProps = {
-    text: string;
-}
+  placeholder: string;
+  onChange: any;
+  width: any;
+};
 
 export const DInput = (props: DefaultInputProps) => {
-    return (
+  return (
     <GluestackUIProvider>
-        <Input>
-        <InputField placeholder={props.text} accessibilityElementsHidden={true}/>
-        </Input>
+      <Input width={props.width} my="$2">
+        <InputField
+          placeholder={props.placeholder}
+          accessibilityElementsHidden={false}
+          onChangeText={props.onChange}
+        />
+      </Input>
     </GluestackUIProvider>
-    )
+  );
 };
