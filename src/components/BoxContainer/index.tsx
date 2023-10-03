@@ -7,7 +7,7 @@ type BoxProps = {
 export const BoxContainer = (props: BoxProps) => {
   return (
     <GluestackUIProvider>
-        <Box flex={2} p={"$4"} justifyContent="center" alignItems={props.alignItems}>
+        <Box p={"$4"} justifyContent="center" alignItems={props.alignItems}>
           {props.children}
         </Box>
     </GluestackUIProvider>
