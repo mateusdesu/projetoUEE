@@ -3,6 +3,7 @@ import { GluestackUIProvider, Button, Text } from "@gluestack-ui/themed";
 type MainButtonProps = {
   text: string;
   onPress?: () => void;
+  width?: any;
 };
 export const DButton = (props: MainButtonProps) => {
   return (
@@ -11,7 +12,7 @@ export const DButton = (props: MainButtonProps) => {
         bg="$green400"
         borderColor="$black"
         borderWidth={"$1"}
-        width={"80%"}
+        width={props.width || "80%"}
         height={"$12"}
         mx={"auto"}
         p={"$1"}

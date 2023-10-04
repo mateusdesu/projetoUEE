@@ -1,7 +1,8 @@
-import { GluestackUIProvider, Box } from "@gluestack-ui/themed";
+import { GluestackUIProvider, Box, VStack } from "@gluestack-ui/themed";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
 import { Image } from "@gluestack-ui/themed";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { NavigationProp } from "@react-navigation/native";
 
@@ -33,9 +34,20 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
           text="CADASTRAR ELEIÇÃO"
           onPress={() => navigation.navigate("CadastrarEleicao")}
         />
-        <DButton text="CADASTRAR CANDIDATOS" />
+        <DButton
+          text="CADASTRAR CANDIDATOS"
+          onPress={() => navigation.navigate("CadastrarCandidato")}
+        />
         <DButton text="REALIZAR ELEIÇÃO" />
-        <DButton text="RESULTADO ELEIÇÃO" />
+        <VStack flexDirection="row" justifyContent="flex-end">
+          <DButton text="RESULTADO ELEIÇÃO" width={"80%"} />
+          <FontAwesome
+            name="gear"
+            size={32}
+            color="black"
+            style={{ marginRight: "4%" }}
+          />
+        </VStack>
       </BoxContainer>
     </GluestackUIProvider>
   );
