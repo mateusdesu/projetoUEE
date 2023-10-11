@@ -18,13 +18,13 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
       >
         <Image
           ml="$4"
-          size="md"
+          size="sm"
           alt="Logo Urna Eletrônica Escolar"
           source={require("../../assets/icon.png")}
         />
         <Image
           ml="$4"
-          size="md"
+          size="sm"
           alt="Logo Urna Eletrônica Escolar"
           source={require("../../assets/uni.png")}
         />
@@ -39,15 +39,10 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
           onPress={() => navigation.navigate("CadastrarCandidato")}
         />
         <DButton text="REALIZAR ELEIÇÃO" />
-        <VStack flexDirection="row" justifyContent="flex-end">
-          <DButton text="RESULTADO ELEIÇÃO" width={"80%"} />
-          <FontAwesome
-            name="gear"
-            size={32}
-            color="black"
-            style={{ marginRight: "4%" }}
-          />
-        </VStack>
+        <DButton text="RESULTADO ELEIÇÃO" width={"80%"} />
+        <Box flexDirection="row" justifyContent="flex-start" alignItems="center" w={"95%"}>
+          <FontAwesome name="gear" size={32} color="black" />
+        </Box>
       </BoxContainer>
     </GluestackUIProvider>
   );
