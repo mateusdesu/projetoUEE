@@ -1,6 +1,6 @@
 export class Candidate{
     name: String;
-    vice_name:String;
+    vice_name: String;
     number: Number;
     picture_path: String;
     id: Number;

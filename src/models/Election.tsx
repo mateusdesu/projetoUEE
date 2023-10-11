@@ -1,9 +1,9 @@
 export class Election{
 
-    name:String;
-    password:String;
-    positions:Array<String>;
-    candidatesConfig:JSON ;
+    name: String;
+    password: String;
+    positions: Array<String>;
+    candidatesConfig: JSON;
     /*{
         party: boolean,
         picture: boolean,
@@ -12,7 +12,7 @@ export class Election{
     id:Number;
 
     constructor(name:String, password:String, positions:Array<String>, candidatesConfig:JSON, id?:number){
-        
+
         if(id !== undefined){
             this.id = id;
         }else{
