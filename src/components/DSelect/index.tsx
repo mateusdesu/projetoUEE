@@ -1,5 +1,6 @@
 import {
   GluestackUIProvider,
+  Box,
   Select,
   SelectTrigger,
   SelectInput,
@@ -12,33 +13,34 @@ import {
   SelectDragIndicatorWrapper,
 } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
-export const DSelect = () => {
+
+type DselectProps = {
+  item: string[];
+};
+export const DSelect = (props: DselectProps) => {
   return (
     <GluestackUIProvider>
-      <Select>
-        <SelectTrigger variant="outline" size="md">
-          <SelectInput placeholder="Select option" />
-          <SelectIcon mr="$3">
-            <FontAwesome name="chevron-down" size={24} color="black" />
-          </SelectIcon>
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectBackdrop />
-          <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            <SelectItem label="UX Research" value="ux" />
-            <SelectItem label="Web Development" value="web" />
-            <SelectItem
-              label="Cross Platform Development Process"
-              value="Cross Platform Development Process"
-            />
-            <SelectItem label="UI Designing" value="ui" isDisabled={true} />
-            <SelectItem label="Backend Development" value="backend" />
-          </SelectContent>
-        </SelectPortal>
-      </Select>
+      <Box alignItems="flex-start" w={"100%"}>
+        <Select w="100%">
+          <SelectTrigger variant="outline" size="md">
+            <SelectInput placeholder="Selecionar Eleição" />
+            <SelectIcon mr="$3">
+              <FontAwesome name="chevron-down" size={16} color="black" />
+            </SelectIcon>
+          </SelectTrigger>
+          <SelectPortal>
+            <SelectBackdrop />
+            <SelectContent>
+              <SelectDragIndicatorWrapper w={"100%"} h={"100%"}>
+                <SelectDragIndicator />
+              </SelectDragIndicatorWrapper>
+              {props.item.map((i) => (
+                <SelectItem label={i} value={i} key={i} />
+              ))}
+            </SelectContent>
+          </SelectPortal>
+        </Select>
+      </Box>
     </GluestackUIProvider>
   );
 };
