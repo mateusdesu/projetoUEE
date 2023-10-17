@@ -31,7 +31,7 @@ export const DSelect = (props: DselectProps) => {
           <SelectPortal>
             <SelectBackdrop />
             <SelectContent>
-              <SelectDragIndicatorWrapper w={"100%"} h={"100%"}>
+              <SelectDragIndicatorWrapper>
                 <SelectDragIndicator />
               </SelectDragIndicatorWrapper>
               {props.item.map((i) => (
