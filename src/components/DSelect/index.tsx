@@ -1,46 +1,30 @@
-import {
-  GluestackUIProvider,
-  Box,
-  Select,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectContent,
-  SelectItem,
-  SelectPortal,
-  SelectBackdrop,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-} from "@gluestack-ui/themed";
-import { FontAwesome } from "@expo/vector-icons";
+import React, { useState } from "react";
+import DropDownPicker from "react-native-dropdown-picker";
 
-type DselectProps = {
-  item: string[];
+type DSelectProps = {
+  items: { label: string; value: string }[];
+  zIndex?: number;
+  onChangeValue?: any;
 };
-export const DSelect = (props: DselectProps) => {
+
+export const DSelect = ({ items, zIndex,onChangeValue }: DSelectProps) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string | null>(null);
+
   return (
-    <GluestackUIProvider>
-      <Box alignItems="flex-start" w={"100%"}>
-        <Select w="100%">
-          <SelectTrigger variant="outline" size="md">
-            <SelectInput placeholder="Selecionar Eleição" />
-            <SelectIcon mr="$3">
-              <FontAwesome name="chevron-down" size={16} color="black" />
-            </SelectIcon>
-          </SelectTrigger>
-          <SelectPortal>
-            <SelectBackdrop />
-            <SelectContent>
-              <SelectDragIndicatorWrapper>
-                <SelectDragIndicator />
-              </SelectDragIndicatorWrapper>
-              {props.item.map((i) => (
-                <SelectItem label={i} value={i} key={i} />
-              ))}
-            </SelectContent>
-          </SelectPortal>
-        </Select>
-      </Box>
-    </GluestackUIProvider>
+    <DropDownPicker
+      onChangeValue={onChangeValue}
+      placeholder="Selecione uma opção"
+      dropDownDirection="DEFAULT"
+      dropDownContainerStyle={{
+        zIndex: zIndex || 1000, // Set a default zIndex or use the provided zIndex
+      }}
+      style={{}}
+      open={open}
+      value={value}
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+    />
   );
 };
