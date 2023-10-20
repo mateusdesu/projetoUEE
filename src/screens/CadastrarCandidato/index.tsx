@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
@@ -5,7 +6,6 @@ import { DSelect } from "../../components/DSelect";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
-import { useState } from "react";
 
 export const CadastrarCandidato = ({
   navigation,
@@ -16,7 +16,7 @@ export const CadastrarCandidato = ({
     if (selectedOption === null || selectedCargo.length === 0) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
-      Alert.alert(selectedOption + " | " + selectedCargo);
+      Alert.alert("Sucesso ✅",`Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`); // Alterado para usar selectedCargoItem
     }
   };
 
@@ -35,16 +35,23 @@ export const CadastrarCandidato = ({
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
+  const [selectedCargoItem, setSelectedCargoItem] = useState<string | null>(null); // Novo estado
 
   const handleElectionChange = (value: string | null) => {
     setSelectedOption(value);
-    // Find the selected option to get cargos
+    // Encontrar a opção selecionada para obter os cargos.
     const selected = eleicao.find((item) => item.value === value);
     if (selected) {
       setSelectedCargo(selected.cargos || []);
+      setSelectedCargoItem(null); // Limpar o cargo selecionado quando a eleição muda
     } else {
       setSelectedCargo([]);
+      setSelectedCargoItem(null);
     }
+  };
+
+  const handleCargoChange = (value: string | null) => {
+    setSelectedCargoItem(value); // Atualizar o estado do cargo selecionado
   };
 
   return (
@@ -68,6 +75,7 @@ export const CadastrarCandidato = ({
         </Text>
         <DSelect
           items={selectedCargo.map((cargo) => ({ label: cargo, value: cargo }))}
+          onChangeValue={handleCargoChange} // Adicionado para lidar com a seleção do cargo
         />
         <Box
           flexDirection="row"
