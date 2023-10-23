@@ -13,10 +13,11 @@ export const CadastrarCandidato = ({
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === null || selectedCargo.length === 0) {
+    if (selectedOption === null || selectedCargoItem === null) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
-      Alert.alert("Sucesso ✅",`Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`); // Alterado para usar selectedCargoItem
+      Alert.alert("Sucesso ✅",`Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`);
+      navigation.navigate("CadastrarCandidato2");
     }
   };
 
@@ -82,6 +83,7 @@ export const CadastrarCandidato = ({
           alignItems="center"
           justifyContent="space-between"
           w={"100%"}
+          mt={"$8"}
         >
           <FontAwesome
             name="chevron-left"

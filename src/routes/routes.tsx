@@ -5,6 +5,7 @@ import { CadastrarCandidato } from '../screens/CadastrarCandidato';
 import { RealizarEleicao } from '../screens/RealizarEleicao';
 import { ResultadoEleicao } from '../screens/ResultadoEleicao';
 import { MenuConfig } from '../screens/MenuConfig';
+import { CadastrarCandidato2 } from '../screens/CadastrarCandidato2';
 const Stack = createNativeStackNavigator();
 
 export const Routes = () => {
@@ -13,6 +14,7 @@ export const Routes = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="CadastrarEleicao" component={CadastrarEleicao} />
             <Stack.Screen name="CadastrarCandidato" component={CadastrarCandidato} />
+            <Stack.Screen name="CadastrarCandidato2" component={CadastrarCandidato2} />
             <Stack.Screen name="RealizarEleicao" component={RealizarEleicao} />
             <Stack.Screen name="ResultadoEleicao" component={ResultadoEleicao} />
             <Stack.Screen name="MenuConfig" component={MenuConfig} />
