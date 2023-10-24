@@ -16,8 +16,9 @@ export const CadastrarCandidato = ({
     if (selectedOption === null || selectedCargoItem === null) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
-      Alert.alert("Sucesso ✅",`Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`);
-      navigation.navigate("CadastrarCandidato2");
+      Alert.alert("Sucesso ✅", `Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`);
+      // navigation.navigate("CadastrarCandidato2");
+      setLoadSecondScreen(true);
     }
   };
 
@@ -37,6 +38,7 @@ export const CadastrarCandidato = ({
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
   const [selectedCargoItem, setSelectedCargoItem] = useState<string | null>(null); // Novo estado
+  const [loadSecondScreen, setLoadSecondScreen] = useState(false);
 
   const handleElectionChange = (value: string | null) => {
     setSelectedOption(value);
@@ -55,51 +57,57 @@ export const CadastrarCandidato = ({
     setSelectedCargoItem(value); // Atualizar o estado do cargo selecionado
   };
 
-  return (
-    <GluestackUIProvider>
-      <Header title="Cadastrar Candidato" />
-      <BoxContainer alignItems={"flex-start"}>
-        <Text fontSize="$md" fontWeight="$bold">
-          Escolher eleição *
-        </Text>
-        <DSelect
-          items={eleicao.map((option) => ({
-            label: option.label,
-            value: option.value,
-          }))}
-          onChangeValue={handleElectionChange}
-          zIndex={10000}
-        />
-
-        <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
-          Escolher cargo *
-        </Text>
-        <DSelect
-          items={selectedCargo.map((cargo) => ({ label: cargo, value: cargo }))}
-          onChangeValue={handleCargoChange} // Adicionado para lidar com a seleção do cargo
-        />
-        <Box
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          w={"100%"}
-          mt={"$8"}
-        >
-          <FontAwesome
-            name="chevron-left"
-            size={28}
-            color="black"
-            onPress={() => navigation.goBack()}
+  if (loadSecondScreen) {
+    return(
+      <Text>Funcionou</Text>
+    )
+  } else {
+    return (
+      <GluestackUIProvider>
+        <Header title="Cadastrar Candidato" />
+        <BoxContainer alignItems={"flex-start"}>
+          <Text fontSize="$md" fontWeight="$bold">
+            Escolher eleição *
+          </Text>
+          <DSelect
+            items={eleicao.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
+            onChangeValue={handleElectionChange}
+            zIndex={10000}
           />
 
-          <FontAwesome
-            name="check"
-            size={32}
-            color="green"
-            onPress={cadastrarCandidato}
+          <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
+            Escolher cargo *
+          </Text>
+          <DSelect
+            items={selectedCargo.map((cargo) => ({ label: cargo, value: cargo }))}
+            onChangeValue={handleCargoChange} // Adicionado para lidar com a seleção do cargo
           />
-        </Box>
-      </BoxContainer>
-    </GluestackUIProvider>
-  );
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            w={"100%"}
+            mt={"$8"}
+          >
+            <FontAwesome
+              name="chevron-left"
+              size={28}
+              color="black"
+              onPress={() => navigation.goBack()}
+            />
+
+            <FontAwesome
+              name="check"
+              size={32}
+              color="green"
+              onPress={cadastrarCandidato}
+            />
+          </Box>
+        </BoxContainer>
+      </GluestackUIProvider>
+    );
+  }
 };
