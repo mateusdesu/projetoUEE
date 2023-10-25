@@ -49,6 +49,7 @@ export const CadastrarEleicao = ({
         <DInput
           placeholder="Ex: 123456"
           onChange={setSenhaEleicao}
+          type={"password"}
           width="$90%"
         />
         <Text fontSize="$md" fontWeight="$bold">

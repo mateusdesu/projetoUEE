@@ -1,44 +1,30 @@
-import {
-  GluestackUIProvider,
-  Select,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectContent,
-  SelectItem,
-  SelectPortal,
-  SelectBackdrop,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-} from "@gluestack-ui/themed";
-import { FontAwesome } from "@expo/vector-icons";
-export const DSelect = () => {
+import React, { useState } from "react";
+import DropDownPicker from "react-native-dropdown-picker";
+
+type DSelectProps = {
+  items: { label: string; value: string }[];
+  zIndex?: number;
+  onChangeValue?: any;
+};
+
+export const DSelect = ({ items, zIndex,onChangeValue }: DSelectProps) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string | null>(null);
+
   return (
-    <GluestackUIProvider>
-      <Select>
-        <SelectTrigger variant="outline" size="md">
-          <SelectInput placeholder="Select option" />
-          <SelectIcon mr="$3">
-            <FontAwesome name="chevron-down" size={24} color="black" />
-          </SelectIcon>
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectBackdrop />
-          <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            <SelectItem label="UX Research" value="ux" />
-            <SelectItem label="Web Development" value="web" />
-            <SelectItem
-              label="Cross Platform Development Process"
-              value="Cross Platform Development Process"
-            />
-            <SelectItem label="UI Designing" value="ui" isDisabled={true} />
-            <SelectItem label="Backend Development" value="backend" />
-          </SelectContent>
-        </SelectPortal>
-      </Select>
-    </GluestackUIProvider>
+    <DropDownPicker
+      onChangeValue={onChangeValue}
+      placeholder="Selecione uma opção"
+      dropDownDirection="DEFAULT"
+      dropDownContainerStyle={{
+        zIndex: zIndex || 1000, // Set a default zIndex or use the provided zIndex
+      }}
+      style={{}}
+      open={open}
+      value={value}
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+    />
   );
 };
