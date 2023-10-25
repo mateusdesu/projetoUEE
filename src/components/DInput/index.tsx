@@ -2,8 +2,11 @@ import { GluestackUIProvider, Input, InputField } from "@gluestack-ui/themed";
 
 type DefaultInputProps = {
   placeholder: string;
-  onChange: any;
-  width: any;
+  onChange?: any;
+  width?: any;
+  keyType?: any;
+  maxLength?: number;
+  type?: any;
 };
 
 export const DInput = (props: DefaultInputProps) => {
@@ -14,6 +17,9 @@ export const DInput = (props: DefaultInputProps) => {
           placeholder={props.placeholder}
           accessibilityElementsHidden={false}
           onChangeText={props.onChange}
+          keyboardType={props.keyType || "default"}
+          maxLength={props.maxLength}
+          type={props.type}
         />
       </Input>
     </GluestackUIProvider>
