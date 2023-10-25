@@ -3,13 +3,20 @@ export class Candidate{
     vice_name: string;
     number: number;
     picture_path: string;
+    party: string;
     id: number;
     electionId:number;
 
-    constructor(name:string, number:number, electionId:number, picture_path?:string, id?:number, vice_name?:string){
+    constructor(name:string, number:number, electionId:number, party?:string,picture_path?:string, id?:number, vice_name?:string){
         this.name = name;
         this.number = number;
         this.electionId = electionId;
+
+        if(party !== undefined){
+            this.party = party;
+        }else{
+            this.party = "";
+        }
 
         if(picture_path !== undefined){
             this.picture_path = picture_path;

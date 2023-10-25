@@ -20,6 +20,7 @@ export default class DatabaseInit{
                         'electionId integer not null,'+
                         'name text not null,'+
                         'vice_name text,'+
+                        'party text,'+
                         'number integer not null,'+
                         'picture_path text'
                         +');'
