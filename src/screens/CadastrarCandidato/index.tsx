@@ -87,7 +87,7 @@ export const CadastrarCandidato = ({
     return (
       <GluestackUIProvider>
         <Header title="Cadastrar Candidato" />
-        <BoxContainer alignItems={"flex-start"}>
+        <BoxContainer alignItems={"center"}>
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
@@ -97,23 +97,29 @@ export const CadastrarCandidato = ({
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
               <Text fontWeight="$bold">Nome*</Text>
-              <DInput placeholder="Nome" />
+              <DInput placeholder="Ex: João" />
+              <Text fontWeight="$bold">Chapa</Text>
+              <DInput placeholder="Ex: Chapa Verde" />
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
               <Text fontWeight="$bold">Número*</Text>
-              <DInput placeholder="Número" keyType={"numeric"} maxLength={2} />
-              <Box flexDirection="row" alignItems="center" gap={"$2"}>
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} />
+              <Text fontWeight="$bold">Vice</Text>
+              <DInput placeholder="Ex: Maria" />
+              
+              
+            </Box>
+            
+          </Box>
+          <Box flexDirection="row" alignItems="center" justifyContent={"center"} gap={"$2"} mt={"$3"}>
                 <Text fontWeight="$bold">Escolher foto</Text>
               <Entypo
               name="upload-to-cloud"
-              size={36}
+              size={40}
               color="black"
               onPress={pickImageAsync}
             />
               </Box>
-              
-            </Box>
-          </Box>
           <Box
             flexDirection="row"
             alignItems="center"
