@@ -27,7 +27,21 @@ export const CadastrarCandidato = ({
     }
   };
 
+  const [name, setName] = useState('');
+  const [vice_name, setViceName] = useState('');
+  const [number, setNumber] = useState(0);
+  const [picture_path, setPicturePath] = useState('');
+  const [party, setParty] = useState('');
+  const [electionId, setElectionId] = useState(0);
+
+
   const realizarCadastro = () => {
+    console.log("Name: "+name);
+    console.log("ViceName: "+vice_name);
+    console.log("Number: "+number);
+    console.log("Picture path: "+picture_path);
+    console.log("Party: "+party);
+
     Alert.alert("Sucesso ✅", "Candidato Cadastrado");
   };
 
@@ -76,7 +90,7 @@ export const CadastrarCandidato = ({
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setPicturePath(result.assets[0].uri);
       Alert.alert("✅ Imagem selecionada com sucesso!");
     } else {
       Alert.alert("⚠️ Nenhuma imagem foi selecionada!");
@@ -97,15 +111,15 @@ export const CadastrarCandidato = ({
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
               <Text fontWeight="$bold">Nome*</Text>
-              <DInput placeholder="Ex: João" />
+              <DInput placeholder="Ex: João"  onChange={(text:string)=>setName(text)} />
               <Text fontWeight="$bold">Chapa</Text>
-              <DInput placeholder="Ex: Chapa Verde" />
+              <DInput placeholder="Ex: Chapa Verde" onChange={(text:string)=>setParty(text)}/>
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
               <Text fontWeight="$bold">Número*</Text>
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} />
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} onChange={(num:number)=>setNumber(num)} />
               <Text fontWeight="$bold">Vice</Text>
-              <DInput placeholder="Ex: Maria" />
+              <DInput placeholder="Ex: Maria" onChange={(text:string)=>setViceName(text)}/>
               
               
             </Box>
@@ -139,7 +153,7 @@ export const CadastrarCandidato = ({
               name="check"
               size={32}
               color="green"
-              onPress={() => realizarCadastro}
+              onPress={realizarCadastro}
             />
           </Box>
         </BoxContainer>
@@ -177,7 +191,7 @@ export const CadastrarCandidato = ({
             alignItems="center"
             justifyContent="space-between"
             w={"100%"}
-            mt={"$8"}
+            //mt={"$8"}
           >
             <FontAwesome
               name="chevron-left"
