@@ -5,8 +5,11 @@ import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { NavigationProp } from "@react-navigation/native";
+import DatabaseInit from "../../database/DatabaseInit";
 
 export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
+  const db_init = new DatabaseInit();
+  
   return (
     <GluestackUIProvider>
       <Box

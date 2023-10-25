@@ -1,4 +1,5 @@
 import { DatabaseConnection } from "./DatabaseConnection";
+import { SQLError } from "expo-sqlite";
 
 var db:any = null;
 
@@ -12,12 +13,26 @@ export default class DatabaseInit{
     }
 
     private InitDb(){
-        var sql = '' //implement SQL query; 
+        var sql = ['DROP TABLE IF EXISTS candidate',
+                    //FOREIGN KEY(electionId) REFERENCES election(id) -> change when create election table
+                    'create table if not exists candidate'+
+                        '(id integer primary key autoincrement,'+ 
+                        'electionId integer not null,'+
+                        'name text not null,'+
+                        'vice_name text,'+
+                        'number integer not null,'+
+                        'picture_path text'
+                        +');'
+                ] 
         
         
-        db.transaction((tr:any) => {tr.executeSql(sql)}, //in case of more than 1 query, execute inside a for lace
-        (error: any) =>{
-            console.log("error call back: "+ JSON.stringify(error));
+        db.transaction((tr:any) => {
+            for(var i=0; i <sql.length; i++){
+                tr.executeSql(sql[i]);            
+            }
+        }, 
+        (error: SQLError) =>{
+            console.log("error call back: "+ error);
         },
         () => {
             console.log("database was succesfully created!");
