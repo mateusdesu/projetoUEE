@@ -7,6 +7,7 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { DInput } from "../../components/DInput";
 
 export const CadastrarCandidato = ({
   navigation,
@@ -86,7 +87,39 @@ export const CadastrarCandidato = ({
     return (
       <GluestackUIProvider>
         <Header title="Cadastrar Candidato" />
-        <BoxContainer alignItems={"flex-start"}>
+        <BoxContainer alignItems={"center"}>
+          <Box
+            alignItems="baseline"
+            justifyContent="flex-start"
+            flexDirection="row"
+            w={"100%"}
+            gap={"$2"}
+          >
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+              <Text fontWeight="$bold">Nome*</Text>
+              <DInput placeholder="Ex: João" />
+              <Text fontWeight="$bold">Chapa</Text>
+              <DInput placeholder="Ex: Chapa Verde" />
+            </Box>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+              <Text fontWeight="$bold">Número*</Text>
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} />
+              <Text fontWeight="$bold">Vice</Text>
+              <DInput placeholder="Ex: Maria" />
+              
+              
+            </Box>
+            
+          </Box>
+          <Box flexDirection="row" alignItems="center" justifyContent={"center"} gap={"$2"} mt={"$3"}>
+                <Text fontWeight="$bold">Escolher foto</Text>
+              <Entypo
+              name="upload-to-cloud"
+              size={40}
+              color="black"
+              onPress={pickImageAsync}
+            />
+              </Box>
           <Box
             flexDirection="row"
             alignItems="center"
@@ -94,12 +127,7 @@ export const CadastrarCandidato = ({
             w={"100%"}
             mt={"$8"}
           >
-            <Entypo
-              name="upload-to-cloud"
-              size={24}
-              color="black"
-              onPress={pickImageAsync}
-            />
+            
             <FontAwesome
               name="chevron-left"
               size={28}
