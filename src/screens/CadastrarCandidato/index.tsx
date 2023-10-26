@@ -8,6 +8,8 @@ import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { DInput } from "../../components/DInput";
+import CandidateService from "../../services/CandidateService";
+import { Candidate } from "../../models/Candidate";
 
 export const CadastrarCandidato = ({
   navigation,
@@ -30,19 +32,19 @@ export const CadastrarCandidato = ({
   const [name, setName] = useState('');
   const [vice_name, setViceName] = useState('');
   const [number, setNumber] = useState(0);
-  const [picture_path, setPicturePath] = useState('');
+  let [picture_path, setPicturePath] = useState('');
   const [party, setParty] = useState('');
   const [electionId, setElectionId] = useState(0);
 
 
   const realizarCadastro = () => {
-    console.log("Name: "+name);
-    console.log("ViceName: "+vice_name);
-    console.log("Number: "+number);
-    console.log("Picture path: "+picture_path);
-    console.log("Party: "+party);
+    let candidate = new Candidate(name, number, electionId, party, picture_path, vice_name, null);
+    CandidateService.addCandidate(candidate);
+    CandidateService.findAll(0);
+    
 
     Alert.alert("Sucesso ✅", "Candidato Cadastrado");
+
   };
 
   const [eleicao, setEleicao] = useState([
