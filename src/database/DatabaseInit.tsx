@@ -14,6 +14,7 @@ export default class DatabaseInit{
 
     private InitDb(){
         var sql = ['DROP TABLE IF EXISTS candidate',
+                    'DROP TABLE IF EXISTS election',
                     //FOREIGN KEY(electionId) REFERENCES election(id) -> change when create election table
                     'create table if not exists candidate'+
                         '(id integer primary key autoincrement,'+ 
@@ -23,7 +24,13 @@ export default class DatabaseInit{
                         'party text,'+
                         'number integer not null,'+
                         'picture_path text'
-                        +');'
+                        +');',
+
+                    'create table if not exists election'+
+                        '(id integer primary key autoincrement,'+                       
+                        'name text not null,'+
+                        'password text NOT null'+                      
+                        ');'
                 ] 
         
         

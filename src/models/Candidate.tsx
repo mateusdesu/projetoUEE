@@ -31,7 +31,7 @@ export class Candidate{
             this.vice_name = vice_name;
         }
 
-        if(party === '' || party === null){
+        if(id === 0 || id === null){
             this.id = null;
         }else{
             this.id = id;
