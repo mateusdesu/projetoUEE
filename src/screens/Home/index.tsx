@@ -9,6 +9,8 @@ import { NavigationProp } from "@react-navigation/native";
 export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <GluestackUIProvider>
+      
+      <BoxContainer alignItems={"center"}>
       <Box
         px={"$2"}
         pt={"$6"}
@@ -29,7 +31,6 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
           source={require("../../assets/uni.png")}
         />
       </Box>
-      <BoxContainer alignItems={"center"}>
         <DButton
           text="CADASTRAR ELEIÇÃO"
           onPress={() => navigation.navigate("CadastrarEleicao")}

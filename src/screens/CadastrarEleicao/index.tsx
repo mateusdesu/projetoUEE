@@ -33,8 +33,9 @@ export const CadastrarEleicao = ({
   };
   return (
     <GluestackUIProvider>
-      <Header title="Cadastrar Eleição"></Header>
+      
       <BoxContainer alignItems={"flex-start"}>
+      <Header title="Cadastrar Eleição"></Header>
         <Text fontSize="$md" fontWeight="$bold">
           Nome da Eleição*
         </Text>
@@ -50,6 +51,7 @@ export const CadastrarEleicao = ({
           placeholder="Ex: 123456"
           onChange={setSenhaEleicao}
           type={"password"}
+          showIcon={true}
           width="$90%"
         />
         <Text fontSize="$md" fontWeight="$bold">

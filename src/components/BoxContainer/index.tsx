@@ -1,4 +1,5 @@
 import { GluestackUIProvider, Box } from "@gluestack-ui/themed";
+import {ImageBackground} from 'react-native'
 
 type BoxProps = {
     children: React.ReactNode;
@@ -7,9 +8,11 @@ type BoxProps = {
 export const BoxContainer = (props: BoxProps) => {
   return (
     <GluestackUIProvider>
+      <ImageBackground source={require("../../assets/bg.png")} resizeMode="cover">
         <Box p={"$4"} justifyContent="center" alignItems={props.alignItems}>
           {props.children}
         </Box>
+        </ImageBackground>
     </GluestackUIProvider>
   );
 };

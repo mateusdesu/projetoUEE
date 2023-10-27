@@ -86,8 +86,9 @@ export const CadastrarCandidato = ({
   if (loadSecondScreen) {
     return (
       <GluestackUIProvider>
-        <Header title="Cadastrar Candidato" />
+        
         <BoxContainer alignItems={"center"}>
+        <Header title="Cadastrar Candidato" />
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
@@ -148,8 +149,9 @@ export const CadastrarCandidato = ({
   } else {
     return (
       <GluestackUIProvider>
-        <Header title="Cadastrar Candidato" />
+        
         <BoxContainer alignItems={"flex-start"}>
+        <Header title="Cadastrar Candidato" />
           <Text fontSize="$md" fontWeight="$bold">
             Escolher eleição *
           </Text>
