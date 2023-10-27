@@ -6,6 +6,8 @@ import { BoxContainer } from "../../components/BoxContainer";
 import { Header } from "../../components/Header";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
+import ElectionService from "../../services/ElectionService";
+import { Election } from "../../models/Election";
 
 export const CadastrarEleicao = ({
   navigation,
@@ -20,6 +22,19 @@ export const CadastrarEleicao = ({
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
       Alert.alert("Erro ⚠️", "Preencha todos os campos");
     } else {
+      let positions:string = "";
+      let p:string;
+      
+      for(p in cargos){
+        if(cargos.indexOf(p) == 0){
+          positions += `${p}`;
+        }else{
+          positions += `,${p}`;
+        }
+        
+      }
+      //let election = new Election(nomeEleicao,senhaEleicao,)
+
       Alert.alert(
         "Sucesso ✅",
         "Eleição cadastrada com sucesso\nDados: " +
@@ -27,7 +42,7 @@ export const CadastrarEleicao = ({
           " | Senha: " +
           senhaEleicao +
           " | Cargos: " +
-          cargos
+          positions
       );
     }
   };

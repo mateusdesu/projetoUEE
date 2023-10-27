@@ -23,13 +23,15 @@ export default class DatabaseInit{
                         'vice_name text,'+
                         'party text,'+
                         'number integer not null,'+
-                        'picture_path text'
+                        'picture_path text,'+
+                        'votes integer not null'
                         +');',
 
                     'create table if not exists election'+
                         '(id integer primary key autoincrement,'+                       
                         'name text not null,'+
-                        'password text NOT null'+                      
+                        'password text not null,'+
+                        'positions text not null'+                      
                         ');'
                 ] 
         

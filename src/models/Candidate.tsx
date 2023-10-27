@@ -6,11 +6,23 @@ export class Candidate{
     party: string | null;
     id: number | null;
     electionId:number;
+    private votes: number;
+
+    get _votes():number{
+        return this.votes;
+    }
+
+    /*set votes(votes:number){
+        this._votes = votes;
+    }*/
+
+
 
     constructor(name:string, number:number, electionId:number, party:string | null, picture_path:string | null, vice_name:string |null, id:number | null){
         this.name = name;
         this.number = number;
         this.electionId = electionId;
+        this.votes = 0;
 
 
         if(party === '' || party === null){
@@ -37,9 +49,8 @@ export class Candidate{
             this.id = id;
         }
 
-        
-        
-        
-       
     }
+    
+    
+    
 }

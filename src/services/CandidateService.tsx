@@ -13,9 +13,9 @@ export default class CandidateService{
     static addCandidate(candidate: Candidate){
         return new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`insert into ${table} (name, vice_name, number, picture_path, electionId, party) 
-                values (?,?,?,?,?,?)`, 
-                [candidate.name, candidate.vice_name, candidate.number,candidate.picture_path, candidate.electionId, candidate.party],
+                tx.executeSql(`insert into ${table} (name, vice_name, number, picture_path, electionId, party, votes) 
+                values (?,?,?,?,?,?,?)`, 
+                [candidate.name, candidate.vice_name, candidate.number,candidate.picture_path, candidate.electionId, candidate.party, 0],
                 (_,{rows,insertId})=>{
                     console.log("Candidato inserido: "+insertId);
                     

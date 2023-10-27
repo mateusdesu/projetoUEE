@@ -2,10 +2,10 @@ export class Election{
 
     name: string;
     password: string;
-    positions: Array<string>;
+    positions: string; //string.split(',');
     id:number | null;
 
-    constructor(name:string, password:string, positions:Array<string>, id:number | null){
+    constructor(name:string, password:string, positions:string, id:number | null){
 
         if(id === 0 || id === null){
             this.id = null;
@@ -17,5 +17,7 @@ export class Election{
         this.password = password;
         this.positions = positions;
     }
+
+
    
 }
