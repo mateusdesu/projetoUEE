@@ -16,34 +16,26 @@ export const CadastrarEleicao = ({
 }) => {
   const [nomeEleicao, setNomeEleicao] = useState<string>("");
   const [senhaEleicao, setSenhaEleicao] = useState<string>("");
-  const [cargos, setCargos] = useState<string[]>([]);
+  const [cargos, setCargos] = useState("");//useState<string[]>([]);
 
-  const cadastrarEleicao = () => {
+  const cadastrarEleicao = async() => {
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
       Alert.alert("Erro ⚠️", "Preencha todos os campos");
     } else {
-      let positions:string = "";
-      let p:string;
-      
-      for(p in cargos){
-        if(cargos.indexOf(p) == 0){
-          positions += `${p}`;
-        }else{
-          positions += `,${p}`;
-        }
-        
+      let election = new Election(nomeEleicao,senhaEleicao,cargos,null);
+      let inserido = await ElectionService.addElection(election);
+    
+      if(inserido){       
+        Alert.alert(
+          "Sucesso ✅",
+          "Eleição cadastrada com sucesso\nDados: " +
+            nomeEleicao +
+            " | Senha: " +
+            senhaEleicao +
+            " | Cargos: " +
+            cargos
+        );
       }
-      //let election = new Election(nomeEleicao,senhaEleicao,)
-
-      Alert.alert(
-        "Sucesso ✅",
-        "Eleição cadastrada com sucesso\nDados: " +
-          nomeEleicao +
-          " | Senha: " +
-          senhaEleicao +
-          " | Cargos: " +
-          positions
-      );
     }
   };
   return (
@@ -71,7 +63,7 @@ export const CadastrarEleicao = ({
           Cargos*
         </Text>
         <DInput
-          placeholder="(Insira os cargos por virgula) Ex: Presidente, Vice-Presidente"
+          placeholder="(Insira os cargos separados por virgula) Ex: Presidente, Vice-Presidente"
           onChange={setCargos}
           width="$90%"
         />

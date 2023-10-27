@@ -18,9 +18,10 @@ export default class CandidateService{
                 [candidate.name, candidate.vice_name, candidate.number,candidate.picture_path, candidate.electionId, candidate.party, 0],
                 (_,{rows,insertId})=>{
                     console.log("Candidato inserido: "+insertId);
-                    
+                    resolve(true);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
+                    reject(false);
                 }
             }
             

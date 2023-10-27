@@ -6,7 +6,7 @@ export class Candidate{
     party: string | null;
     id: number | null;
     electionId:number;
-    private votes: number;
+    private votes: number; //a pensar
 
     get _votes():number{
         return this.votes;

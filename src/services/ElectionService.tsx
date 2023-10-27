@@ -14,13 +14,13 @@ export default class ElectionService{
                 values (?,?,?)`, 
                 [election.name, election.password, election.positions],
                 (_,{rows,insertId})=>{
-                    console.log("Candidato inserido: "+insertId);
-                    
+                    console.log("Eleição inserida: "+insertId);
+                    resolve(true);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
+                    reject(false);
                 }
-            }
-            
+            }          
         ));
     }
 }
