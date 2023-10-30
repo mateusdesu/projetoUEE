@@ -35,7 +35,7 @@ export default class ElectionService{
                     console.log(elections);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao buscar eleições: "+sqlErr);
-                    //reject(null);
+                    reject(null);
                 }
             }
         ));

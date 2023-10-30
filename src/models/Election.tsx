@@ -16,7 +16,7 @@ export class Election{
         this.name = name;
         this.password = password;
         this.positions = positions;
-    }
+    }   
 
 
    

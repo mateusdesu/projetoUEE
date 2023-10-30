@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
 type DSelectProps = {
-  items: { label: string; value: string }[];
+  items: { label: string; value: string|number }[];
   zIndex?: number;
   onChangeValue?: any;
 };

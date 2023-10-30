@@ -53,18 +53,9 @@ export const CadastrarCandidato = ({
 
   };
 
-  const [eleicao, setEleicao] = useState([
-    {
-      label: "Turma 901",
-      value: "1",
-      cargos: ["Presidente", "Professor Representante"],
-    },
-    {
-      label: "Grêmio sala 204",
-      value: "2",
-      cargos: ["Representante", "Conselheiro"],
-    },
-  ]);
+  var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [];
+  const [eleicao, setEleicao] = useState(
+    arrSetE);
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
@@ -105,19 +96,25 @@ export const CadastrarCandidato = ({
     }
   };
 
-  var arrSetE:Array<{label:string, value:number|null, cargos:string[]}> = [];
+  //var arrSetE:Array<{label:string, value:number|null, cargos:string[]}> = [];
   const findAllElections = async() =>{
     let elections:Array<Election> = await ElectionService.findAll();
     let e:any;
     let i:number;
     console.log("Eleições: "+elections);
-
-    for(i = 0; i<elections.length; i++){
+    
+    /*for(i = 0; i<elections.length; i++){
       let positions = elections[i].positions.split(",");
       arrSetE.push({label:elections[i].name, value: elections[i].id, cargos: positions});
+    }*/
+
+    for(e in elections){
+      let positions = e.positions.split(",");
+      arrSetE.push({label:e.name, value: e.id, cargos: positions});
     }
 
-    console.log(arrSetE);
+
+    console.log("ArrSetE: "+arrSetE);
 
     
   }
@@ -125,7 +122,7 @@ export const CadastrarCandidato = ({
     findAllElections();
   })
   
-  //setEleicao(arrSetE);
+  
   
   
 
