@@ -96,16 +96,12 @@ export const CadastrarCandidato = ({
             gap={"$2"}
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <Text fontWeight="$bold">Nome*</Text>
-              <DInput placeholder="Ex: João" />
-              <Text fontWeight="$bold">Chapa</Text>
-              <DInput placeholder="Ex: Chapa Verde" />
+              <DInput placeholder="Ex: João" text="Nome*"/>
+              <DInput placeholder="Ex: Chapa Verde" text="Chapa"/>
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <Text fontWeight="$bold">Número*</Text>
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} />
-              <Text fontWeight="$bold">Vice</Text>
-              <DInput placeholder="Ex: Maria" />
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*"/>
+              <DInput placeholder="Ex: Maria" text="Vice"/>
             </Box>
           </Box>
           <Box
