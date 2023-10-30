@@ -132,8 +132,8 @@ export const CadastrarCandidato = ({
   if (loadSecondScreen) {
     return (
       <GluestackUIProvider>
-        <Header title="Cadastrar Candidato" />
         <BoxContainer alignItems={"center"}>
+          <Header title="Cadastrar Candidato" headerWidth={"100%"}/>
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
@@ -142,30 +142,29 @@ export const CadastrarCandidato = ({
             gap={"$2"}
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <Text fontWeight="$bold">Nome*</Text>
-              <DInput placeholder="Ex: João"  onChange={(text:string)=>setName(text)} />
-              <Text fontWeight="$bold">Chapa</Text>
-              <DInput placeholder="Ex: Chapa Verde" onChange={(text:string)=>setParty(text)}/>
+              <DInput placeholder="Ex: João" text="Nome*"/>
+              <DInput placeholder="Ex: Chapa Verde" text="Chapa"/>
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <Text fontWeight="$bold">Número*</Text>
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} onChange={(num:number)=>setNumber(num)} />
-              <Text fontWeight="$bold">Vice</Text>
-              <DInput placeholder="Ex: Maria" onChange={(text:string)=>setViceName(text)}/>
-              
-              
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*"/>
+              <DInput placeholder="Ex: Maria" text="Vice"/>
             </Box>
-            
           </Box>
-          <Box flexDirection="row" alignItems="center" justifyContent={"center"} gap={"$2"} mt={"$3"}>
-                <Text fontWeight="$bold">Escolher foto</Text>
-              <Entypo
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={"center"}
+            gap={"$2"}
+            mt={"$3"}
+          >
+            <Text fontWeight="$bold">Escolher foto</Text>
+            <Entypo
               name="upload-to-cloud"
               size={40}
               color="black"
               onPress={pickImageAsync}
             />
-              </Box>
+          </Box>
           <Box
             flexDirection="row"
             alignItems="center"
@@ -173,7 +172,6 @@ export const CadastrarCandidato = ({
             w={"100%"}
             mt={"$8"}
           >
-            
             <FontAwesome
               name="chevron-left"
               size={28}
@@ -194,8 +192,8 @@ export const CadastrarCandidato = ({
   } else {
     return (
       <GluestackUIProvider>
-        <Header title="Cadastrar Candidato" />
         <BoxContainer alignItems={"flex-start"}>
+          <Header title="Cadastrar Candidato" />
           <Text fontSize="$md" fontWeight="$bold">
             Escolher eleição *
           </Text>
@@ -220,7 +218,7 @@ export const CadastrarCandidato = ({
           />
           <Box
             flexDirection="row"
-            alignItems="center"
+            alignItems="flex-end"
             justifyContent="space-between"
             w={"100%"}
             //mt={"$8"}
@@ -231,6 +229,10 @@ export const CadastrarCandidato = ({
               color="black"
               onPress={() => navigation.goBack()}
             />
+
+            <Text fontSize={"$md"} fontWeight="$bold">
+              *Preenchimento Obrigatório
+            </Text>
 
             <FontAwesome
               name="check"
