@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
@@ -10,6 +10,8 @@ import * as ImagePicker from "expo-image-picker";
 import { DInput } from "../../components/DInput";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
+import ElectionService from "../../services/ElectionService";
+import { Election } from "../../models/Election";
 
 export const CadastrarCandidato = ({
   navigation,
@@ -37,13 +39,17 @@ export const CadastrarCandidato = ({
   const [electionId, setElectionId] = useState(0);
 
 
-  const realizarCadastro = () => {
+  const realizarCadastro = async() => {
     let candidate = new Candidate(name, number, electionId, party, picture_path, vice_name, null);
-    CandidateService.addCandidate(candidate);
+    let inserido = await CandidateService.addCandidate(candidate);
     CandidateService.findAll(0);
     
-
-    Alert.alert("Sucesso ✅", "Candidato Cadastrado");
+    if(inserido){
+      Alert.alert("Sucesso ✅", "Candidato Cadastrado");
+    }else{
+      Alert.alert("Erro ⚠️","Falha ao cadastrar candidato! \nTente novamente!");
+    }
+    
 
   };
 
@@ -98,6 +104,30 @@ export const CadastrarCandidato = ({
       Alert.alert("⚠️ Nenhuma imagem foi selecionada!");
     }
   };
+
+  var arrSetE:Array<{label:string, value:number|null, cargos:string[]}> = [];
+  const findAllElections = async() =>{
+    let elections:Array<Election> = await ElectionService.findAll();
+    let e:any;
+    let i:number;
+    console.log("Eleições: "+elections);
+
+    for(i = 0; i<elections.length; i++){
+      let positions = elections[i].positions.split(",");
+      arrSetE.push({label:elections[i].name, value: elections[i].id, cargos: positions});
+    }
+
+    console.log(arrSetE);
+
+    
+  }
+  useEffect(()=>{
+    findAllElections();
+  })
+  
+  //setEleicao(arrSetE);
+  
+  
 
   if (loadSecondScreen) {
     return (

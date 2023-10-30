@@ -4,6 +4,7 @@ import { SQLError } from "expo-sqlite";
 
 const db = DatabaseConnection.getConnection();
 const table = "election";
+var elections: Array<Election> = [];
 
 export default class ElectionService{
     
@@ -22,5 +23,23 @@ export default class ElectionService{
                 }
             }          
         ));
+    }
+
+    static findAll(){
+        new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
+                    console.log("FA El: "+rows.length);
+                    resolve(rows._array);
+                    elections = rows._array;
+                    console.log(elections);
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao buscar eleições: "+sqlErr);
+                    //reject(null);
+                }
+            }
+        ));
+
+        return elections;
     }
 }
