@@ -4,8 +4,8 @@ import { GluestackUIProvider, Text } from "@gluestack-ui/themed";
 export const ResultadoEleicao = () => {
   return (
     <GluestackUIProvider>
-      <Header title="Resultado Eleição" />
       <BoxContainer alignItems={"flex-start"}>
+        <Header title="Resultado Eleição" />
         <Text fontSize="$md" fontWeight="$bold">
           Resultado da Eleição
         </Text>

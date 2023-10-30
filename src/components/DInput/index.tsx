@@ -4,6 +4,8 @@ import {
   InputField,
   InputIcon,
   InputSlot,
+  Box,
+  Text
 } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -15,6 +17,7 @@ type DefaultInputProps = {
   maxLength?: number;
   type?: any;
   showIcon?: boolean;
+  text?: string;
 };
 
 import { useState } from "react";
@@ -28,7 +31,9 @@ export const DInput = (props: DefaultInputProps) => {
 
   return (
     <GluestackUIProvider>
-      <Input width={props.width} my="$2" borderRadius={"$xl"}>
+      <Box alignItems="flex-start" justifyContent="center">
+        <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600">{props.text}</Text>
+      <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900">
         <InputField
           backgroundColor="$white"
           padding={"$2"}
@@ -44,6 +49,7 @@ export const DInput = (props: DefaultInputProps) => {
             w={"$10"}
             justifyContent="center"
             alignItems="center"
+            backgroundColor="$white"
             onPress={toggleShowPassword}
           >
             <InputIcon>
@@ -52,6 +58,7 @@ export const DInput = (props: DefaultInputProps) => {
           </InputSlot>
         )}
       </Input>
+      </Box>
     </GluestackUIProvider>
   );
 };

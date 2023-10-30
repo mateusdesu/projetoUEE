@@ -86,9 +86,8 @@ export const CadastrarCandidato = ({
   if (loadSecondScreen) {
     return (
       <GluestackUIProvider>
-        
         <BoxContainer alignItems={"center"}>
-        <Header title="Cadastrar Candidato" />
+          <Header title="Cadastrar Candidato" headerWidth={"100%"}/>
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
@@ -107,20 +106,23 @@ export const CadastrarCandidato = ({
               <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} />
               <Text fontWeight="$bold">Vice</Text>
               <DInput placeholder="Ex: Maria" />
-              
-              
             </Box>
-            
           </Box>
-          <Box flexDirection="row" alignItems="center" justifyContent={"center"} gap={"$2"} mt={"$3"}>
-                <Text fontWeight="$bold">Escolher foto</Text>
-              <Entypo
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={"center"}
+            gap={"$2"}
+            mt={"$3"}
+          >
+            <Text fontWeight="$bold">Escolher foto</Text>
+            <Entypo
               name="upload-to-cloud"
               size={40}
               color="black"
               onPress={pickImageAsync}
             />
-              </Box>
+          </Box>
           <Box
             flexDirection="row"
             alignItems="center"
@@ -128,7 +130,6 @@ export const CadastrarCandidato = ({
             w={"100%"}
             mt={"$8"}
           >
-            
             <FontAwesome
               name="chevron-left"
               size={28}
@@ -149,9 +150,8 @@ export const CadastrarCandidato = ({
   } else {
     return (
       <GluestackUIProvider>
-        
         <BoxContainer alignItems={"flex-start"}>
-        <Header title="Cadastrar Candidato" />
+          <Header title="Cadastrar Candidato" />
           <Text fontSize="$md" fontWeight="$bold">
             Escolher eleição *
           </Text>
@@ -176,7 +176,7 @@ export const CadastrarCandidato = ({
           />
           <Box
             flexDirection="row"
-            alignItems="center"
+            alignItems="flex-end"
             justifyContent="space-between"
             w={"100%"}
             mt={"$8"}
@@ -187,6 +187,10 @@ export const CadastrarCandidato = ({
               color="black"
               onPress={() => navigation.goBack()}
             />
+
+            <Text fontSize={"$md"} fontWeight="$bold">
+              *Preenchimento Obrigatório
+            </Text>
 
             <FontAwesome
               name="check"
