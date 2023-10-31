@@ -22,7 +22,7 @@ export const CadastrarEleicao = ({
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
       Alert.alert("Erro ⚠️", "Preencha todos os campos");
     } else {
-      let election = new Election(nomeEleicao,senhaEleicao,cargos,null);
+      let election = new Election(nomeEleicao,senhaEleicao,cargos,0);
       let inserido = await ElectionService.addElection(election);
     
       if(inserido){       
