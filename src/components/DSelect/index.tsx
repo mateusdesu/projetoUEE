@@ -19,7 +19,7 @@ export const DSelect = ({ items, zIndex,onChangeValue }: DSelectProps) => {
       dropDownContainerStyle={{
         zIndex: zIndex || 1000, // Set a default zIndex or use the provided zIndex
       }}
-      style={{}}
+      style={{width: "100%",borderRadius: 20}}
       open={open}
       value={value}
       items={items}

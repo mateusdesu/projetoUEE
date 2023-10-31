@@ -33,32 +33,36 @@ export const CadastrarEleicao = ({
   };
   return (
     <GluestackUIProvider>
-      
       <BoxContainer alignItems={"center"}>
-      <Header title="Cadastrar Eleição"></Header>
+        <Header title="Cadastrar Eleição"></Header>
 
         <DInput
-        text="Nome da Eleição*"
+          text="Nome da Eleição*"
           placeholder="Ex: Representante da sala 901"
           onChange={setNomeEleicao}
+          type={"text"}
           width="$90%"
         />
         <DInput
-        text="Senha para acesso*"
+          text="Senha para acesso*"
           placeholder="Ex: 123456"
           onChange={setSenhaEleicao}
-          type={"password"}
           showIcon={true}
           width="$90%"
         />
         <DInput
-        text="Cargos*"
+          text="Cargos*"
           placeholder="(Insira os cargos por virgula) Ex: Presidente, Vice-Presidente"
           onChange={setCargos}
           width="$90%"
         />
-        <Box flexDirection="row" alignItems="center" justifyContent="space-between" w={"100%"}>
-        <FontAwesome
+        <Box
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          w={"100%"}
+        >
+          <FontAwesome
             name="chevron-left"
             size={28}
             color="black"

@@ -42,7 +42,7 @@ export const DInput = (props: DefaultInputProps) => {
           onChangeText={props.onChange}
           keyboardType={props.keyType || "default"}
           maxLength={props.maxLength}
-          type={showPassword ? "text" : "password"}
+          type={props.type || showPassword ? "text" : "password"}
         />
         {props.showIcon && (
           <InputSlot
