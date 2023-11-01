@@ -13,7 +13,20 @@ export default class ImageService{
         })
     }
 
-    static getDir = (dirName:string, candidateNumber:number)=>{
+    static getDir = async(dirName:string)=>{
+        path = `${fs.documentDirectory}images/${dirName}`;
+        let dir = await fs.getInfoAsync(path);
+
+        if(!dir.exists){
+          await this.createDir(dirName);
+          return path;
+        }else{
+            return path;
+        }
+        
+    }
+
+    static getPic = (dirName:string, candidateNumber:number)=>{
         path = `${fs.documentDirectory}images/${dirName}/${candidateNumber}.jpg`;
         return path;
     }
