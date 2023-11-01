@@ -8,11 +8,15 @@ export default class ImageService{
 
         await fs.makeDirectoryAsync(path, {}).then(()=>{
             console.log("DIRETÓRIO CRIADO COM SUCESSO!");
+            return true;
         }).catch((err)=>{
             console.log("FALHA AO CRIAR DIRETÓRIO: "+err);
+            return false;
         })
     }
 
+
+    //check the necessity of this function
     static getDir = async(dirName:string)=>{
         path = `${fs.documentDirectory}images/${dirName}`;
         let dir = await fs.getInfoAsync(path);
@@ -26,6 +30,7 @@ export default class ImageService{
         
     }
 
+    //mount the image path using the file system to get the image
     static getPic = (dirName:string, candidateNumber:number)=>{
         path = `${fs.documentDirectory}images/${dirName}/${candidateNumber}.jpg`;
         return path;

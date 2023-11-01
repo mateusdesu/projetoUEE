@@ -1,6 +1,7 @@
 import { Election } from "../models/Election";
 import { DatabaseConnection } from "../database/DatabaseConnection";
 import { SQLError } from "expo-sqlite";
+import ImageService from "./ImageService";
 
 const db = DatabaseConnection.getConnection();
 const table = "election";
@@ -16,6 +17,7 @@ export default class ElectionService{
                 [election.name, election.password, election.positions],
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
+                    ImageService.createDir(election.name);                 
                     resolve(true);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
