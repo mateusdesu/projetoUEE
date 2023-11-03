@@ -12,6 +12,7 @@ import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
 import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
+import ImageService from "../../services/ImageService";
 
 export const CadastrarCandidato = ({
   navigation,
@@ -40,9 +41,11 @@ export const CadastrarCandidato = ({
 
 
   const realizarCadastro = async() => {
-    let candidate = new Candidate(name, number, electionId, party, picture_path, vice_name, null);
+    let realPicPath = await ImageService.uploadPic(picture_path,electionId.toString(),number);
+    let candidate = new Candidate(name, number, electionId, party, realPicPath, vice_name, null);
+    
     let inserido = await CandidateService.addCandidate(candidate);
-    CandidateService.findAll(0);
+    //CandidateService.findAll(0);
     
     if(inserido){
       Alert.alert("Sucesso ✅", "Candidato Cadastrado");

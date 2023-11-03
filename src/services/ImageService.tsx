@@ -38,15 +38,17 @@ export default class ImageService{
 
     //from -> local repository; to -> election name; imageName-> candidate number;
     static uploadPic = async(from:string, to:string, imageName:number)=>{
+        path = `${fs.documentDirectory}images/${to}/${imageName}.jpg`
         await fs.copyAsync({
             from: from,
-            to: `${fs.documentDirectory}images/${to}/${imageName}.jpg`
+            to: path
            }).then(()=>{    
             console.log("Upload concluido");
-            return to;
+            return path;
            }).catch((err)=>{
             console.log("Erro ao carregar imagem: "+err);
             return '';
            })
+           return path;
     }
 }
