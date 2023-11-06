@@ -28,20 +28,21 @@ export default class ElectionService{
     }
 
     static findAll(){
-        new Promise((resolve, reject)=> db.transaction(
+       return new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
-                    console.log("FA El: "+rows.length);
-                    resolve(rows._array);
-                    elections = rows._array;
-                    console.log(elections);
+                    //console.log("FA El: "+rows.length);
+                    //resolve(rows._array);
+                    //elections = rows._array;
+                    resolve(rows);
+                    //console.log("FA ELEC: "+elections);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao buscar eleições: "+sqlErr);
-                    reject(null);
+                    //reject(null);
                 }
             }
         ));
 
-        return elections;
+        //return elections;
     }
 }

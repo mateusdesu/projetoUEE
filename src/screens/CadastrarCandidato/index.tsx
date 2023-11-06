@@ -13,6 +13,9 @@ import { Candidate } from "../../models/Candidate";
 import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
+import { Components } from "@gluestack-style/react/lib/typescript/types";
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 export const CadastrarCandidato = ({
   navigation,
@@ -59,11 +62,13 @@ export const CadastrarCandidato = ({
   var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [];
   const [eleicao, setEleicao] = useState(arrSetE);
 
-  const findAllElections = async() =>{
-    let elections:Array<Election> = await ElectionService.findAll();
+  const findAllElections = () =>{
+    /*let elections:Array<Election> = await ElectionService.findAll();
     let e:any;
     let i:number;
     
+    console.log("Tamanho de Elections: "+elections.length);
+
     for(i = 0; i<elections.length; i++){
       let positions = elections[i].positions.split(",");
       arrSetE.push({
@@ -72,7 +77,30 @@ export const CadastrarCandidato = ({
         cargos: positions});
 
     }
-    setEleicao(arrSetE);
+
+    console.log("Elections: "+elections)
+    console.log("ArrSetE: "+arrSetE)
+    setEleicao(arrSetE);*/
+    let i:number;
+    ElectionService.findAll().then((response: any)=>{
+      
+      let elections:Array<Election> = response._array;
+      for(i = 0; i<elections.length; i++){
+        let positions = elections[i].positions.split(",");
+        arrSetE.push({
+          label:elections[i].name, 
+          value:elections[i].id,
+          cargos: positions});
+  
+      }
+    
+      console.log("ArrSetE:"+eleicao);
+      eleicao.map(e=>{
+        console.log(e.cargos);
+      })
+      
+      //console.log(elections);
+    })
   }
 
   useEffect(()=>{
@@ -118,6 +146,22 @@ export const CadastrarCandidato = ({
     }
   };
 
+ 
+
+  const DropDownSelectElection=()=>{
+    return(  
+      <DSelect
+            items={arrSetE.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
+            onChangeValue={handleElectionChange}
+            zIndex={10000}
+          />
+        
+  );
+    
+  }
 
   if (loadSecondScreen) {
     return (
@@ -187,6 +231,9 @@ export const CadastrarCandidato = ({
           <Text fontSize="$md" fontWeight="$bold">
             Escolher eleição *
           </Text>
+
+          {/*<DropDownSelectElection />*/}
+          
           <DSelect
             items={eleicao.map((option) => ({
               label: option.label,
