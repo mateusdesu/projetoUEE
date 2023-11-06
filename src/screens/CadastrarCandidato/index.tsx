@@ -15,7 +15,7 @@ import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
 import { Components } from "@gluestack-style/react/lib/typescript/types";
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 export const CadastrarCandidato = ({
   navigation,
@@ -60,9 +60,11 @@ export const CadastrarCandidato = ({
   };
 
   var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [];
+  var arrSetE2:Array<{label:string, value:string|number, cargos:string[]}> = [];
   const [eleicao, setEleicao] = useState(arrSetE);
+  
 
-  const findAllElections = () =>{
+  const findAllElections = async() =>{
     /*let elections:Array<Election> = await ElectionService.findAll();
     let e:any;
     let i:number;
@@ -81,31 +83,31 @@ export const CadastrarCandidato = ({
     console.log("Elections: "+elections)
     console.log("ArrSetE: "+arrSetE)
     setEleicao(arrSetE);*/
-    let i:number;
-    ElectionService.findAll().then((response: any)=>{
+     let i:number;
+    await ElectionService.findAll().then((response: any)=>{
       
       let elections:Array<Election> = response._array;
       for(i = 0; i<elections.length; i++){
         let positions = elections[i].positions.split(",");
-        arrSetE.push({
+        arrSetE2.push({
           label:elections[i].name, 
           value:elections[i].id,
           cargos: positions});
   
       }
-        setEleicao(arrSetE);
+        setEleicao(arrSetE2);
       console.log("ArrSetE:"+eleicao);
       eleicao.map(e=>{
-        console.log(e.cargos);
+        console.log(e.label);
       })
       
       //console.log(elections);
     })
   }
 
-  useEffect(()=>{
+  /*useEffect(()=>{
     findAllElections();
-  },[]);
+  },[]);*/
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
@@ -146,7 +148,9 @@ export const CadastrarCandidato = ({
     }
   };
 
- 
+  useEffect(()=>{
+    findAllElections();
+  },[]);
 
   
 
@@ -211,7 +215,8 @@ export const CadastrarCandidato = ({
       </GluestackUIProvider>
     );
   } else {
-    return (
+    
+    return  (
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />

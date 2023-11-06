@@ -17,7 +17,7 @@ export default class ElectionService{
                 [election.name, election.password, election.positions],
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
-                    ImageService.createDir("el"+election.id.toString());                 
+                    ImageService.createDir(election.name);                 
                     resolve(true);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
