@@ -93,7 +93,7 @@ export const CadastrarCandidato = ({
           cargos: positions});
   
       }
-    
+        setEleicao(arrSetE);
       console.log("ArrSetE:"+eleicao);
       eleicao.map(e=>{
         console.log(e.cargos);
@@ -114,7 +114,7 @@ export const CadastrarCandidato = ({
   ); // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
 
-  const handleElectionChange = (value: string | null) => {
+  /*const handleElectionChange = (value: string | null) => {
     setSelectedOption(value);
     // Encontrar a opção selecionada para obter os cargos.
     const selected = eleicao.find((item) => item.value === value);
@@ -125,7 +125,7 @@ export const CadastrarCandidato = ({
       setSelectedCargo([]);
       setSelectedCargoItem(null);
     }
-  };
+  };*/
 
   const handleCargoChange = (value: string | null) => {
     setSelectedCargoItem(value); // Atualizar o estado do cargo selecionado
@@ -148,20 +148,7 @@ export const CadastrarCandidato = ({
 
  
 
-  const DropDownSelectElection=()=>{
-    return(  
-      <DSelect
-            items={arrSetE.map((option) => ({
-              label: option.label,
-              value: option.value,
-            }))}
-            onChangeValue={handleElectionChange}
-            zIndex={10000}
-          />
-        
-  );
-    
-  }
+  
 
   if (loadSecondScreen) {
     return (
@@ -234,25 +221,12 @@ export const CadastrarCandidato = ({
 
           {/*<DropDownSelectElection />*/}
           
-          <DSelect
-            items={eleicao.map((option) => ({
-              label: option.label,
-              value: option.value,
-            }))}
-            onChangeValue={handleElectionChange}
-            zIndex={10000}
-          />
+          <DSelect items={eleicao}></DSelect>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
             Escolher cargo *
           </Text>
-          <DSelect
-            items={selectedCargo.map((cargo) => ({
-              label: cargo,
-              value: cargo,
-            }))}
-            onChangeValue={handleCargoChange} // Adicionado para lidar com a seleção do cargo
-          />
+          
           <Box
             flexDirection="row"
             alignItems="flex-end"

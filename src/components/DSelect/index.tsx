@@ -1,30 +1,20 @@
-import React, { useState } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from "@react-native-picker/picker";
+import { useState } from "react";
 
 type DSelectProps = {
-  items: { label: string; value: string|number }[];
-  zIndex?: number;
-  onChangeValue?: any;
+  items: any;
 };
 
-export const DSelect = ({ items, zIndex,onChangeValue }: DSelectProps) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(null);
-
+export const DSelect = ({items} : DSelectProps) => {
+  const [selectedLanguage, setSelectedLanguage] = useState();
   return (
-    <DropDownPicker
-      onChangeValue={onChangeValue}
-      placeholder="Selecione uma opção"
-      dropDownDirection="DEFAULT"
-      dropDownContainerStyle={{
-        zIndex: zIndex || 1000, // Set a default zIndex or use the provided zIndex
-      }}
-      style={{}}
-      open={open}
-      value={value}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-    />
+    <Picker style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
+      selectedValue={selectedLanguage}
+      onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+    >
+      {items.map((item: { key: string | undefined; value: string | null; label: string | undefined; }) => {
+        return <Picker.Item key={item.label} label={item.label} value={item.value} />
+      })}
+    </Picker>
   );
 };
