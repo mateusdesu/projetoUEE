@@ -23,7 +23,7 @@ export const CadastrarCandidato = ({
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === null || selectedCargoItem === null) {
+    if (selectedOption === null /*|| selectedCargoItem === null*/) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
       Alert.alert(
@@ -44,10 +44,17 @@ export const CadastrarCandidato = ({
 
 
   const realizarCadastro = async() => {
-    let realPicPath = await ImageService.uploadPic(picture_path,electionId.toString(),number);
-    let candidate = new Candidate(name, number, electionId, party, realPicPath, vice_name, null);
+    let inserido;
+    const election = eleicao.find((e)=> e.value === electionId);
+    const eName = election != undefined ? election.label : '';
+
+    if(eName != ''){
+      let realPicPath = await ImageService.uploadPic(picture_path,eName,number);
+      let candidate = new Candidate(name, number, electionId, party, realPicPath, vice_name, null);  
+      inserido = await CandidateService.addCandidate(candidate);
+    }
     
-    let inserido = await CandidateService.addCandidate(candidate);
+
     //CandidateService.findAll(0);
     
     if(inserido){
@@ -116,7 +123,7 @@ export const CadastrarCandidato = ({
   ); // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
 
-  /*const handleElectionChange = (value: string | null) => {
+  const handleElectionChange = (value: string | null) => {
     setSelectedOption(value);
     // Encontrar a opção selecionada para obter os cargos.
     const selected = eleicao.find((item) => item.value === value);
@@ -127,7 +134,7 @@ export const CadastrarCandidato = ({
       setSelectedCargo([]);
       setSelectedCargoItem(null);
     }
-  };*/
+  };
 
   const handleCargoChange = (value: string | null) => {
     setSelectedCargoItem(value); // Atualizar o estado do cargo selecionado
