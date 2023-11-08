@@ -20,7 +20,7 @@ export default class MasterService{
             }        
         ))
         return master;
-    }
+     }
 
     static checkMasterPass(password:string){
         
