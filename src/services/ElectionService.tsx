@@ -2,6 +2,7 @@ import { Election } from "../models/Election";
 import { DatabaseConnection } from "../database/DatabaseConnection";
 import { SQLError } from "expo-sqlite";
 import ImageService from "./ImageService";
+import { Candidate } from "../models/Candidate";
 import CandidateService  from "./CandidateService"; 
 
 const db = DatabaseConnection.getConnection();
@@ -28,8 +29,36 @@ export default class ElectionService{
         ));
     }
 
-    static result(idElection:number){
-         
+    static result(electionId:number){
+        let candidates:Array<Candidate> = [];
+         new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select * from candidates where idElection = ${electionId} order by votes desc`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    candidates = rows._array;
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao gerar resultado: "+sqlErr);                   
+                }
+            }
+         ));
+
+         return candidates;
+    }
+
+    static amountOfVotes(electionId:number){
+        let amount = 0;
+        new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select SUM(votes) as votes from candidates where idElection = ${electionId}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    amount = rows._array[0];
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao gerar resultado: "+sqlErr);                   
+                }
+            }
+         ));
+
+         return amount;
     }
 
     static findAll(){
