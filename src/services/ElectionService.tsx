@@ -29,7 +29,7 @@ export default class ElectionService{
     }
 
     static result(idElection:number){
-        
+         
     }
 
     static findAll(){
