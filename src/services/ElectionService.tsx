@@ -2,6 +2,7 @@ import { Election } from "../models/Election";
 import { DatabaseConnection } from "../database/DatabaseConnection";
 import { SQLError } from "expo-sqlite";
 import ImageService from "./ImageService";
+import CandidateService  from "./CandidateService"; 
 
 const db = DatabaseConnection.getConnection();
 const table = "election";
@@ -25,6 +26,10 @@ export default class ElectionService{
                 }
             }          
         ));
+    }
+
+    static result(idElection:number){
+        
     }
 
     static findAll(){
