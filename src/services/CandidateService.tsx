@@ -28,6 +28,18 @@ export default class CandidateService{
         ));
     }
 
+    static deleteCandidate(id:number){
+        return new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
+                    resolve(rows.item(0).id);
+                }),(sqlError:SQLError)=>{
+                    console.log("Erro ao excluir candidato: "+sqlError);
+                }
+            }
+        ))
+    }
+
     static findAll(electionId: number){
         new Promise((resolve, reject)=> db.transaction(
             tx=>{
