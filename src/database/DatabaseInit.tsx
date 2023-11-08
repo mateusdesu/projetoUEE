@@ -13,7 +13,8 @@ export default class DatabaseInit{
     }
 
     private InitDb(){
-        var sql = ['DROP TABLE IF EXISTS candidate',
+        var sql = [//'DROP TABLE IF EXISTS candidate',
+                    //'DROP TABLE IF EXISTS master',
                     //'DROP TABLE IF EXISTS election',
                     //FOREIGN KEY(electionId) REFERENCES election(id) -> change when create election table
                     'create table if not exists candidate'+
@@ -32,7 +33,11 @@ export default class DatabaseInit{
                         'name text not null,'+
                         'password text not null,'+
                         'positions text not null'+                      
-                        ');'
+                        ');',
+
+                    'create table if not exists master'+
+                    '(id integer primary key autoincrement,'+
+                    'password text not null);'
                 ] 
         
         
