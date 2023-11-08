@@ -187,7 +187,6 @@ export const CadastrarCandidato = ({
             alignItems="center"
             justifyContent={"center"}
             gap={"$2"}
-            mt={"$3"}
           >
             <Text fontWeight="$bold">Escolher foto</Text>
             <Entypo

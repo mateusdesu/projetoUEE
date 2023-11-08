@@ -50,9 +50,9 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
           flexDirection="row"
           justifyContent="flex-end"
           alignItems="center"
-          w={"95%"}
+          w={"100%"}
         >
-          <FontAwesome name="gear" size={32} color="white" onPress={() => navigation.navigate("MenuConfig")} />
+          <FontAwesome name="gear" size={40} color="white" onPress={() => navigation.navigate("MenuConfig")} />
         </Box>
       </BoxContainer>
     </GluestackUIProvider>
