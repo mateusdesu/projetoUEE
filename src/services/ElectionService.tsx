@@ -29,6 +29,46 @@ export default class ElectionService{
         ));
     }
 
+    static startElection(id:number, pass:string){
+        let authorized = false;
+
+        new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select password from ${table} where id = ${id}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    let password = rows._array[0].password;
+
+                    if(password.equals(pass)){
+                        authorized = true;
+                    }
+                }),(sqlErr:SQLError)=>{
+                    console.log("Falha ao conferir senha!"+sqlErr);                   
+                }
+            }
+        ))
+
+        return authorized;
+    }
+
+    static computeVote(id: number, votes:number){
+        let newVotes = votes + 1;
+        let voteWasComputed = false;
+
+        new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`update candidates set votes = ${newVotes} where id = ${id}`,[],(_,{rows})=>{
+                    console.log("Voto computado!");
+                    voteWasComputed = true;
+                }),(sqlErr:SQLError)=>{
+                    console.log("Falha ao computar voto!"+sqlErr);                   
+                }
+            }
+        ));
+
+        return voteWasComputed;
+
+    }
+
     static result(electionId:number){
         let candidates:Array<Candidate> = [];
          new Promise((resolve, reject)=>db.transaction(
