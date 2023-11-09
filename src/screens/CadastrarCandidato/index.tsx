@@ -13,9 +13,6 @@ import { Candidate } from "../../models/Candidate";
 import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
-import { Components } from "@gluestack-style/react/lib/typescript/types";
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useFocusEffect } from '@react-navigation/native';
 
 export const CadastrarCandidato = ({
   navigation,

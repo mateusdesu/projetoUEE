@@ -33,7 +33,7 @@ export const DInput = (props: DefaultInputProps) => {
     <GluestackUIProvider>
       <Box alignItems="flex-start" justifyContent="center">
         <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600">{props.text}</Text>
-      <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900">
+      <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900" h={"$12"}>
         <InputField
           backgroundColor="$white"
           padding={"$2"}
