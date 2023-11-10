@@ -223,13 +223,8 @@ export const CadastrarCandidato = ({
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
-          <Text fontSize="$md" fontWeight="$bold">
-            Escolher eleição *
-          </Text>
-
-          {/*<DropDownSelectElection />*/}
           
-          <DSelect items={eleicao}></DSelect>
+          <DSelect items={eleicao} text="Escolher eleição*"/>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
             Escolher cargo *

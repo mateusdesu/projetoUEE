@@ -1,15 +1,18 @@
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
-import { View } from "react-native";
+import { Text,Box, GluestackUIProvider } from "@gluestack-ui/themed";
 
 type DSelectProps = {
   items: any;
+  text?: string;
 };
 
-export const DSelect = ({items} : DSelectProps) => {
+export const DSelect = ({items,text} : DSelectProps) => {
   const [selectedItem, setSelectedItem] = useState();
   return (
-    
+    <GluestackUIProvider>
+    <Box width={"100%"} h={"$20"} >
+    <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600">{text}</Text>
     <Picker style={{ height: "10%", width: "100%",backgroundColor:"white",
   borderTopStartRadius: 10, borderTopEndRadius: 10, borderBottomStartRadius: 10, borderBottomEndRadius: 10, }}
       selectedValue={selectedItem}
@@ -19,5 +22,7 @@ export const DSelect = ({items} : DSelectProps) => {
         return <Picker.Item key={item.label} label={item.label} value={item.value} />
       })}
     </Picker>
+    </Box>
+    </GluestackUIProvider>
   );
 };
