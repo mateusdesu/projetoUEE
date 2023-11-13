@@ -13,19 +13,20 @@ import { Candidate } from "../../models/Candidate";
 import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
+import { Picker } from "@react-native-picker/picker";
 
 export const CadastrarCandidato = ({
-  navigation,
+   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === null /*|| selectedCargoItem === null*/) {
+    if (selectedOption === undefined || selectedCargo === null || selectedCargo === "selecionar cargo") {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
       Alert.alert(
         "Sucesso ✅",
-        `Eleição: ${selectedOption} | Cargo: ${selectedCargoItem}`
+        `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
       );
       // navigation.navigate("CadastrarCandidato2");
       setLoadSecondScreen(true);
@@ -63,7 +64,7 @@ export const CadastrarCandidato = ({
 
   };
 
-  var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [];
+  var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [{label:"", value:"",cargos:[""]}];
   var arrSetE2:Array<{label:string, value:string|number, cargos:string[]}> = [];
   const [eleicao, setEleicao] = useState(arrSetE);
   
@@ -89,7 +90,10 @@ export const CadastrarCandidato = ({
     setEleicao(arrSetE);*/
      let i:number;
     await ElectionService.findAll().then((response: any)=>{
-      
+      arrSetE2.push({
+        label:"selecionar eleição", 
+        value:0,
+        cargos: [""]})
       let elections:Array<Election> = response._array;
       for(i = 0; i<elections.length; i++){
         let positions = elections[i].positions.split(",");
@@ -109,33 +113,43 @@ export const CadastrarCandidato = ({
     })
   }
 
+
   /*useEffect(()=>{
     findAllElections();
   },[]);*/
 
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
-  const [selectedCargoItem, setSelectedCargoItem] = useState<string | null>(
-    null
-  ); // Novo estado
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
+  const [selectedCargo, setSelectedCargo] = useState("");
+  const [cargos, setCargos] = useState([""]);
+  // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
+   
+  const findSelectedElection =(value:number)=>{
+    
+    let e:{label:string, value:string|number, cargos:string[]} | undefined;
+    e = eleicao.find(e => e.value === value);
+    let c = ["selecionar cargo"];
+    let fc= [""];
+    if(e !== undefined){
+       fc = c.concat(e.cargos);
+      setCargos(fc);
+    }
+    
+  }
 
-  const handleElectionChange = (value: string | null) => {
+  /*const handleElectionChange = (value: string | undefined) => {
     setSelectedOption(value);
     // Encontrar a opção selecionada para obter os cargos.
     const selected = eleicao.find((item) => item.value === value);
     if (selected) {
       setSelectedCargo(selected.cargos || []);
-      setSelectedCargoItem(null); // Limpar o cargo selecionado quando a eleição muda
+       // Limpar o cargo selecionado quando a eleição muda
     } else {
       setSelectedCargo([]);
-      setSelectedCargoItem(null);
     }
-  };
+  };*/
 
-  const handleCargoChange = (value: string | null) => {
-    setSelectedCargoItem(value); // Atualizar o estado do cargo selecionado
-  };
+  
 
   const [selectedImage, setSelectedImage] = useState("");
   const pickImageAsync = async () => {
@@ -156,7 +170,13 @@ export const CadastrarCandidato = ({
     findAllElections();
   },[]);
 
-  
+  const electionOptions=()=>{
+    eleicao.map(e=>{
+      return{
+        
+      }
+    })
+  }
 
   if (loadSecondScreen) {
     return (
@@ -224,11 +244,44 @@ export const CadastrarCandidato = ({
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
           
-          <DSelect items={eleicao} text="Escolher eleição*"/>
+          <Picker 
+          
+          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
+           selectedValue = {selectedOption}
+           onValueChange={(itemValue:string) => {
+            setSelectedOption(itemValue);
+            findSelectedElection(Number(itemValue));
+            console.log("Eleição Selecionada: "+itemValue);         
+          }} 
+
+          
+          >
+           {eleicao.map(item => {
+            return <Picker.Item key={item.label} label={item.label} value={item.value} />
+          })}
+            
+          </Picker>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
             Escolher cargo *
           </Text>
+
+          <Picker 
+          
+          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
+           selectedValue = {selectedCargo}
+           onValueChange={(itemValue:string) => {
+            setSelectedCargo(itemValue);
+            console.log("Cargo Selecionado: "+itemValue);         
+          }} 
+
+          
+          >
+           {cargos.map(item => {
+            return <Picker.Item key={item}  label={item} value={item} />
+          })}
+            
+          </Picker>
           
           <Box
             flexDirection="row"
