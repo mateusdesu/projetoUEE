@@ -5,9 +5,9 @@ import { Text,Box, GluestackUIProvider } from "@gluestack-ui/themed";
 type DSelectProps = {
   items: any;
   text?: string;
-  onValueChange: any;
-  selectedValue: any;
-  selectedOption:any;
+  onValueChange?: any;
+  selectedValue?: any;
+  selectedOption?:any;
 
 };
 
