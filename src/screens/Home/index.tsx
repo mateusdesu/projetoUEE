@@ -5,10 +5,15 @@ import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { NavigationProp } from "@react-navigation/native";
+import DatabaseInit from "../../database/DatabaseInit";
 
 export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
+  const db_init = new DatabaseInit();
+  
   return (
     <GluestackUIProvider>
+      
+      <BoxContainer alignItems={"center"}>
       <Box
         px={"$2"}
         pt={"$6"}
@@ -17,19 +22,17 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
         flexDirection="row"
       >
         <Image
-          ml="$4"
-          size="sm"
+          size="md"
           alt="Logo Urna Eletrônica Escolar"
           source={require("../../assets/icon.png")}
         />
         <Image
           ml="$4"
-          size="sm"
+          size="md"
           alt="Logo Urna Eletrônica Escolar"
           source={require("../../assets/uni.png")}
         />
       </Box>
-      <BoxContainer alignItems={"center"}>
         <DButton
           text="CADASTRAR ELEIÇÃO"
           onPress={() => navigation.navigate("CadastrarEleicao")}
@@ -45,11 +48,11 @@ export const Home = ({ navigation }: { navigation: NavigationProp<any> }) => {
         <DButton text="RESULTADO ELEIÇÃO" onPress={() => navigation.navigate("ResultadoEleicao")} />
         <Box
           flexDirection="row"
-          justifyContent="flex-start"
+          justifyContent="flex-end"
           alignItems="center"
-          w={"95%"}
+          w={"100%"}
         >
-          <FontAwesome name="gear" size={32} color="black" onPress={() => navigation.navigate("MenuConfig")} />
+          <FontAwesome name="gear" size={40} color="white" onPress={() => navigation.navigate("MenuConfig")} />
         </Box>
       </BoxContainer>
     </GluestackUIProvider>

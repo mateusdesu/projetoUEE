@@ -1,30 +1,23 @@
 export class Election{
 
-    name: String;
-    password: String;
-    positions: Array<String>;
-    candidatesConfig: JSON;
-    /*{
-        party: boolean,
-        picture: boolean,
-        vice:boolean
-    }*/
-    id:Number;
+    name: string;
+    password: string;
+    positions: string; //string.split(',');
+    id:number ;
 
-    constructor(name:String, password:String, positions:Array<String>, candidatesConfig:JSON, id?:number){
+    constructor(name:string, password:string, positions:string, id:number){
 
-        if(id !== undefined){
-            this.id = id;
+        if(id === 0 || id === null){
+            this.id = 0;
         }else{
-           this.id = 0;
+            this.id = id;
         }
 
         this.name = name;
         this.password = password;
         this.positions = positions;
-        this.candidatesConfig = candidatesConfig;
-    }
+    }   
 
 
-    
+   
 }

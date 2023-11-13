@@ -1,30 +1,26 @@
-import React, { useState } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from "@react-native-picker/picker";
+import { useState } from "react";
+import { Text,Box, GluestackUIProvider } from "@gluestack-ui/themed";
 
 type DSelectProps = {
-  items: { label: string; value: string }[];
-  zIndex?: number;
-  onChangeValue?: any;
+  items: any;
+  text?: string;
+  onValueChange?: any;
+  selectedValue?: any;
+  selectedOption?:any;
+
 };
 
-export const DSelect = ({ items, zIndex,onChangeValue }: DSelectProps) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(null);
-
+export const DSelect = ({items, selectedOption} : DSelectProps) => {
+  const [selectedLanguage, setSelectedLanguage] = useState();
   return (
-    <DropDownPicker
-      onChangeValue={onChangeValue}
-      placeholder="Selecione uma opção"
-      dropDownDirection="DEFAULT"
-      dropDownContainerStyle={{
-        zIndex: zIndex || 1000, // Set a default zIndex or use the provided zIndex
-      }}
-      style={{}}
-      open={open}
-      value={value}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-    />
+    <Picker style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
+      selectedValue={selectedOption}
+      onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+    >
+      {items.map((item: { key: string | undefined; value: string | null; label: string | undefined; }) => {
+        return <Picker.Item key={item.label} label={item.label} value={item.value} />
+      })}
+    </Picker>
   );
 };
