@@ -13,9 +13,6 @@ import { Candidate } from "../../models/Candidate";
 import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
-import { Components } from "@gluestack-style/react/lib/typescript/types";
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useFocusEffect } from '@react-navigation/native';
 import { Picker } from "@react-native-picker/picker";
 
 export const CadastrarCandidato = ({
@@ -246,11 +243,6 @@ export const CadastrarCandidato = ({
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
-          <Text fontSize="$md" fontWeight="$bold">
-            Escolher eleição *
-          </Text>
-
-          {/*<DropDownSelectElection />*/}
           
           <Picker 
           
