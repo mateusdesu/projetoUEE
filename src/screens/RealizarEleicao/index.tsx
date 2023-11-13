@@ -74,65 +74,253 @@ export const RealizarEleicao = ({
       </GluestackUIProvider>
     );
   } else if (screen === 2) {
-    return <BoxContainer><Button></Button></BoxContainer>;
+    return (
+      <BoxContainer>
+        <Button></Button>
+      </BoxContainer>
+    );
   } else if (screen === 3) {
     return (
-      <BoxContainer alignItems={"center"} flexDirection={"row"}>
-        <Box w={"50%"}>
-          <Text>Area dados</Text>
+      <BoxContainer alignItems={"center"} flexDirection={"row"} gap={"$2"}>
+        <Box w={"50%"} h={"100%"} bg="#f0f0f0" flexDirection="column">
+          <Box pl={"$2"} pt={"$2"} flexDirection={"row"} h={"40%"}>
+            <Box w={"50%"}>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Seu voto para
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                Presidente
+              </Text>
+              <Box flexDirection="row" gap={"$1"}>
+                <Box
+                  borderColor="$black"
+                  borderWidth={"$2"}
+                  h={"$12"}
+                  w={"$10"}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text
+                    fontSize={"$2xl"}
+                    lineHeight={"$2xl"}
+                    fontWeight="$bold"
+                  >
+                    1
+                  </Text>
+                </Box>
+                <Box
+                  borderColor="$black"
+                  borderWidth={"$2"}
+                  h={"$12"}
+                  w={"$10"}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text
+                    fontSize={"$2xl"}
+                    lineHeight={"$2xl"}
+                    fontWeight="$bold"
+                  >
+                    0
+                  </Text>
+                </Box>
+              </Box>
+            </Box>
+            <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
+              <Box borderColor="$black" borderWidth={"$2"} h={"90%"} w={"$24"}>
+                <Text>Imagem</Text>
+              </Box>
+            </Box>
+          </Box>
+          <Box pl={"$2"} pt={"$2"} flexDirection={"column"}>
+            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+              Nome
+            </Text>
+            <Text
+              fontSize={"$xl"}
+              lineHeight={"$xl"}
+              fontWeight="$bold"
+              color="$blueGray600"
+            >
+              Candidato
+            </Text>
+            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+              Vice
+            </Text>
+            <Text
+              fontSize={"$xl"}
+              lineHeight={"$xl"}
+              fontWeight="$bold"
+              color="$blueGray600"
+            >
+             Vice Candidato
+            </Text>
+            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+              Chapa
+            </Text>
+            <Text
+              fontSize={"$xl"}
+              lineHeight={"$xl"}
+              fontWeight="$bold"
+              color="$blueGray600"
+            >
+              Chapa 1
+            </Text>
+            
+          </Box>
         </Box>
         <Box w={"50%"} bg="#f0f0f0" h={"100%"} bgColor="black">
           <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>1</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                1
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>2</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                2
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>3</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                3
+              </ButtonText>
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-          <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>4</ButtonText>
+            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                4
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>5</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                5
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>6</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                6
+              </ButtonText>
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-          <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>7</ButtonText>
+            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                7
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>8</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                8
+              </ButtonText>
             </Button>
             <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>9</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                9
+              </ButtonText>
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-          <Button bg="$coolGray300" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$4xl"} fontWeight="bold" lineHeight={"$4xl"}>0</ButtonText>
+            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+              <ButtonText
+                color="black"
+                fontSize={"$4xl"}
+                fontWeight="bold"
+                lineHeight={"$4xl"}
+              >
+                0
+              </ButtonText>
             </Button>
-          
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"} alignItems="center">
-          <Button bg="$white" w={"30%"} h={"90%"}>
-              <ButtonText color="black" fontSize={"$2xl"} fontWeight="bold" lineHeight={"$2xl"}>Branco</ButtonText>
+          <HStack
+            justifyContent="center"
+            gap={"$1"}
+            mt={"$1"}
+            h={"18%"}
+            alignItems="flex-end"
+          >
+            <Button bg="$white" w={"30%"} h={"90%"}>
+              <ButtonText
+                color="black"
+                fontSize={"$2xl"}
+                fontWeight="bold"
+                lineHeight={"$2xl"}
+              >
+                Branco
+              </ButtonText>
             </Button>
             <Button bg="$amber500" w={"30%"} h={"90%"}>
-              <ButtonText color="black" fontSize={"$xl"} fontWeight="bold" lineHeight={"$xl"}>Corrige</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$xl"}
+                fontWeight="bold"
+                lineHeight={"$xl"}
+              >
+                Corrige
+              </ButtonText>
             </Button>
             <Button bg="$emerald400" w={"30%"} h={"100%"}>
-              <ButtonText color="black" fontSize={"$lg"} fontWeight="bold" lineHeight={"$lg"}>Confirma</ButtonText>
+              <ButtonText
+                color="black"
+                fontSize={"$lg"}
+                fontWeight="bold"
+                lineHeight={"$lg"}
+              >
+                Confirma
+              </ButtonText>
             </Button>
           </HStack>
-         
         </Box>
       </BoxContainer>
     );

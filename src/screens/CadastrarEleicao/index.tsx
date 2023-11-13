@@ -64,6 +64,7 @@ export const CadastrarEleicao = ({
           placeholder="(Insira os cargos por virgula) Ex: Presidente, Vice-Presidente"
           onChange={setCargos}
           width="$90%"
+          type={"text"}
         />
         <Box
           flexDirection="row"
