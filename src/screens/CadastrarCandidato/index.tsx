@@ -16,7 +16,7 @@ import ImageService from "../../services/ImageService";
 import { Picker } from "@react-native-picker/picker";
 
 export const CadastrarCandidato = ({
-  navigation,
+   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
