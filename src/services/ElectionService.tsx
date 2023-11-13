@@ -29,7 +29,7 @@ export default class ElectionService{
         ));
     }
 
-    static startElection(id:number, pass:string){
+    static checkElectionCredential(id:number, pass:string){
         let authorized = false;
 
         new Promise((resolve, reject)=> db.transaction(
