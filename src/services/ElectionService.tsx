@@ -29,12 +29,17 @@ export default class ElectionService{
         ));
     }
 
-    static hasCandidates(id:number){
+    static hasCandidates(id:number){    
         new Promise ((resolve, reject)=>db.transaction(
             tx=>{
                 tx.executeSql(`select count(electionId) from candidates where electionId = ${id}`,[],(_,{rows})=>{
-                    let hasCandidate = resolve(rows.item(0));
-                 
+                    let hasCandidate = Number(resolve(rows.item(0)));
+                    
+                    if(hasCandidate > 0){
+                        return true
+                    }else{
+                        return false;
+                    }
                 })
             }
         ))
