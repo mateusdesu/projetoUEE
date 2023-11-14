@@ -49,7 +49,7 @@ export const CadastrarCandidato = ({
 
     if(eName != ''){
       let realPicPath = await ImageService.uploadPic(picture_path,eName,number);
-      let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo,party, realPicPath, vice_name, null);  
+      let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo, party, realPicPath, vice_name, null);  
       inserido = await CandidateService.addCandidate(candidate);
     }
      
