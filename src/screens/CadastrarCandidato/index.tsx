@@ -21,14 +21,13 @@ export const CadastrarCandidato = ({
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === undefined || selectedCargo === null || selectedCargo === "selecionar cargo") {
+    if (selectedOption === undefined || selectedOption === "selecionar eleição" || selectedCargo === null || selectedCargo === "selecionar cargo") {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
       Alert.alert(
         "Sucesso ✅",
         `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
       );
-      // navigation.navigate("CadastrarCandidato2");
       setLoadSecondScreen(true);
     }
   };
@@ -43,18 +42,17 @@ export const CadastrarCandidato = ({
 
   const realizarCadastro = async() => {
     let inserido;
+    
+
     const election = eleicao.find((e)=> e.value === electionId);
     const eName = election != undefined ? election.label : '';
 
     if(eName != ''){
       let realPicPath = await ImageService.uploadPic(picture_path,eName,number);
-      let candidate = new Candidate(name, number, electionId, party, realPicPath, vice_name, null);  
+      let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo,party, realPicPath, vice_name, null);  
       inserido = await CandidateService.addCandidate(candidate);
     }
-    
-
-    //CandidateService.findAll(0);
-    
+     
     if(inserido){
       Alert.alert("Sucesso ✅", "Candidato Cadastrado");
     }else{
@@ -70,24 +68,6 @@ export const CadastrarCandidato = ({
   
 
   const findAllElections = async() =>{
-    /*let elections:Array<Election> = await ElectionService.findAll();
-    let e:any;
-    let i:number;
-    
-    console.log("Tamanho de Elections: "+elections.length);
-
-    for(i = 0; i<elections.length; i++){
-      let positions = elections[i].positions.split(",");
-      arrSetE.push({
-        label:elections[i].name, 
-        value:elections[i].id,
-        cargos: positions});
-
-    }
-
-    console.log("Elections: "+elections)
-    console.log("ArrSetE: "+arrSetE)
-    setEleicao(arrSetE);*/
      let i:number;
     await ElectionService.findAll().then((response: any)=>{
       arrSetE2.push({
@@ -109,14 +89,9 @@ export const CadastrarCandidato = ({
         console.log(e.label);
       })
       
-      //console.log(elections);
+
     })
   }
-
-
-  /*useEffect(()=>{
-    findAllElections();
-  },[]);*/
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
   const [selectedCargo, setSelectedCargo] = useState("");
@@ -136,20 +111,6 @@ export const CadastrarCandidato = ({
     }
     
   }
-
-  /*const handleElectionChange = (value: string | undefined) => {
-    setSelectedOption(value);
-    // Encontrar a opção selecionada para obter os cargos.
-    const selected = eleicao.find((item) => item.value === value);
-    if (selected) {
-      setSelectedCargo(selected.cargos || []);
-       // Limpar o cargo selecionado quando a eleição muda
-    } else {
-      setSelectedCargo([]);
-    }
-  };*/
-
-  
 
   const [selectedImage, setSelectedImage] = useState("");
   const pickImageAsync = async () => {
@@ -191,12 +152,12 @@ export const CadastrarCandidato = ({
             gap={"$2"}
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: João" text="Nome*"/>
-              <DInput placeholder="Ex: Chapa Verde" text="Chapa"/>
+              <DInput placeholder="Ex: João" text="Nome*" onChange={setName}/>
+              <DInput placeholder="Ex: Chapa Verde" text="Chapa" onChange={setParty}/>
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*"/>
-              <DInput placeholder="Ex: Maria" text="Vice"/>
+              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*" onChange={setNumber}/>
+              <DInput placeholder="Ex: Maria" text="Vice" onChange={setViceName}/>
             </Box>
           </Box>
           <Box
