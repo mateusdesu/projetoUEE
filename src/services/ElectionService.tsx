@@ -29,6 +29,29 @@ export default class ElectionService{
         ));
     }
 
+    static hasCandidates(id:number){
+        new Promise ((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select count(electionId) from candidates where electionId = ${id}`,[],(_,{rows})=>{
+                    let hasCandidate = resolve(rows.item(0));
+                 
+                })
+            }
+        ))
+    }
+
+    static deleteElection(id:number){
+        return new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
+                    resolve(rows.item(0).id);
+                }),(sqlError:SQLError)=>{
+                    console.log("Erro ao excluir candidato: "+sqlError);
+                }
+            }
+        ))
+    }
+
     static checkElectionCredential(id:number, pass:string){
         let authorized = false;
 
