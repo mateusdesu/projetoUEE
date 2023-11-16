@@ -7,7 +7,7 @@ export class Candidate{
     id: number | null;
     electionId:number;
     position:string;
-    private votes: number; //a pensar
+    private votes: number; 
 
     get _votes():number{
         return this.votes;

@@ -11,8 +11,9 @@ var elections: Array<Election> = [];
 
 export default class ElectionService{
     
-    static addElection(election: Election){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async addElection(election: Election){
+        let add = false;
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`insert into ${table} (name, password, positions) 
                 values (?,?,?)`, 
@@ -20,29 +21,39 @@ export default class ElectionService{
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
                     ImageService.createDir(election.name);                 
-                    resolve(true);
+                    
+
+                    if(insertId != undefined){
+                        add = true;
+                    }
+
+                    resolve(rows);
+
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
                     reject(false);
                 }
             }          
         ));
+        return add;
     }
 
-    static hasCandidates(id:number){    
-        new Promise ((resolve, reject)=>db.transaction(
+    static async hasCandidates(id:number){   
+        let hasCandidate = 0; 
+        await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
                 tx.executeSql(`select count(electionId) from candidates where electionId = ${id}`,[],(_,{rows})=>{
-                    let hasCandidate = Number(resolve(rows.item(0)));
+                     hasCandidate = Number(resolve(rows.item(0)));
                     
                     if(hasCandidate > 0){
-                        return true
+                        console.log("NUMERO DE CANDIDATOS: "+hasCandidate);                      
                     }else{
-                        return false;
+                        console.log("NUMERO DE CANDIDATOS: "+hasCandidate);                     
                     }
                 })
             }
         ))
+        return hasCandidate;
     }
 
     static deleteElection(id:number){

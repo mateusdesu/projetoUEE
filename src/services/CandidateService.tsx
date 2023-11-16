@@ -10,22 +10,31 @@ var candidates:Array<Candidate> = [];
 
 export default class CandidateService{
     
-    static addCandidate(candidate: Candidate){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async addCandidate(candidate: Candidate){
+        let add = false;
+       await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`insert into ${table} (name, vice_name, number, picture_path, electionId, party, position,votes) 
-                values (?,?,?,?,?,?,?)`, 
+                values (?,?,?,?,?,?,?,?)`, 
                 [candidate.name, candidate.vice_name, candidate.number,candidate.picture_path, candidate.electionId, candidate.party, candidate.position,0],
                 (_,{rows,insertId})=>{
                     console.log("Candidato inserido: "+insertId);
-                    resolve(true);
+
+                    console.log(insertId);
+                    
+                    if(insertId !== undefined){
+                        add = true;
+                    }
+
+                    resolve(rows);
                 }),(sqlErr:SQLError)=>{
-                    console.log("Erro ao inserir candidato: "+sqlErr);
-                    reject(false);
+                    console.log("Erro ao inserir candidato: "+sqlErr); 
                 }
             }
             
-        ));
+        ));  
+
+        return add;
     }
 
     static deleteCandidate(id:number){
@@ -40,8 +49,8 @@ export default class CandidateService{
         ))
     }
 
-    static findAll(electionId: number){
-        new Promise((resolve, reject)=> db.transaction(
+    static async findAll(electionId: number){
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table} where electionId = ${electionId}`, [],(_,{rows})=>{
                     console.log("Finda all: "+rows.length);

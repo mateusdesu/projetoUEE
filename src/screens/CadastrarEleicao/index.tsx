@@ -20,10 +20,15 @@ export const CadastrarEleicao = ({
 
   const cadastrarEleicao = async() => {
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
+      let hasc = await ElectionService.hasCandidates(2);
+      console.log(hasc);
       Alert.alert("Erro ⚠️", "Preencha todos os campos");
+      
     } else {
       let election = new Election(nomeEleicao,senhaEleicao,cargos,0);
-      let inserido = await ElectionService.addElection(election);
+      let inserido = false;
+      
+      inserido = await ElectionService.addElection(election);
     
       if(inserido){       
         Alert.alert(
