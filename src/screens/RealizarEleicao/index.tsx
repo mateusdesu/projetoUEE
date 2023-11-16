@@ -32,6 +32,18 @@ export const RealizarEleicao = ({
       cargos: ["Representante", "Conselheiro"],
     },
   ]);
+  const [numberVoted, setNumberVoted] = useState<string | any>("");
+
+function handleVotes (num:string){
+  if (numberVoted.length <= 2){
+    setNumberVoted( numberVoted + num)
+    console.log(numberVoted)
+  }
+function splitVotedNumber(numberVoted:string){
+  
+}
+
+}
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -110,7 +122,7 @@ export const RealizarEleicao = ({
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    1
+                    {numberVoted}
                   </Text>
                 </Box>
                 <Box
@@ -126,7 +138,7 @@ export const RealizarEleicao = ({
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    0
+                    {numberVoted}
                   </Text>
                 </Box>
               </Box>
@@ -137,7 +149,8 @@ export const RealizarEleicao = ({
               </Box>
             </Box>
           </Box>
-          <Box pl={"$2"} pt={"$2"} flexDirection={"column"}>
+          <Box flexDirection="row">
+          <Box pl={"$2"} pt={"$2"} flexDirection={"column"} w={"50%"}>
             <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
               Nome
             </Text>
@@ -173,10 +186,14 @@ export const RealizarEleicao = ({
             </Text>
             
           </Box>
+          <Box w={"50%"} alignItems="center" justifyContent="center">
+            <Text>aaa</Text>
+          </Box>
+          </Box>
         </Box>
         <Box w={"50%"} bg="#f0f0f0" h={"100%"} bgColor="black">
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("1")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -186,7 +203,7 @@ export const RealizarEleicao = ({
                 1
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -196,7 +213,7 @@ export const RealizarEleicao = ({
                 2
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -207,8 +224,8 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -218,7 +235,7 @@ export const RealizarEleicao = ({
                 4
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -228,7 +245,7 @@ export const RealizarEleicao = ({
                 5
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -239,8 +256,8 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -250,7 +267,7 @@ export const RealizarEleicao = ({
                 7
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -260,7 +277,7 @@ export const RealizarEleicao = ({
                 8
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -271,8 +288,8 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}

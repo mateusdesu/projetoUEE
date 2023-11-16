@@ -94,7 +94,7 @@ export const CadastrarCandidato = ({
   }
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
-  const [selectedCargo, setSelectedCargo] = useState("");
+  const [selectedCargo, setSelectedCargo] = useState(" ");
   const [cargos, setCargos] = useState([""]);
   // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
@@ -204,6 +204,10 @@ export const CadastrarCandidato = ({
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
+
+          <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
+            Escolher eleição*
+          </Text>
           
           <Picker 
           
@@ -224,7 +228,7 @@ export const CadastrarCandidato = ({
           </Picker>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
-            Escolher cargo *
+            Escolher cargo*
           </Text>
 
           <Picker 
