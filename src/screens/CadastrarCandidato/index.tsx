@@ -41,16 +41,21 @@ export const CadastrarCandidato = ({
 
 
   const realizarCadastro = async() => {
-    let inserido;
-    
+    let inserido = false;
+    let realPicPath = '';
 
     const election = eleicao.find((e)=> e.value === electionId);
     const eName = election != undefined ? election.label : '';
 
-    if(eName != ''){
-      let realPicPath = await ImageService.uploadPic(picture_path,eName,number);
-      let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo, party, realPicPath, vice_name, null);  
+    if(picture_path != ''){
+      realPicPath = await ImageService.uploadPic(picture_path,eName,number);
+    }
+
+    let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo, party, realPicPath, vice_name, null); 
+
+    if(eName != ''){   
       inserido = await CandidateService.addCandidate(candidate);
+      console.log("valor de inserido: "+inserido);
     }
      
     if(inserido){
