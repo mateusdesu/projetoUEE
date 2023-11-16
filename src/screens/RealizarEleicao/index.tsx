@@ -32,17 +32,24 @@ export const RealizarEleicao = ({
       cargos: ["Representante", "Conselheiro"],
     },
   ]);
-  const [numberVoted, setNumberVoted] = useState<string | any>("");
+  const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
+  const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
+  const [NumberVoted, setNumberVoted] = useState<string | any>("");
 
 function handleVotes (num:string){
-  if (numberVoted.length <= 2){
-    setNumberVoted( numberVoted + num)
-    console.log(numberVoted)
+  if( firstNumberVoted === ""){
+    setFistNumberVoted(num)
   }
-function splitVotedNumber(numberVoted:string){
-  
+  else if(firstNumberVoted != ""){
+    setSecondNumberVoted(num)
+    setNumberVoted(firstNumberVoted + secondNumberVoted)
+  }
 }
 
+function clear(){
+  setFistNumberVoted("");
+  setSecondNumberVoted("");
+  setNumberVoted("");
 }
 
   const [screen, SetScreen] = useState(1);
@@ -122,7 +129,7 @@ function splitVotedNumber(numberVoted:string){
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    {numberVoted}
+                    {firstNumberVoted}
                   </Text>
                 </Box>
                 <Box
@@ -138,7 +145,7 @@ function splitVotedNumber(numberVoted:string){
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    {numberVoted}
+                    {secondNumberVoted}
                   </Text>
                 </Box>
               </Box>
@@ -203,7 +210,7 @@ function splitVotedNumber(numberVoted:string){
                 1
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("2")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -213,7 +220,7 @@ function splitVotedNumber(numberVoted:string){
                 2
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("3")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -225,7 +232,7 @@ function splitVotedNumber(numberVoted:string){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("4")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -235,7 +242,7 @@ function splitVotedNumber(numberVoted:string){
                 4
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("5")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -245,7 +252,7 @@ function splitVotedNumber(numberVoted:string){
                 5
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("6")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -257,7 +264,7 @@ function splitVotedNumber(numberVoted:string){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("7")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -267,7 +274,7 @@ function splitVotedNumber(numberVoted:string){
                 7
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("8")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -277,7 +284,7 @@ function splitVotedNumber(numberVoted:string){
                 8
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("9")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -289,7 +296,7 @@ function splitVotedNumber(numberVoted:string){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"}>
+            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("0")}>
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -323,6 +330,7 @@ function splitVotedNumber(numberVoted:string){
                 fontSize={"$xl"}
                 fontWeight="bold"
                 lineHeight={"$xl"}
+                onPress={()=> clear()}
               >
                 Corrige
               </ButtonText>
