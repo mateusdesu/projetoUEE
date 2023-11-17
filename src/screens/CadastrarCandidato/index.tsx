@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
-import { DSelect } from "../../components/DSelect";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
@@ -14,14 +13,19 @@ import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
 import { Picker } from "@react-native-picker/picker";
-
+import Checkbox from "expo-checkbox";
 export const CadastrarCandidato = ({
-   navigation,
+  navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === undefined || selectedOption === "selecionar eleição" || selectedCargo === null || selectedCargo === "selecionar cargo") {
+    if (
+      selectedOption === undefined ||
+      selectedOption === "selecionar eleição" ||
+      selectedCargo === null ||
+      selectedCargo === "selecionar cargo"
+    ) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
       Alert.alert(
@@ -32,90 +36,110 @@ export const CadastrarCandidato = ({
     }
   };
 
-  const [name, setName] = useState('');
-  const [vice_name, setViceName] = useState('');
+  const [name, setName] = useState("");
+  const [vice_name, setViceName] = useState("");
   const [number, setNumber] = useState(0);
-  let [picture_path, setPicturePath] = useState('');
-  const [party, setParty] = useState('');
+  let [picture_path, setPicturePath] = useState("");
+  const [party, setParty] = useState("");
   const [electionId, setElectionId] = useState(0);
+  const [hasImage, setHasImage] = useState(false);
+  const [hasParty, setHasParty] = useState(false);
+  const [hasVice, setHasVice] = useState(false);
 
-
-  const realizarCadastro = async() => {
+  const realizarCadastro = async () => {
     let inserido = false;
-    let realPicPath = '';
+    let realPicPath = "";
 
-    const election = eleicao.find((e)=> e.value === electionId);
-    const eName = election != undefined ? election.label : '';
+    const election = eleicao.find((e) => e.value === electionId);
+    const eName = election != undefined ? election.label : "";
 
-    if(picture_path != ''){
-      realPicPath = await ImageService.uploadPic(picture_path,eName,number);
+    if (picture_path != "") {
+      realPicPath = await ImageService.uploadPic(picture_path, eName, number);
     }
 
-    let candidate = new Candidate(name, number, Number(selectedOption), selectedCargo, party, realPicPath, vice_name, null); 
+    let candidate = new Candidate(
+      name,
+      number,
+      Number(selectedOption),
+      selectedCargo,
+      party,
+      realPicPath,
+      vice_name,
+      null
+    );
 
-    if(eName != ''){   
+    if (eName != "") {
       inserido = await CandidateService.addCandidate(candidate);
-      console.log("valor de inserido: "+inserido);
+      console.log("valor de inserido: " + inserido);
     }
-     
-    if(inserido){
-      Alert.alert("Sucesso ✅", "Candidato Cadastrado");
-    }else{
-      Alert.alert("Erro ⚠️","Falha ao cadastrar candidato! \nTente novamente!");
-    }
-    
 
+    if (inserido) {
+      Alert.alert("Sucesso ✅", "Candidato Cadastrado");
+    } else {
+      Alert.alert(
+        "Erro ⚠️",
+        "Falha ao cadastrar candidato! \nTente novamente!"
+      );
+    }
   };
 
-  var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [{label:"", value:"",cargos:[""]}];
-  var arrSetE2:Array<{label:string, value:string|number, cargos:string[]}> = [];
+  var arrSetE: Array<{
+    label: string;
+    value: string | number;
+    cargos: string[];
+  }> = [{ label: "", value: "", cargos: [""] }];
+  var arrSetE2: Array<{
+    label: string;
+    value: string | number;
+    cargos: string[];
+  }> = [];
   const [eleicao, setEleicao] = useState(arrSetE);
-  
 
-  const findAllElections = async() =>{
-     let i:number;
-    await ElectionService.findAll().then((response: any)=>{
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
       arrSetE2.push({
-        label:"selecionar eleição", 
-        value:0,
-        cargos: [""]})
-      let elections:Array<Election> = response._array;
-      for(i = 0; i<elections.length; i++){
+        label: "selecionar eleição",
+        value: 0,
+        cargos: [""],
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {
         let positions = elections[i].positions.split(",");
         arrSetE2.push({
-          label:elections[i].name, 
-          value:elections[i].id,
-          cargos: positions});
-  
+          label: elections[i].name,
+          value: elections[i].id,
+          cargos: positions,
+        });
       }
-        setEleicao(arrSetE2);
-      console.log("ArrSetE:"+eleicao);
-      eleicao.map(e=>{
+      setEleicao(arrSetE2);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
         console.log(e.label);
-      })
-      
+      });
+    });
+  };
 
-    })
-  }
-
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
   const [selectedCargo, setSelectedCargo] = useState(" ");
   const [cargos, setCargos] = useState([""]);
   // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
-   
-  const findSelectedElection =(value:number)=>{
-    
-    let e:{label:string, value:string|number, cargos:string[]} | undefined;
-    e = eleicao.find(e => e.value === value);
+
+  const findSelectedElection = (value: number) => {
+    let e:
+      | { label: string; value: string | number; cargos: string[] }
+      | undefined;
+    e = eleicao.find((e) => e.value === value);
     let c = ["selecionar cargo"];
-    let fc= [""];
-    if(e !== undefined){
-       fc = c.concat(e.cargos);
+    let fc = [""];
+    if (e !== undefined) {
+      fc = c.concat(e.cargos);
       setCargos(fc);
     }
-    
-  }
+  };
 
   const [selectedImage, setSelectedImage] = useState("");
   const pickImageAsync = async () => {
@@ -132,23 +156,21 @@ export const CadastrarCandidato = ({
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     findAllElections();
-  },[]);
+  }, []);
 
-  const electionOptions=()=>{
-    eleicao.map(e=>{
-      return{
-        
-      }
-    })
-  }
+  const electionOptions = () => {
+    eleicao.map((e) => {
+      return {};
+    });
+  };
 
   if (loadSecondScreen) {
     return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"center"}>
-          <Header title="Cadastrar Candidato" headerWidth={"100%"}/>
+          <Header title="Cadastrar Candidato" headerWidth={"100%"} />
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
@@ -157,12 +179,26 @@ export const CadastrarCandidato = ({
             gap={"$2"}
           >
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: João" text="Nome*" onChange={setName}/>
-              <DInput placeholder="Ex: Chapa Verde" text="Chapa" onChange={setParty}/>
+              <DInput placeholder="Ex: João" text="Nome*" onChange={setName} />
+              <DInput
+                placeholder="Ex: Chapa Verde"
+                text="Chapa"
+                onChange={setParty}
+              />
             </Box>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*" onChange={setNumber}/>
-              <DInput placeholder="Ex: Maria" text="Vice" onChange={setViceName}/>
+              <DInput
+                placeholder="Ex: 55"
+                keyType={"numeric"}
+                maxLength={2}
+                text="Número*"
+                onChange={setNumber}
+              />
+              <DInput
+                placeholder="Ex: Maria"
+                text="Vice"
+                onChange={setViceName}
+              />
             </Box>
           </Box>
           <Box
@@ -204,61 +240,94 @@ export const CadastrarCandidato = ({
       </GluestackUIProvider>
     );
   } else {
-    
-    return  (
+    return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
 
-          <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
+          <Text fontSize="$md" fontWeight="$bold">
             Escolher eleição*
           </Text>
-          
-          <Picker 
-          
-          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
-           selectedValue = {selectedOption}
-           onValueChange={(itemValue:string) => {
-            setSelectedOption(itemValue);
-            findSelectedElection(Number(itemValue));
-            console.log("Eleição Selecionada: "+itemValue);         
-          }} 
 
-          
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedOption}
+            onValueChange={(itemValue: string) => {
+              setSelectedOption(itemValue);
+              findSelectedElection(Number(itemValue));
+              console.log("Eleição Selecionada: " + itemValue);
+            }}
           >
-           {eleicao.map(item => {
-            return <Picker.Item key={item.label} label={item.label} value={item.value} />
-          })}
-            
+            {eleicao.map((item) => {
+              return (
+                <Picker.Item
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              );
+            })}
           </Picker>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
             Escolher cargo*
           </Text>
 
-          <Picker 
-          
-          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
-           selectedValue = {selectedCargo}
-           onValueChange={(itemValue:string) => {
-            setSelectedCargo(itemValue);
-            console.log("Cargo Selecionado: "+itemValue);         
-          }} 
-
-          
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedCargo}
+            onValueChange={(itemValue: string) => {
+              setSelectedCargo(itemValue);
+              console.log("Cargo Selecionado: " + itemValue);
+            }}
           >
-           {cargos.map(item => {
-            return <Picker.Item key={item}  label={item} value={item} />
-          })}
-            
+            {cargos.map((item) => {
+              return <Picker.Item key={item} label={item} value={item} />;
+            })}
           </Picker>
-          
+          <Box flexDirection="row" p={"$1"} mt={"$2"} alignItems="center" gap={"$2"} bgColor="$white">
+            <Checkbox
+              value={hasVice}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasVice === false ? setHasVice(true) : setHasVice(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá vice?</Text>
+            <Checkbox
+              value={hasParty}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasParty === false ? setHasParty(true) : setHasParty(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá chapa?</Text>
+            <Checkbox
+              value={hasImage}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasImage === false ? setHasImage(true) : setHasImage(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá foto?</Text>
+          </Box>
+
           <Box
             flexDirection="row"
             alignItems="flex-end"
             justifyContent="space-between"
             w={"100%"}
-            //mt={"$8"}
+            mt={"4%"}
           >
             <FontAwesome
               name="chevron-left"
