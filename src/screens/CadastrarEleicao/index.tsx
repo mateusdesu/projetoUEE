@@ -7,7 +7,6 @@ import { Header } from "../../components/Header";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import ElectionService from "../../services/ElectionService";
-import CandidateService from "../../services/CandidateService";
 import { Election } from "../../models/Election";
 
 export const CadastrarEleicao = ({
@@ -20,7 +19,11 @@ export const CadastrarEleicao = ({
   const [cargos, setCargos] = useState("");//useState<string[]>([]);
 
   const cadastrarEleicao = async() => {
-    if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {   
+    if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
+      let wv = 0;
+
+      wv = await ElectionService.getWhiteVotes(1);
+      
       Alert.alert("Erro ⚠️", "Preencha todos os campos");
       
     } else {

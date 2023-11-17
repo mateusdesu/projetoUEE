@@ -20,7 +20,7 @@ export default class ElectionService{
                 [election.name, election.password, election.positions,0],
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
-                    ImageService.createDir(election.name);                 
+                    ImageService.createDir(election.name); //OBS: fazer verificação se diretório(eleição) já existe                 
                     
 
                     if(insertId != undefined){
@@ -36,6 +36,31 @@ export default class ElectionService{
             }          
         ));
         return add;
+    }
+
+    static async sumWhiteVote(id:number){
+
+    }
+
+    static async getWhiteVotes(id:number){
+        let white_votes = 0;
+        await new Promise ((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select white_votes from ${table} where id = ${id}`,[],(_,{rows})=>{
+                     resolve(rows);
+
+                    white_votes= rows.item(0).white_votes;
+
+                    console.log(white_votes);
+
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao contabilizar votos brancos: "+sqlErr);
+                    reject(false);
+                }
+            }
+        ))
+        return white_votes;
+
     }
 
     static async hasCandidates(id:number){   
