@@ -7,6 +7,7 @@ import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
+import React from "react";
 
 export const SenhaMaster = ({ navigation }: { navigation: NavigationProp<any>; }) =>
 {
@@ -21,7 +22,7 @@ export const SenhaMaster = ({ navigation }: { navigation: NavigationProp<any>; }
         <DInput placeholder="Senha Master" type={"password"} width="$90%" onChange={setSenhaMaster}/>
         <Box flexDirection="row" justifyContent="flex-start" alignItems="center" w={"95%"}>
             <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("Home")}/>
-            <FontAwesome name="check" size={32} color="green" onPress={casdastrarSenhaMaster}/>
+            <FontAwesome name="check" size={32} color="green" />
         </Box>
       </BoxContainer>
     </GluestackUIProvider>

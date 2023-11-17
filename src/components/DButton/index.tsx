@@ -9,18 +9,18 @@ export const DButton = (props: MainButtonProps) => {
   return (
     <GluestackUIProvider>
       <Button
-        bg="$green400"
-        borderColor="$black"
-        borderWidth={"$1"}
+        bg="white"
+        borderColor="$green900"
+        borderWidth={"$2"}
         width={props.width || "80%"}
         height={"$12"}
         mx={"auto"}
         p={"$1"}
         my={"$1"}
-        borderRadius={"$xl"}
+        borderRadius={"$2xl"}
         onPress={props.onPress}
       >
-        <Text color="$trueGray900" fontWeight="$bold" fontSize={"$xl"} textAlign="center">
+        <Text color="$blue900" lineHeight={"$2xl"} fontWeight="$bold" fontSize={"$2xl"} textAlign="center">
           {props.text}
         </Text>
       </Button>

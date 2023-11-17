@@ -5,6 +5,7 @@ import { BoxContainer } from "../../components/BoxContainer";
 import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
+import React from "react";
 
 export const Contato = ({ navigation }: { navigation: NavigationProp<any> }) =>
 {
