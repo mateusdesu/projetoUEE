@@ -20,12 +20,7 @@ export const CadastrarEleicao = ({
 
   const cadastrarEleicao = async() => {
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
-      let wv = 0;
-
-      wv = await ElectionService.getWhiteVotes(1);
-      
-      Alert.alert("Erro ⚠️", "Preencha todos os campos");
-      
+      Alert.alert("Erro ⚠️", "Preencha todos os campos");  
     } else {
       let election = new Election(nomeEleicao,senhaEleicao,cargos,0);
       let inserido = false;
