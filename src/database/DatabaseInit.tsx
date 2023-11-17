@@ -26,7 +26,8 @@ export default class DatabaseInit{
                         'number integer not null,'+
                         'position text not null,'+
                         'picture_path text,'+
-                        'votes integer not null'
+                        'votes integer not null,'+
+                        'FOREIGN KEY(electionId) REFERENCES election(id)'
                         +');',
 
                     'create table if not exists election'+
