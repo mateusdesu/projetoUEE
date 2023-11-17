@@ -33,7 +33,8 @@ export default class DatabaseInit{
                         '(id integer primary key autoincrement,'+                       
                         'name text not null,'+
                         'password text not null,'+
-                        'positions text not null'+                      
+                        'positions text not null,'+   
+                        'white_votes integer not null'+                   
                         ');',
 
                     'create table if not exists master'+
