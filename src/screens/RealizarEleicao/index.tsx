@@ -36,21 +36,20 @@ export const RealizarEleicao = ({
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
 
-function handleVotes (num:string){
-  if( firstNumberVoted === ""){
-    setFistNumberVoted(num)
+  function handleVotes(num: string) {
+    if (firstNumberVoted === "") {
+      setFistNumberVoted(num);
+    } else if (firstNumberVoted != "") {
+      setSecondNumberVoted(num);
+      setNumberVoted(firstNumberVoted + secondNumberVoted);
+    }
   }
-  else if(firstNumberVoted != ""){
-    setSecondNumberVoted(num)
-    setNumberVoted(firstNumberVoted + secondNumberVoted)
-  }
-}
 
-function clear(){
-  setFistNumberVoted("");
-  setSecondNumberVoted("");
-  setNumberVoted("");
-}
+  function clear() {
+    setFistNumberVoted("");
+    setSecondNumberVoted("");
+    setNumberVoted("");
+  }
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -157,50 +156,54 @@ function clear(){
             </Box>
           </Box>
           <Box flexDirection="row">
-          <Box pl={"$2"} pt={"$2"} flexDirection={"column"} w={"50%"}>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Nome
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-              Candidato
-            </Text>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Vice
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-             Vice Candidato
-            </Text>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Chapa
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-              Chapa 1
-            </Text>
-            
-          </Box>
-          <Box w={"50%"} alignItems="center" justifyContent="center">
-            <Text>aaa</Text>
-          </Box>
+            <Box pl={"$2"} pt={"$2"} flexDirection={"column"} w={"50%"}>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Nome
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                Candidato
+              </Text>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Vice
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                Vice Candidato
+              </Text>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Chapa
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                Chapa 1
+              </Text>
+            </Box>
+            <Box w={"50%"} alignItems="center" justifyContent="center">
+              <Text>aaa</Text>
+            </Box>
           </Box>
         </Box>
         <Box w={"50%"} bg="#f0f0f0" h={"100%"} bgColor="black">
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("1")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("1")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -210,7 +213,12 @@ function clear(){
                 1
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("2")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("2")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -220,7 +228,12 @@ function clear(){
                 2
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("3")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("3")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -232,7 +245,12 @@ function clear(){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("4")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("4")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -242,7 +260,12 @@ function clear(){
                 4
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("5")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("5")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -252,7 +275,12 @@ function clear(){
                 5
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("6")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("6")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -264,7 +292,12 @@ function clear(){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("7")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("7")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -274,7 +307,12 @@ function clear(){
                 7
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("8")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("8")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -284,7 +322,12 @@ function clear(){
                 8
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("9")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("9")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -296,7 +339,12 @@ function clear(){
             </Button>
           </HStack>
           <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"28%"} h={"100%"} onPress={() => handleVotes("0")}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("0")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -324,13 +372,12 @@ function clear(){
                 Branco
               </ButtonText>
             </Button>
-            <Button bg="$amber500" w={"30%"} h={"90%"}>
+            <Button bg="$amber500" w={"30%"} h={"90%"} onPress={() => clear()}>
               <ButtonText
                 color="black"
                 fontSize={"$xl"}
                 fontWeight="bold"
                 lineHeight={"$xl"}
-                onPress={()=> clear()}
               >
                 Corrige
               </ButtonText>
