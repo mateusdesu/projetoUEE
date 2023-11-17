@@ -40,17 +40,17 @@ export default class ElectionService{
 
     static async hasCandidates(id:number){   
         let hasCandidate = 0; 
-        await new Promise ((resolve, reject)=>db.transaction(
+          await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select count(electionId) from candidates where electionId = ${id}`,[],(_,{rows})=>{
-                     hasCandidate = Number(resolve(rows.item(0)));
-                    
-                    if(hasCandidate > 0){
-                        console.log("NUMERO DE CANDIDATOS: "+hasCandidate);                      
-                    }else{
-                        console.log("NUMERO DE CANDIDATOS: "+hasCandidate);                     
-                    }
-                })
+                tx.executeSql(`select count(electionId) as candidates from candidate where electionId = (?)`,[id],(_,{rows})=>{
+                     resolve(rows);
+
+                     hasCandidate= rows.item(0).candidates;
+
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao contar candidatos "+sqlErr);
+                    reject(false);
+                }
             }
         ))
         return hasCandidate;
@@ -95,7 +95,7 @@ export default class ElectionService{
 
         new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`update candidates set votes = ${newVotes} where id = ${id}`,[],(_,{rows})=>{
+                tx.executeSql(`update candidate set votes = ${newVotes} where id = ${id}`,[],(_,{rows})=>{
                     console.log("Voto computado!");
                     voteWasComputed = true;
                 }),(sqlErr:SQLError)=>{
@@ -112,7 +112,7 @@ export default class ElectionService{
         let candidates:Array<Candidate> = [];
          new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select * from candidates where idElection = ${electionId} order by votes desc`,[],(_,{rows})=>{
+                tx.executeSql(`select * from candidate where idElection = ${electionId} order by votes desc`,[],(_,{rows})=>{
                     resolve(rows._array);
                     candidates = rows._array;
                 }),(sqlErr:SQLError)=>{
@@ -128,7 +128,7 @@ export default class ElectionService{
         let amount = 0;
         new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select SUM(votes) as votes from candidates where idElection = ${electionId}`,[],(_,{rows})=>{
+                tx.executeSql(`select SUM(votes) as votes from candidate where idElection = ${electionId}`,[],(_,{rows})=>{
                     resolve(rows._array);
                     amount = rows._array[0];
                 }),(sqlErr:SQLError)=>{
