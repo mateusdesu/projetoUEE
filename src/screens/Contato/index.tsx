@@ -15,7 +15,7 @@ export const Contato = ({ navigation }: { navigation: NavigationProp<any> }) =>
         <BoxContainer alignItems={"center"}>
           
           <Box flexDirection="row" justifyContent="flex-start" alignItems="center" w={"95%"}>
-            <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("Home")} />
+            <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("MenuConfig")} />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>

@@ -22,7 +22,7 @@ export function Termos  ({ navigation }: { navigation: NavigationProp<any> }) {
             name="chevron-left"
             size={28}
             color="black"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("MenuConfig")}
           />
         </Box>
       </BoxContainer>

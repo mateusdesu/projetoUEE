@@ -12,9 +12,9 @@ export const MenuConfig = ({ navigation }: { navigation: NavigationProp<any> }) 
       <GluestackUIProvider>
         <Header title="Configuração"></Header>
         <BoxContainer alignItems={"center"}>
-          <DButton text="SENHA MASTER" onPress={() => navigation.navigate("../../SenhaMaster/SenhaMaster.tsx")}/>
+          <DButton text="SENHA MASTER" onPress={() => navigation.navigate("SenhaMaster")}/>
           <DButton text="EXCLUIR CADASTRO" onPress={() => navigation.navigate("ExcluirCadastro")}/>
-          <DButton text="TERMOS" onPress={() => navigation.navigate("Termos/Termos")}/>
+          <DButton text="TERMOS" onPress={() => navigation.navigate("Termos")}/>
           <DButton text="CONTATO" onPress={() => navigation.navigate("Contato")} />
           <Box flexDirection="row" justifyContent="flex-start" alignItems="center" w={"95%"}>
             <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("Home")} />
