@@ -18,6 +18,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
+import { Alert } from "react-native";
 
 export const RealizarEleicao = ({
   navigation,
@@ -32,6 +33,8 @@ export const RealizarEleicao = ({
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
+
+  const [password,setPassword] = useState('');
 
   var arrSetE: Array<{
     label: string;
@@ -66,6 +69,18 @@ export const RealizarEleicao = ({
       });
     });
   };
+
+const checkCrendentials = async(password:string, id:number)=>{
+  let confirm = ElectionService.checkElectionCredential(id, password);
+
+  if(confirm){
+    Alert.alert(password+"/"+id);
+    SetScreen(2);
+  }else{
+    Alert.alert("Senha incorreta!");
+  }
+  
+}
 
 function handleVotes (num:string){
   if( firstNumberVoted === ""){
@@ -120,6 +135,7 @@ useEffect(() => {
             placeholder="Senha"
             showIcon={true}
             text="Senha da eleição*"
+            onChange={setPassword}
           />
           <Box
             flexDirection="row"
@@ -143,19 +159,13 @@ useEffect(() => {
               name="check"
               size={32}
               color="green"
-              onPress={() => SetScreen(3)}
+              onPress={() => checkCrendentials(password,Number(selectedOption))}
             />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>
     );
-  } else if (screen === 2) {
-    return (
-      <BoxContainer>
-        <Button></Button>
-      </BoxContainer>
-    );
-  } else if (screen === 3) {
+  }else if (screen === 2) {
     return (
       <BoxContainer alignItems={"center"} flexDirection={"row"} gap={"$2"}>
         <Box w={"50%"} h={"100%"} bg="#f0f0f0" flexDirection="column">
