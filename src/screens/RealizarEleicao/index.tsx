@@ -1,4 +1,6 @@
 import { Header } from "../../components/Header";
+import { useEffect } from "react";
+import { Picker } from "@react-native-picker/picker";
 import { BoxContainer } from "../../components/BoxContainer";
 import {
   Text,
@@ -14,27 +16,56 @@ import { useState } from "react";
 import { DInput } from "../../components/DInput";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
+import { Election } from "../../models/Election";
+import ElectionService from "../../services/ElectionService";
 
 export const RealizarEleicao = ({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
-  const [eleicao, setEleicao] = useState([
-    {
-      label: "Turma 901",
-      value: "1",
-      cargos: ["Presidente", "Professor Representante"],
-    },
-    {
-      label: "Grêmio sala 204",
-      value: "2",
-      cargos: ["Representante", "Conselheiro"],
-    },
-  ]);
+
   const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
+
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
+
+  var arrSetE: Array<{
+    label: string;
+    value: string | number;
+  }> = [{ label: "", value: ""}];
+  var arrSetE2: Array<{
+    label: string;
+    value: string | number;
+  }> = [];
+
+  const [eleicao, setEleicao] = useState(arrSetE);
+
+
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
+      arrSetE2.push({
+        label: "selecionar eleição",
+        value: 0
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {     
+        arrSetE2.push({
+          label: elections[i].name,
+          value: elections[i].id
+        });
+      }
+      setEleicao(arrSetE2);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
+        console.log(e.label);
+      });
+    });
+  };
 
 function handleVotes (num:string){
   if( firstNumberVoted === ""){
@@ -52,13 +83,39 @@ function clear(){
   setNumberVoted("");
 }
 
+useEffect(() => {
+  findAllElections();
+}, []);
+
+
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
     return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Realizar Eleição" />
-          <DSelect items={eleicao} text="Escolher eleição*" />
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedOption}
+            onValueChange={(itemValue: string) => {
+              setSelectedOption(itemValue);            
+            }}
+          >
+            {eleicao.map((item) => {
+              return (
+                <Picker.Item
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              );
+            })}
+          </Picker>
           <DInput
             placeholder="Senha"
             showIcon={true}
