@@ -176,45 +176,98 @@ export const CadastrarCandidato = ({
             justifyContent="flex-start"
             flexDirection="row"
             w={"100%"}
-            gap={"$2"}
+            gap={"$2"} mt={"1%"}
           >
+            {hasVice && hasParty &&
+            <>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: João" text="Nome*" onChange={setName} />
-              <DInput
-                placeholder="Ex: Chapa Verde"
-                text="Chapa"
-                onChange={setParty}
-              />
-            </Box>
-            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput
-                placeholder="Ex: 55"
-                keyType={"numeric"}
-                maxLength={2}
-                text="Número*"
-                onChange={setNumber}
-              />
-              <DInput
-                placeholder="Ex: Maria"
-                text="Vice"
-                onChange={setViceName}
-              />
-            </Box>
-          </Box>
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent={"center"}
-            gap={"$2"}
-          >
-            <Text fontWeight="$bold">Escolher foto</Text>
-            <Entypo
-              name="upload-to-cloud"
-              size={40}
-              color="black"
-              onPress={pickImageAsync}
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Chapa Verde"
+              text="Chapa"
+              type={"text"}
+              onChange={setParty}
             />
           </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+            
+            <DInput
+              placeholder="Ex: Maria"
+              text="Vice"
+              type={"text"}
+              onChange={setViceName}
+            />
+          </Box></>}
+          {hasParty &&
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Chapa Verde"
+              text="Chapa"
+              type={"text"}
+              onChange={setParty}
+            />
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+          </Box></>}
+          {hasVice &&
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Maria"
+              text="Vice"
+              type={"text"}
+              onChange={setViceName}
+            />
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+          </Box></>}
+            
+          </Box>
+          {hasImage && 
+           <Box
+           flexDirection="row"
+           alignItems="center"
+           justifyContent={"center"}
+           gap={"$2"}
+         >
+           <Text fontWeight="$bold" fontSize={"$lg"}>Escolher foto</Text>
+           <Entypo
+             name="upload-to-cloud"
+             size={60}
+             color="black"
+             onPress={pickImageAsync}
+           />
+         </Box>}
+            
+          
+         
           <Box
             flexDirection="row"
             alignItems="center"

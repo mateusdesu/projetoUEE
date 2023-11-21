@@ -80,6 +80,9 @@ export const CadastrarEleicao = ({
             color="black"
             onPress={() => navigation.goBack()}
           />
+          <Text fontSize={"$md"} fontWeight="$bold">
+              *Preenchimento Obrigatório
+            </Text>
 
           <FontAwesome
             name="check"
