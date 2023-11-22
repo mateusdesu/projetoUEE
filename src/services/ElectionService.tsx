@@ -109,16 +109,16 @@ export default class ElectionService{
         ))
     }
 
-    static checkElectionCredential(id:number, pass:string){
+    static async checkElectionCredential(id:number, pass:string){
         let authorized = false;
 
-        new Promise((resolve, reject)=> db.transaction(
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select password from ${table} where id = ${id}`,[],(_,{rows})=>{
-                    resolve(rows._array);
+                    resolve(rows);
                     let password = rows._array[0].password;
 
-                    if(password.equals(pass)){
+                    if(password === pass){
                         authorized = true;
                     }
                 }),(sqlErr:SQLError)=>{

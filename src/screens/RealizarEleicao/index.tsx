@@ -71,7 +71,7 @@ export const RealizarEleicao = ({
   };
 
 const checkCrendentials = async(password:string, id:number)=>{
-  let confirm = ElectionService.checkElectionCredential(id, password);
+  let confirm = await ElectionService.checkElectionCredential(id, password);
 
   if(confirm){
     Alert.alert(password+"/"+id);
