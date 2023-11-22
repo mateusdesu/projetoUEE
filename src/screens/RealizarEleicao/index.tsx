@@ -19,6 +19,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
 import { Alert } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 export const RealizarEleicao = ({
   navigation,
@@ -259,8 +260,11 @@ useEffect(() => {
                 Chapa 1
               </Text>
             </Box>
-            <Box w={"50%"} alignItems="center" justifyContent="center">
-              <Text>aaa</Text>
+            <Box w={"50%"} alignItems="center" justifyContent="flex-end">
+            <Ionicons name="exit-outline" size={60} color="black" />
+            <Text fontSize={"$xl"} fontWeight="bold">Pressione a tecla</Text>
+            <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">Verde <Text fontSize={"$lg"} fontWeight="bold">para </Text>confirmar</Text>
+            <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">Laranja <Text fontSize={"$lg"} fontWeight="bold">para </Text>corrigir</Text>
             </Box>
           </Box>
         </Box>
