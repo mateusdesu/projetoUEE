@@ -19,14 +19,13 @@ import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
 import { Alert } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 export const RealizarEleicao = ({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
-
   const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
@@ -35,12 +34,12 @@ export const RealizarEleicao = ({
     undefined
   );
 
-  const [password,setPassword] = useState('');
+  const [password, setPassword] = useState("");
 
   var arrSetE: Array<{
     label: string;
     value: string | number;
-  }> = [{ label: "", value: ""}];
+  }> = [{ label: "", value: "" }];
   var arrSetE2: Array<{
     label: string;
     value: string | number;
@@ -48,19 +47,18 @@ export const RealizarEleicao = ({
 
   const [eleicao, setEleicao] = useState(arrSetE);
 
-
   const findAllElections = async () => {
     let i: number;
     await ElectionService.findAll().then((response: any) => {
       arrSetE2.push({
         label: "selecionar eleição",
-        value: 0
+        value: 0,
       });
       let elections: Array<Election> = response._array;
-      for (i = 0; i < elections.length; i++) {     
+      for (i = 0; i < elections.length; i++) {
         arrSetE2.push({
           label: elections[i].name,
-          value: elections[i].id
+          value: elections[i].id,
         });
       }
       setEleicao(arrSetE2);
@@ -71,38 +69,39 @@ export const RealizarEleicao = ({
     });
   };
 
-const checkCrendentials = async(password:string, id:number)=>{
-  let confirm = await ElectionService.checkElectionCredential(id, password);
+  const checkCrendentials = async (password: string, id: number) => {
+    let confirm = await ElectionService.checkElectionCredential(id, password);
 
-  if(confirm){
-    Alert.alert(password+"/"+id);
-    SetScreen(2);
-  }else{
-    Alert.alert("Senha incorreta!");
+    if (confirm) {
+      Alert.alert(password + "/" + id);
+      SetScreen(2);
+    } else {
+      Alert.alert("Senha incorreta!");
+    }
+  };
+
+  function handleVotes(num: string) {
+    if (firstNumberVoted === "") {
+      setFistNumberVoted(num);
+      setNumberVoted(num);
+    } else if (firstNumberVoted != "" && secondNumberVoted === "") {
+      setSecondNumberVoted(num);
+      setNumberVoted(NumberVoted + num);
+    }
   }
-  
-}
+  useEffect(() => {
+    setNumberVoted(firstNumberVoted + secondNumberVoted);
+  }, [NumberVoted]);
 
-function handleVotes (num:string){
-  if( firstNumberVoted === ""){
-    setFistNumberVoted(num)
+  function clear() {
+    setFistNumberVoted("");
+    setSecondNumberVoted("");
+    setNumberVoted("");
   }
-  else if(firstNumberVoted != ""){
-    setSecondNumberVoted(num)
-    setNumberVoted(firstNumberVoted + secondNumberVoted)
-  }
-}
 
-function clear(){
-  setFistNumberVoted("");
-  setSecondNumberVoted("");
-  setNumberVoted("");
-}
-
-useEffect(() => {
-  findAllElections();
-}, []);
-
+  useEffect(() => {
+    findAllElections();
+  }, []);
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -119,7 +118,7 @@ useEffect(() => {
             }}
             selectedValue={selectedOption}
             onValueChange={(itemValue: string) => {
-              setSelectedOption(itemValue);            
+              setSelectedOption(itemValue);
             }}
           >
             {eleicao.map((item) => {
@@ -160,13 +159,15 @@ useEffect(() => {
               name="check"
               size={32}
               color="green"
-              onPress={() => checkCrendentials(password,Number(selectedOption))}
+              onPress={() =>
+                checkCrendentials(password, Number(selectedOption))
+              }
             />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>
     );
-  }else if (screen === 2) {
+  } else if (screen === 2) {
     return (
       <BoxContainer alignItems={"center"} flexDirection={"row"} gap={"$2"}>
         <Box w={"50%"} h={"100%"} bg="#f0f0f0" flexDirection="column">
@@ -261,10 +262,24 @@ useEffect(() => {
               </Text>
             </Box>
             <Box w={"50%"} alignItems="center" justifyContent="flex-end">
-            <Ionicons name="exit-outline" size={60} color="black" />
-            <Text fontSize={"$xl"} fontWeight="bold">Pressione a tecla</Text>
-            <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">Verde <Text fontSize={"$lg"} fontWeight="bold">para </Text>confirmar</Text>
-            <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">Laranja <Text fontSize={"$lg"} fontWeight="bold">para </Text>corrigir</Text>
+              <Ionicons name="exit-outline" size={60} color="black" />
+              <Text fontSize={"$xl"} fontWeight="bold">
+                Pressione a tecla
+              </Text>
+              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">
+                Verde{" "}
+                <Text fontSize={"$lg"} fontWeight="bold">
+                  para{" "}
+                </Text>
+                confirmar
+              </Text>
+              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">
+                Laranja{" "}
+                <Text fontSize={"$lg"} fontWeight="bold">
+                  para{" "}
+                </Text>
+                corrigir
+              </Text>
             </Box>
           </Box>
         </Box>
@@ -460,6 +475,7 @@ useEffect(() => {
                 fontSize={"$lg"}
                 fontWeight="bold"
                 lineHeight={"$lg"}
+                onPress={() => console.log(NumberVoted)}
               >
                 Confirma
               </ButtonText>
