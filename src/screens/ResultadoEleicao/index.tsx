@@ -120,18 +120,19 @@ export const ResultadoEleicao = ({
             <Box w={"20%"} alignItems="center">
               <Text fontSize={"$xl"} color="white" fontWeight="bold">Votos</Text>
             </Box>
-            <Box w={"80%"} alignItems="center">
+            <Box w={"80%"} alignItems="center" borderLeftWidth={"$1"}>
               <Text fontSize={"$xl"} color="white" fontWeight="bold">Nome do Candidato</Text>
             </Box>
           </HStack>
           <HStack bgColor="$white">
             <Box w={"20%"} alignItems="center">
-              <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">800</Text>
+              <Text fontSize={"$xl"} color="$blue900" fontWeight="bold" pt={"$1"}>800</Text>
             </Box>
-            <Box w={"80%"} alignItems="center" >
+            <Box w={"80%"} alignItems="center" borderLeftWidth={"$1"} pt={"$1"}>
               <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">Candidato 1</Text>
             </Box>
           </HStack>
+          
           
         </Box>
         <Box
