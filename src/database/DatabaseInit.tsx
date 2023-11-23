@@ -30,6 +30,7 @@ export default class DatabaseInit{
                         'FOREIGN KEY(electionId) REFERENCES election(id)'
                         +');',
 
+                    //criar campo eleiçãoEncerrada
                     'create table if not exists election'+
                         '(id integer primary key autoincrement,'+                       
                         'name text not null,'+
