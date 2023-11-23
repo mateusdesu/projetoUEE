@@ -130,13 +130,31 @@ export default class ElectionService{
         return authorized;
     }
 
-    static computeVote(id: number, votes:number){
+    static async countCandidateVotes(id:number){
+        let votes = 0;
+        await new Promise((resolve,reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select votes from candidates where id = ${id}`,[],(_,{rows})=>{~
+                    resolve(rows);
+                    votes = rows._array[0].votes;
+                }),(sqlErr:SQLError)=>{
+                    console.log("Falha ao buscar votos!"+sqlErr);
+                }
+            }
+        ))
+
+        return votes;
+    }
+
+    static async computeVote(id: number){
+        let votes = await this.countCandidateVotes(id);
         let newVotes = votes + 1;
         let voteWasComputed = false;
 
-        new Promise((resolve, reject)=> db.transaction(
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`update candidate set votes = ${newVotes} where id = ${id}`,[],(_,{rows})=>{
+                    resolve(rows);
                     console.log("Voto computado!");
                     voteWasComputed = true;
                 }),(sqlErr:SQLError)=>{
@@ -165,9 +183,9 @@ export default class ElectionService{
          return candidates;
     }
 
-    static amountOfVotes(electionId:number){
+    static async amountOfVotes(electionId:number){
         let amount = 0;
-        new Promise((resolve, reject)=>db.transaction(
+        await new Promise((resolve, reject)=>db.transaction(
             tx=>{
                 tx.executeSql(`select SUM(votes) as votes from candidate where idElection = ${electionId}`,[],(_,{rows})=>{
                     resolve(rows._array);

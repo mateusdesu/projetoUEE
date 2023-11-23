@@ -20,6 +20,7 @@ import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
 import { Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import CandidateService from "../../services/CandidateService";
 
 export const RealizarEleicao = ({
   navigation,
@@ -29,6 +30,7 @@ export const RealizarEleicao = ({
   const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
+  const [candidatePicture, setCandidatePicture] = useState('');
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
@@ -87,10 +89,35 @@ export const RealizarEleicao = ({
     } else if (firstNumberVoted != "" && secondNumberVoted === "") {
       setSecondNumberVoted(num);
       setNumberVoted(NumberVoted + num);
+      //Alert.alert(NumberVoted);
     }
   }
+
+  const computeVote = async(id:number) =>{
+    let voteWasComputed = await ElectionService.computeVote(id);
+
+    return voteWasComputed;
+  }
+
+  const findCandidateByNumber = async(number:number, electionId:number)=>{
+    let candidate = await CandidateService.getCandidateByNumber(number,electionId);
+
+    if(candidate.id != null){
+      if(candidate.picture_path != ""){
+        setCandidatePicture(candidate.picture_path);
+      }
+      
+    }
+    console.log(candidate.id);
+  }
+
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
+
+    if(secondNumberVoted != ""){
+      findCandidateByNumber(Number(NumberVoted),Number(selectedOption));
+    }
+    
   }, [NumberVoted]);
 
   function clear() {
@@ -221,7 +248,7 @@ export const RealizarEleicao = ({
             </Box>
             <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
               <Box borderColor="$black" borderWidth={"$2"} h={"90%"} w={"$24"}>
-                <Text>Imagem</Text>
+              {candidatePicture != '' ? <Image source={{uri: candidatePicture}} /> :  <Text>Imagem</Text>}
               </Box>
             </Box>
           </Box>

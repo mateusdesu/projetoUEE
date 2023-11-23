@@ -37,6 +37,24 @@ export default class CandidateService{
         return add;
     }
 
+
+    static async getCandidateByNumber(number:number, electionId:number){
+        let candidate = new Candidate("",0,0,"",null,"",null,null);
+
+        await new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select * from candidates where number = ${number} AND electionId = ${electionId}`,[],(_,{rows})=>{
+                    resolve(rows);
+                    candidate = rows._array[0];
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao buscar candidato: "+sqlErr); 
+                }
+            }
+        ))
+
+        return candidate;
+    }
+
     static deleteCandidate(id:number){
         return new Promise((resolve, reject)=> db.transaction(
             tx=>{
