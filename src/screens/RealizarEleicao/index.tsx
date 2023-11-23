@@ -100,25 +100,30 @@ export const RealizarEleicao = ({
   }
 
   const findCandidateByNumber = async(number:number, electionId:number)=>{
-    let candidate = await CandidateService.getCandidateByNumber(number,electionId);
-
-    if(candidate.id != null){
-      if(candidate.picture_path != ""){
-        setCandidatePicture(candidate.picture_path);
+    let candidates = await CandidateService.getCandidateByNumber(number,electionId);
+    console.log("caminho da foto: "+candidates[0].picture_path);
+    if(candidates[0].id != null){
+      
+      if(candidates[0].picture_path != ""){
+        
+        setCandidatePicture(candidates[0].picture_path);
       }
       
     }
-    console.log(candidate.id);
+    console.log(candidates[0].id);
   }
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
-
-    if(secondNumberVoted != ""){
-      findCandidateByNumber(Number(NumberVoted),Number(selectedOption));
-    }
     
   }, [NumberVoted]);
+
+  useEffect(()=>{
+    if(secondNumberVoted != ""){
+      findCandidateByNumber(Number(NumberVoted),Number(selectedOption));
+      console.log("foto: "+candidatePicture);
+    }
+  })
 
   function clear() {
     setFistNumberVoted("");
