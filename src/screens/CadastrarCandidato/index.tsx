@@ -178,6 +178,7 @@ export const CadastrarCandidato = ({
             w={"100%"}
             gap={"$2"} mt={"1%"}
           >
+            
             {hasVice && hasParty &&
             <>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
@@ -205,6 +206,24 @@ export const CadastrarCandidato = ({
               type={"text"}
               onChange={setViceName}
             />
+          </Box></>}
+          {!hasVice && !hasParty && 
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+            
+           
           </Box></>}
           {hasParty &&
             <>
@@ -279,7 +298,7 @@ export const CadastrarCandidato = ({
               name="chevron-left"
               size={28}
               color="black"
-              onPress={() => navigation.goBack()}
+              onPress={() => setLoadSecondScreen(false)}
             />
 
             <FontAwesome

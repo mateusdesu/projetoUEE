@@ -109,6 +109,9 @@ export const RealizarEleicao = ({
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Realizar Eleição" />
+          <Text fontSize={"$lg"} fontWeight="bold" mb={"$1"}>
+            Selecionar Eleição*
+          </Text>
           <Picker
             style={{
               height: "10%",
