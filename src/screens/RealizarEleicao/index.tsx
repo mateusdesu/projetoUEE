@@ -117,6 +117,15 @@ export const RealizarEleicao = ({
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
+
+    if(secondNumberVoted != ""){
+      let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
+      setCandidatePicture(c[0].picture_path);
+      console.log("Número votado: "+NumberVoted);
+      console.log("Eleição Selecionada: "+selectedOption);
+      console.log("CANDIDATO ENCONTRADO: "+c);
+    }
+    
     
   }, [secondNumberVoted]);
 
