@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 
 export const Routes = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false, }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="CadastrarEleicao" component={CadastrarEleicao} />
       <Stack.Screen name="CadastrarCandidato" component={CadastrarCandidato} />
