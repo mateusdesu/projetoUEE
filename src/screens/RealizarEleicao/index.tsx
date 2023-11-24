@@ -113,12 +113,12 @@ export const RealizarEleicao = ({
       
     }
     console.log(candidates[0].id);
-  }
+  }*/
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
     
-  }, [secondNumberVoted]);*/
+  }, [secondNumberVoted]);
 
   /*useEffect(()=>{
     async function findCandidateByNumber(){
