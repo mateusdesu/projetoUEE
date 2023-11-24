@@ -37,6 +37,11 @@ export const ResultadoEleicao = ({
   const [password, setPassword] = useState("");
   const [eleicao, setEleicao] = useState(arrSetE);
   const [screen, SetScreen] = useState(1);
+  const TempArr = [
+    { nome: "Candidato1", votos: "50" },
+    { nome: "Candidato2", votos: "38" },
+    { nome: "Bolsonaro", votos: "69" },
+  ];
 
   if (screen == 1) {
     return (
@@ -115,46 +120,76 @@ export const ResultadoEleicao = ({
         >
           Nome eleição
         </Text>
-        <Box backgroundColor="white" w={"90%"} mt={"$1"} flexDirection="column" borderColor="$emerald900" borderWidth={"$1"}>
-          <HStack bgColor="$emerald400" >
+        <Box
+          backgroundColor="white"
+          w={"90%"}
+          mt={"$1"}
+          flexDirection="column"
+          borderColor="$emerald900"
+          borderWidth={"$1"}
+        >
+          <HStack bgColor="$emerald400">
             <Box w={"20%"} alignItems="center">
-              <Text fontSize={"$xl"} color="white" fontWeight="bold">Votos</Text>
+              <Text fontSize={"$xl"} color="white" fontWeight="bold">
+                Votos
+              </Text>
             </Box>
             <Box w={"80%"} alignItems="center" borderLeftWidth={"$1"}>
-              <Text fontSize={"$xl"} color="white" fontWeight="bold">Nome do Candidato</Text>
+              <Text fontSize={"$xl"} color="white" fontWeight="bold">
+                Nome do Candidato
+              </Text>
             </Box>
           </HStack>
-          <HStack bgColor="$white">
-            <Box w={"20%"} alignItems="center">
-              <Text fontSize={"$xl"} color="$blue900" fontWeight="bold" pt={"$1"}>800</Text>
-            </Box>
-            <Box w={"80%"} alignItems="center" borderLeftWidth={"$1"} pt={"$1"}>
-              <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">Candidato 1</Text>
-            </Box>
-          </HStack>
-          
-          
+          {TempArr.sort(
+            (a, b) => parseFloat(b.votos) - parseFloat(a.votos)
+          ).map((item: any, key = item.nome) => {
+            return (
+              <HStack bgColor="$white">
+                <Box w={"20%"} alignItems="center" borderTopWidth={"$1"}>
+                  <Text
+                    fontSize={"$xl"}
+                    color="$blue900"
+                    fontWeight="bold"
+                    pt={"$1"}
+                  >
+                    {item.votos}
+                  </Text>
+                </Box>
+                <Box
+                  w={"80%"}
+                  alignItems="center"
+                  borderLeftWidth={"$1"}
+                  pt={"$1"}
+                  borderTopWidth={"$1"}
+                >
+                  <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
+                    {item.nome}
+                  </Text>
+                </Box>
+              </HStack>
+            );
+          })}
         </Box>
         <Box
-            flexDirection="row"
-            alignItems="flex-end"
-            justifyContent="space-between"
-            w={"100%"}
-            mt={"8%"}
-          >
-            <FontAwesome
-              name="chevron-left"
-              size={28}
-              color="black"
-              onPress={() => SetScreen(1)}
-            />
-            <FontAwesome
-              name="check"
-              size={32}
-              color="green"
-              onPress={() => console.log("aa")}
-            />
-          </Box>
+          flexDirection="row"
+          alignItems="flex-end"
+          justifyContent="space-between"
+          w={"100%"}
+          mt={"8%"}
+        >
+          <FontAwesome
+            name="chevron-left"
+            size={28}
+            color="black"
+            onPress={() => SetScreen(1)}
+          />
+          <FontAwesome
+            name="check"
+            size={32}
+            color="green"
+            onPress={() => console.log("aa")}
+          />
+        </Box>
       </BoxContainer>
     );
   }
