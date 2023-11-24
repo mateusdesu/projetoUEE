@@ -21,6 +21,7 @@ import ElectionService from "../../services/ElectionService";
 import { Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
+import { Candidate } from "../../models/Candidate";
 
 export const RealizarEleicao = ({
   navigation,
@@ -31,6 +32,7 @@ export const RealizarEleicao = ({
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
   const [candidatePicture, setCandidatePicture] = useState('');
+  const [candidates, setCandidates] = useState<Array<Candidate>>([]);
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
@@ -99,7 +101,7 @@ export const RealizarEleicao = ({
     return voteWasComputed;
   }
 
-  const findCandidateByNumber = async(number:number, electionId:number)=>{
+  /*const findCandidateByNumber = async(number:string, electionId:number)=>{
     let candidates = await CandidateService.getCandidateByNumber(number,electionId);
     console.log("caminho da foto: "+candidates[0].picture_path);
     if(candidates[0].id != null){
@@ -116,14 +118,26 @@ export const RealizarEleicao = ({
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
     
-  }, [NumberVoted]);
+  }, [secondNumberVoted]);*/
 
-  useEffect(()=>{
-    if(secondNumberVoted != ""){
-      findCandidateByNumber(Number(NumberVoted),Number(selectedOption));
-      console.log("foto: "+candidatePicture);
+  /*useEffect(()=>{
+    async function findCandidateByNumber(){
+      let candidates = await CandidateService.getCandidateByNumber(NumberVoted,Number(selectedOption));
+      console.log("caminho da foto: "+candidates[0].picture_path);
+      if(candidates[0].id != null){
+        
+        if(candidates[0].picture_path != ""){
+          
+          setCandidatePicture(candidates[0].picture_path);
+        }
+        
+      }
+      console.log(candidates[0].id);
     }
-  })
+
+    findCandidateByNumber();
+    console.log("cheguei aqui");
+  },[NumberVoted])*/
 
   function clear() {
     setFistNumberVoted("");
@@ -133,6 +147,12 @@ export const RealizarEleicao = ({
 
   useEffect(() => {
     findAllElections();
+    async function findAllCandidates() {
+      let c = await CandidateService.findAll(Number(selectedOption));
+      setCandidates(c);
+    }
+
+    findAllCandidates();
   }, []);
 
   const [screen, SetScreen] = useState(1);

@@ -23,7 +23,7 @@ export default class DatabaseInit{
                         'name text not null,'+
                         'vice_name text,'+
                         'party text,'+
-                        'number integer not null,'+
+                        'number text not null,'+
                         'position text not null,'+
                         'picture_path text,'+
                         'votes integer not null,'+

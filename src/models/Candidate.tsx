@@ -1,7 +1,7 @@
 export class Candidate{
     name: string;
     vice_name: string | null;
-    number: number;
+    number: string;
     picture_path: string;
     party: string | null;
     id: number | null;
@@ -19,7 +19,7 @@ export class Candidate{
 
 
 
-    constructor(name:string, number:number, electionId:number, position:string,party:string | null, picture_path:string, vice_name:string |null, id:number | null){
+    constructor(name:string, number:string, electionId:number, position:string,party:string | null, picture_path:string, vice_name:string |null, id:number | null){
         this.name = name;
         this.number = number;
         this.electionId = electionId;

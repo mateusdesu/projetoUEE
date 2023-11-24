@@ -38,7 +38,7 @@ export default class CandidateService{
     }
 
 
-    static async getCandidateByNumber(number:number, electionId:number){
+    /*static async getCandidateByNumber(number:string, electionId:number){
         let candidate: Candidate;
 
         await new Promise((resolve, reject)=>db.transaction(
@@ -46,6 +46,7 @@ export default class CandidateService{
                 tx.executeSql(`select * from candidates where number = ${number} AND electionId = ${electionId}`,[],(_,{rows})=>{
                     resolve(rows);
                     candidates = rows._array;
+                    console.log("candidato retornado!");
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao buscar candidato: "+sqlErr); 
                 }
@@ -53,7 +54,7 @@ export default class CandidateService{
         ))
 
         return candidates;
-    }
+    }*/
 
     static deleteCandidate(id:number){
         return new Promise((resolve, reject)=> db.transaction(
