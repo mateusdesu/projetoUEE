@@ -144,7 +144,7 @@ export const ResultadoEleicao = ({
             (a, b) => parseFloat(b.votos) - parseFloat(a.votos)
           ).map((item: any, key = item.nome) => {
             return (
-              <HStack bgColor="$white">
+              <HStack bgColor="$white" key={key}>
                 <Box w={"20%"} alignItems="center" borderTopWidth={"$1"}>
                   <Text
                     fontSize={"$xl"}
