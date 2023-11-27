@@ -83,7 +83,7 @@ export default class ElectionService{
         let hasCandidate = 0; 
           await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select count(electionId) as candidates from candidate where electionId = (?)`,[id],(_,{rows})=>{
+                tx.executeSql(`select count(electionId) as candidate from candidate where electionId = (?)`,[id],(_,{rows})=>{
                      resolve(rows);
 
                      hasCandidate= rows.item(0).candidates;
@@ -134,7 +134,7 @@ export default class ElectionService{
         let votes = 0;
         await new Promise((resolve,reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select votes from candidates where id = ${id}`,[],(_,{rows})=>{~
+                tx.executeSql(`select votes from candidate where id = ${id}`,[],(_,{rows})=>{~
                     resolve(rows);
                     votes = rows._array[0].votes;
                 }),(sqlErr:SQLError)=>{

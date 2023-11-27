@@ -35,6 +35,7 @@ export const RealizarEleicao = ({
   const [candidateName, setCandidateName] = useState('');
   const [candidateViceName, setCandidateViceName ]= useState<string | null>('');
   const [candidateParty, setCandidateParty]= useState<string | null>('');
+  const [candidateId, setCandidateId] = useState<number | null>(0);
 
 
   const [candidates, setCandidates] = useState<Array<Candidate>>([]);
@@ -104,9 +105,19 @@ export const RealizarEleicao = ({
   }
 
   const computeVote = async(id:number) =>{
-    let voteWasComputed = await ElectionService.computeVote(id);
+    if(id != 0){
+      let voteWasComputed = await ElectionService.computeVote(id);
+      if(voteWasComputed){
+        clear();
+        Alert.alert("Voto Confirmado!");      
+      }
+    }else{
+      Alert.alert("Falha ao computar voto");
+    }
+    
+    
 
-    return voteWasComputed;
+   
   }
 
 
@@ -117,6 +128,7 @@ export const RealizarEleicao = ({
     if(secondNumberVoted != ""){
       let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
       setCandidateName(c[0].name);
+      setCandidateId(c[0].id);
 
       if(c[0].picture_path != ""){
         setCandidatePicture(c[0].picture_path);
@@ -130,6 +142,7 @@ export const RealizarEleicao = ({
         setCandidateParty(c[0].party);
       }
       
+
       console.log("Número votado: "+NumberVoted);
       console.log("Eleição Selecionada: "+selectedOption);
       console.log("CANDIDATO ENCONTRADO: "+c);
@@ -536,7 +549,7 @@ export const RealizarEleicao = ({
                 fontSize={"$lg"}
                 fontWeight="bold"
                 lineHeight={"$lg"}
-                onPress={() => console.log(NumberVoted)}
+                onPress={() => computeVote(candidateId != null ? candidateId : 0)}
               >
                 Confirma
               </ButtonText>
