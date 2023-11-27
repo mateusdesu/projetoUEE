@@ -68,10 +68,30 @@ export default class CandidateService{
         ))
     }
 
-    static async findAll(electionId: number){
+    /*static async findAll(electionId: number){
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table} where electionId = ${electionId}`, [],(_,{rows})=>{
+                    console.log("Finda all: "+rows.length);
+                    resolve(rows._array);
+                    candidates = rows._array;
+                    console.log(candidates);
+
+
+                }),(sqlErr:SQLError)=>{
+                    console.log("Falha na busca de candidatos: "+sqlErr);
+                }
+            }
+        ));
+        
+        return candidates;
+        
+    }*/
+
+    static async findAll(){
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from ${table}`, [],(_,{rows})=>{
                     console.log("Finda all: "+rows.length);
                     resolve(rows._array);
                     candidates = rows._array;

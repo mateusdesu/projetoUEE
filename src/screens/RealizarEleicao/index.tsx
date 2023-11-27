@@ -6,7 +6,7 @@ import {
   Text,
   GluestackUIProvider,
   Box,
-  Image,
+  
   HStack,
   Button,
   ButtonText,
@@ -18,7 +18,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
-import { Alert } from "react-native";
+import { Alert, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
@@ -32,7 +32,15 @@ export const RealizarEleicao = ({
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
   const [candidatePicture, setCandidatePicture] = useState('');
+  const [candidateName, setCandidateName] = useState('');
+  const [candidateViceName, setCandidateViceName ]= useState<string | null>('');
+  const [candidateParty, setCandidateParty]= useState<string | null>('');
+
+
   const [candidates, setCandidates] = useState<Array<Candidate>>([]);
+  const styles = StyleSheet.create({
+    CandidatePicture: {width: 115,height: 120}
+  })
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
@@ -101,26 +109,27 @@ export const RealizarEleicao = ({
     return voteWasComputed;
   }
 
-  /*const findCandidateByNumber = async(number:string, electionId:number)=>{
-    let candidates = await CandidateService.getCandidateByNumber(number,electionId);
-    console.log("caminho da foto: "+candidates[0].picture_path);
-    if(candidates[0].id != null){
-      
-      if(candidates[0].picture_path != ""){
-        
-        setCandidatePicture(candidates[0].picture_path);
-      }
-      
-    }
-    console.log(candidates[0].id);
-  }*/
+
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
 
     if(secondNumberVoted != ""){
       let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
-      setCandidatePicture(c[0].picture_path);
+      setCandidateName(c[0].name);
+
+      if(c[0].picture_path != ""){
+        setCandidatePicture(c[0].picture_path);
+      }
+
+      if(c[0].vice_name != ""){
+        setCandidateViceName(c[0].vice_name);
+      }
+
+      if(c[0].party != ""){
+        setCandidateParty(c[0].party);
+      }
+      
       console.log("Número votado: "+NumberVoted);
       console.log("Eleição Selecionada: "+selectedOption);
       console.log("CANDIDATO ENCONTRADO: "+c);
@@ -129,35 +138,23 @@ export const RealizarEleicao = ({
     
   }, [secondNumberVoted]);
 
-  /*useEffect(()=>{
-    async function findCandidateByNumber(){
-      let candidates = await CandidateService.getCandidateByNumber(NumberVoted,Number(selectedOption));
-      console.log("caminho da foto: "+candidates[0].picture_path);
-      if(candidates[0].id != null){
-        
-        if(candidates[0].picture_path != ""){
-          
-          setCandidatePicture(candidates[0].picture_path);
-        }
-        
-      }
-      console.log(candidates[0].id);
-    }
-
-    findCandidateByNumber();
-    console.log("cheguei aqui");
-  },[NumberVoted])*/
 
   function clear() {
     setFistNumberVoted("");
     setSecondNumberVoted("");
     setNumberVoted("");
+    setCandidateName('');
+    setCandidateViceName('');
+    setCandidateParty('');
+    setCandidatePicture('');
   }
 
   useEffect(() => {
     findAllElections();
     async function findAllCandidates() {
-      let c = await CandidateService.findAll(Number(selectedOption));
+      let c = await CandidateService.findAll();
+      console.log("Eleição selecionada: "+selectedOption);
+      console.log("Candidatos:"+c);
       setCandidates(c);
     }
 
@@ -285,7 +282,7 @@ export const RealizarEleicao = ({
             </Box>
             <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
               <Box borderColor="$black" borderWidth={"$2"} h={"90%"} w={"$24"}>
-              {candidatePicture != '' ? <Image source={{uri: candidatePicture}} /> :  <Text>Imagem</Text>}
+              {candidatePicture != '' ? <Image source={{uri: candidatePicture}} alt="Foto Candidato" style={styles.CandidatePicture} /> :  <Text>Imagem</Text>}
               </Box>
             </Box>
           </Box>
@@ -300,7 +297,7 @@ export const RealizarEleicao = ({
                 fontWeight="$bold"
                 color="$blueGray600"
               >
-                Candidato
+                {candidateName}
               </Text>
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
                 Vice
@@ -311,7 +308,7 @@ export const RealizarEleicao = ({
                 fontWeight="$bold"
                 color="$blueGray600"
               >
-                Vice Candidato
+                {candidateViceName}
               </Text>
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
                 Chapa
@@ -322,7 +319,7 @@ export const RealizarEleicao = ({
                 fontWeight="$bold"
                 color="$blueGray600"
               >
-                Chapa 1
+                {candidateParty}
               </Text>
             </Box>
             <Box w={"50%"} alignItems="center" justifyContent="flex-end">
