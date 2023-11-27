@@ -114,10 +114,11 @@ export const RealizarEleicao = ({
     }else{
       Alert.alert("Falha ao computar voto");
     }
-    
-    
-
    
+  }
+
+  const computeWhiteVote = async(electionId:number) =>{
+    
   }
 
 
@@ -141,11 +142,6 @@ export const RealizarEleicao = ({
       if(c[0].party != ""){
         setCandidateParty(c[0].party);
       }
-      
-
-      console.log("Número votado: "+NumberVoted);
-      console.log("Eleição Selecionada: "+selectedOption);
-      console.log("CANDIDATO ENCONTRADO: "+c);
     }
     
     

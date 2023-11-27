@@ -1,13 +1,14 @@
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
 import { Box, GluestackUIProvider, Text, HStack } from "@gluestack-ui/themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { DInput } from "../../components/DInput";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
 import ElectionService from "../../services/ElectionService";
 import { FontAwesome } from "@expo/vector-icons";
+import { Election } from "../../models/Election";
 export const ResultadoEleicao = ({
   navigation,
 }: {
@@ -21,6 +22,33 @@ export const ResultadoEleicao = ({
     label: string;
     value: string | number;
   }> = [];
+
+
+  
+
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
+      arrSetE2.push({
+        label: "selecionar eleição",
+        value: 0,
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {
+        arrSetE2.push({
+          label: elections[i].name,
+          value: elections[i].id,
+        });
+      }
+      setEleicao(arrSetE2);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
+        console.log(e.label);
+      });
+    });
+  };
+
+
   const checkCrendentials = async (password: string, id: number) => {
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
@@ -42,6 +70,10 @@ export const ResultadoEleicao = ({
     { nome: "Candidato2", votos: "38" },
     { nome: "Bolsonaro", votos: "69" },
   ];
+
+  useEffect(()=>{
+    findAllElections();
+  },[])
 
   if (screen == 1) {
     return (
@@ -99,8 +131,8 @@ export const ResultadoEleicao = ({
               size={32}
               color="green"
               onPress={() =>
-                //checkCrendentials(password, Number(selectedOption))
-                SetScreen(2)
+                checkCrendentials(password, Number(selectedOption))
+                
               }
             />
           </Box>
