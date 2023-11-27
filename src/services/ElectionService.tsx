@@ -199,6 +199,23 @@ export default class ElectionService{
          return amount;
     }
 
+    static async closeElection(electionId:number){
+        let closed = false;
+
+        await new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`update ${table} set closed = 1`,[],(_,{rows})=>{
+                    resolve(rows);
+                    closed = true;
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao encerrar eleição: "+sqlErr);                   
+                }
+            }
+        ));
+        
+        return closed;
+    }
+
     static findAll(){
        return new Promise((resolve, reject)=> db.transaction(
             tx=>{

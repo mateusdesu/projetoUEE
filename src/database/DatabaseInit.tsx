@@ -36,7 +36,8 @@ export default class DatabaseInit{
                         'name text not null,'+
                         'password text not null,'+
                         'positions text not null,'+   
-                        'white_votes integer not null'+                   
+                        'white_votes integer not null,'+  
+                        'closed boolean not null'+                 
                         ');',
 
                     'create table if not exists master'+
