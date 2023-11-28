@@ -52,10 +52,12 @@ export const RealizarEleicao = ({
   var arrSetE: Array<{
     label: string;
     value: string | number;
-  }> = [{ label: "", value: "" }];
+    positions: Array<string>;
+  }> = [{ label: "", value: "",positions:[]}];
   var arrSetE2: Array<{
     label: string;
     value: string | number;
+    positions: Array<string>;
   }> = [];
 
   const [eleicao, setEleicao] = useState(arrSetE);
@@ -66,12 +68,14 @@ export const RealizarEleicao = ({
       arrSetE2.push({
         label: "selecionar eleição",
         value: 0,
+        positions: [],
       });
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
         arrSetE2.push({
           label: elections[i].name,
           value: elections[i].id,
+          positions: elections[i].positions.split(",")
         });
       }
       setEleicao(arrSetE2);
