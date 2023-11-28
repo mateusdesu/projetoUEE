@@ -100,6 +100,25 @@ export default class ElectionService{
 
     }*/
 
+    static async getWhiteVotes(electionId:number, position:string){
+        let white_votes = 0;
+        await new Promise ((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select count(electionId) as whitevotes from whitevotes where electionId = ${electionId} AND position = ${position}`,[],(_,{rows})=>{
+                    resolve(rows);
+
+                    white_votes= rows.item(0).whitevotes;
+                    console.log("Votos em Branco: "+white_votes);
+
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao contabilizar votos brancos: "+sqlErr);
+                    reject(false);
+                }
+            }
+        ))
+        return white_votes;
+    }
+
     static async hasCandidates(id:number){   
         let hasCandidate = 0; 
           await new Promise ((resolve, reject)=>db.transaction(

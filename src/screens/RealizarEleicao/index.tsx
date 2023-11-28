@@ -125,15 +125,12 @@ export const RealizarEleicao = ({
     let voteWasComputed = await ElectionService.computeWhiteVotes(electionId,position);
     if(voteWasComputed){
       clear();
-      Alert.alert("Voto Confirmado!");      
+      Alert.alert("Voto Em Branco Confirmado!");      
     }else{
       Alert.alert("Falha ao computar voto");
     }
 
   }
-
-
-
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
