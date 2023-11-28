@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
-import { DSelect } from "../../components/DSelect";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
@@ -14,142 +13,133 @@ import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
 import { Picker } from "@react-native-picker/picker";
-
+import Checkbox from "expo-checkbox";
 export const CadastrarCandidato = ({
-   navigation,
+  navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
   const cadastrarCandidato = () => {
-    if (selectedOption === undefined || selectedCargo === null || selectedCargo === "selecionar cargo") {
+    if (
+      selectedOption === undefined ||
+      selectedOption === "selecionar eleição" ||
+      selectedCargo === null ||
+      selectedCargo === "selecionar cargo"
+    ) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
       Alert.alert(
         "Sucesso ✅",
         `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
       );
-      // navigation.navigate("CadastrarCandidato2");
       setLoadSecondScreen(true);
     }
   };
 
-  const [name, setName] = useState('');
-  const [vice_name, setViceName] = useState('');
-  const [number, setNumber] = useState(0);
-  let [picture_path, setPicturePath] = useState('');
-  const [party, setParty] = useState('');
+  const [name, setName] = useState("");
+  const [vice_name, setViceName] = useState("");
+  const [number, setNumber] = useState("");
+  let [picture_path, setPicturePath] = useState("");
+  const [party, setParty] = useState("");
   const [electionId, setElectionId] = useState(0);
+  const [hasImage, setHasImage] = useState(false);
+  const [hasParty, setHasParty] = useState(false);
+  const [hasVice, setHasVice] = useState(false);
 
+  const realizarCadastro = async () => {
+    let inserido = false;
+    let realPicPath = "";
 
-  const realizarCadastro = async() => {
-    let inserido;
-    const election = eleicao.find((e)=> e.value === electionId);
-    const eName = election != undefined ? election.label : '';
+    const election = eleicao.find((e) => e.value === electionId);
+    const eName = election != undefined ? election.label : "";
 
-    if(eName != ''){
-      let realPicPath = await ImageService.uploadPic(picture_path,eName,number);
-      let candidate = new Candidate(name, number, electionId, party, realPicPath, vice_name, null);  
+    if (picture_path != "") {
+      realPicPath = await ImageService.uploadPic(picture_path, eName, number);
+    }
+
+    let candidate = new Candidate(
+      name,
+      number,
+      Number(selectedOption),
+      selectedCargo,
+      party,
+      realPicPath,
+      vice_name,
+      null
+    );
+
+    if (eName != "") {
       inserido = await CandidateService.addCandidate(candidate);
+      console.log("valor de inserido: " + inserido);
     }
-    
 
-    //CandidateService.findAll(0);
-    
-    if(inserido){
+    if (inserido) {
       Alert.alert("Sucesso ✅", "Candidato Cadastrado");
-    }else{
-      Alert.alert("Erro ⚠️","Falha ao cadastrar candidato! \nTente novamente!");
+    } else {
+      Alert.alert(
+        "Erro ⚠️",
+        "Falha ao cadastrar candidato! \nTente novamente!"
+      );
     }
-    
-
   };
 
-  var arrSetE:Array<{label:string, value:string|number, cargos:string[]}> = [{label:"", value:"",cargos:[""]}];
-  var arrSetE2:Array<{label:string, value:string|number, cargos:string[]}> = [];
+  var arrSetE: Array<{
+    label: string;
+    value: string | number;
+    cargos: string[];
+  }> = [{ label: "", value: "", cargos: [""] }];
+  var arrSetE2: Array<{
+    label: string;
+    value: string | number;
+    cargos: string[];
+  }> = [];
   const [eleicao, setEleicao] = useState(arrSetE);
-  
 
-  const findAllElections = async() =>{
-    /*let elections:Array<Election> = await ElectionService.findAll();
-    let e:any;
-    let i:number;
-    
-    console.log("Tamanho de Elections: "+elections.length);
-
-    for(i = 0; i<elections.length; i++){
-      let positions = elections[i].positions.split(",");
-      arrSetE.push({
-        label:elections[i].name, 
-        value:elections[i].id,
-        cargos: positions});
-
-    }
-
-    console.log("Elections: "+elections)
-    console.log("ArrSetE: "+arrSetE)
-    setEleicao(arrSetE);*/
-     let i:number;
-    await ElectionService.findAll().then((response: any)=>{
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
       arrSetE2.push({
-        label:"selecionar eleição", 
-        value:0,
-        cargos: [""]})
-      let elections:Array<Election> = response._array;
-      for(i = 0; i<elections.length; i++){
+        label: "selecionar eleição",
+        value: 0,
+        cargos: [""],
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {
         let positions = elections[i].positions.split(",");
         arrSetE2.push({
-          label:elections[i].name, 
-          value:elections[i].id,
-          cargos: positions});
-  
+          label: elections[i].name,
+          value: elections[i].id,
+          cargos: positions,
+        });
       }
-        setEleicao(arrSetE2);
-      console.log("ArrSetE:"+eleicao);
-      eleicao.map(e=>{
+      setEleicao(arrSetE2);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
         console.log(e.label);
-      })
-      
-      //console.log(elections);
-    })
-  }
+      });
+    });
+  };
 
-
-  /*useEffect(()=>{
-    findAllElections();
-  },[]);*/
-
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
-  const [selectedCargo, setSelectedCargo] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedCargo, setSelectedCargo] = useState(" ");
   const [cargos, setCargos] = useState([""]);
   // Novo estado
   const [loadSecondScreen, setLoadSecondScreen] = useState(false);
-   
-  const findSelectedElection =(value:number)=>{
-    
-    let e:{label:string, value:string|number, cargos:string[]} | undefined;
-    e = eleicao.find(e => e.value === value);
+
+  const findSelectedElection = (value: number) => {
+    let e:
+      | { label: string; value: string | number; cargos: string[] }
+      | undefined;
+    e = eleicao.find((e) => e.value === value);
     let c = ["selecionar cargo"];
-    let fc= [""];
-    if(e !== undefined){
-       fc = c.concat(e.cargos);
+    let fc = [""];
+    if (e !== undefined) {
+      fc = c.concat(e.cargos);
       setCargos(fc);
     }
-    
-  }
-
-  /*const handleElectionChange = (value: string | undefined) => {
-    setSelectedOption(value);
-    // Encontrar a opção selecionada para obter os cargos.
-    const selected = eleicao.find((item) => item.value === value);
-    if (selected) {
-      setSelectedCargo(selected.cargos || []);
-       // Limpar o cargo selecionado quando a eleição muda
-    } else {
-      setSelectedCargo([]);
-    }
-  };*/
-
-  
+  };
 
   const [selectedImage, setSelectedImage] = useState("");
   const pickImageAsync = async () => {
@@ -166,53 +156,137 @@ export const CadastrarCandidato = ({
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     findAllElections();
-  },[]);
+  }, []);
 
-  const electionOptions=()=>{
-    eleicao.map(e=>{
-      return{
-        
-      }
-    })
-  }
+  const electionOptions = () => {
+    eleicao.map((e) => {
+      return {};
+    });
+  };
 
   if (loadSecondScreen) {
     return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"center"}>
-          <Header title="Cadastrar Candidato" headerWidth={"100%"}/>
+          <Header title="Cadastrar Candidato" headerWidth={"100%"} />
           <Box
             alignItems="baseline"
             justifyContent="flex-start"
             flexDirection="row"
             w={"100%"}
-            gap={"$2"}
+            gap={"$2"} mt={"1%"}
           >
+            
+            {hasVice && hasParty &&
+            <>
             <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: João" text="Nome*"/>
-              <DInput placeholder="Ex: Chapa Verde" text="Chapa"/>
-            </Box>
-            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
-              <DInput placeholder="Ex: 55" keyType={"numeric"} maxLength={2} text="Número*"/>
-              <DInput placeholder="Ex: Maria" text="Vice"/>
-            </Box>
-          </Box>
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent={"center"}
-            gap={"$2"}
-          >
-            <Text fontWeight="$bold">Escolher foto</Text>
-            <Entypo
-              name="upload-to-cloud"
-              size={40}
-              color="black"
-              onPress={pickImageAsync}
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Chapa Verde"
+              text="Chapa"
+              type={"text"}
+              onChange={setParty}
             />
           </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+            
+            <DInput
+              placeholder="Ex: Maria"
+              text="Vice"
+              type={"text"}
+              onChange={setViceName}
+            />
+          </Box></>}
+          {!hasVice && !hasParty && 
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+            
+           
+          </Box></>}
+          {hasParty &&
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Chapa Verde"
+              text="Chapa"
+              type={"text"}
+              onChange={setParty}
+            />
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+          </Box></>}
+          {hasVice &&
+            <>
+            <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput placeholder="Ex: João" text="Nome*" onChange={setName} type={"text"}/>
+            <DInput
+              placeholder="Ex: Maria"
+              text="Vice"
+              type={"text"}
+              onChange={setViceName}
+            />
+          </Box>
+          <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+            <DInput
+              placeholder="Ex: 55"
+              keyType={"numeric"}
+              maxLength={2}
+              text="Número*"
+              type={"text"}
+              onChange={setNumber}
+            />
+          </Box></>}
+            
+          </Box>
+          {hasImage && 
+           <Box
+           flexDirection="row"
+           alignItems="center"
+           justifyContent={"center"}
+           gap={"$2"}
+         >
+           <Text fontWeight="$bold" fontSize={"$lg"}>Escolher foto</Text>
+           <Entypo
+             name="upload-to-cloud"
+             size={60}
+             color="black"
+             onPress={pickImageAsync}
+           />
+         </Box>}
+            
+          
+         
           <Box
             flexDirection="row"
             alignItems="center"
@@ -224,7 +298,7 @@ export const CadastrarCandidato = ({
               name="chevron-left"
               size={28}
               color="black"
-              onPress={() => navigation.goBack()}
+              onPress={() => setLoadSecondScreen(false)}
             />
 
             <FontAwesome
@@ -238,57 +312,94 @@ export const CadastrarCandidato = ({
       </GluestackUIProvider>
     );
   } else {
-    
-    return  (
+    return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Cadastrar Candidato" />
-          
-          <Picker 
-          
-          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
-           selectedValue = {selectedOption}
-           onValueChange={(itemValue:string) => {
-            setSelectedOption(itemValue);
-            findSelectedElection(Number(itemValue));
-            console.log("Eleição Selecionada: "+itemValue);         
-          }} 
 
-          
+          <Text fontSize="$md" fontWeight="$bold">
+            Escolher eleição*
+          </Text>
+
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedOption}
+            onValueChange={(itemValue: string) => {
+              setSelectedOption(itemValue);
+              findSelectedElection(Number(itemValue));
+              console.log("Eleição Selecionada: " + itemValue);
+            }}
           >
-           {eleicao.map(item => {
-            return <Picker.Item key={item.label} label={item.label} value={item.value} />
-          })}
-            
+            {eleicao.map((item) => {
+              return (
+                <Picker.Item
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              );
+            })}
           </Picker>
 
           <Text fontSize="$md" fontWeight="$bold" mt={"$3"}>
-            Escolher cargo *
+            Escolher cargo*
           </Text>
 
-          <Picker 
-          
-          style={{ height: "10%", width: "100%",backgroundColor:"white", borderColor:"black" }}
-           selectedValue = {selectedCargo}
-           onValueChange={(itemValue:string) => {
-            setSelectedCargo(itemValue);
-            console.log("Cargo Selecionado: "+itemValue);         
-          }} 
-
-          
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedCargo}
+            onValueChange={(itemValue: string) => {
+              setSelectedCargo(itemValue);
+              console.log("Cargo Selecionado: " + itemValue);
+            }}
           >
-           {cargos.map(item => {
-            return <Picker.Item key={item}  label={item} value={item} />
-          })}
-            
+            {cargos.map((item) => {
+              return <Picker.Item key={item} label={item} value={item} />;
+            })}
           </Picker>
-          
+          <Box flexDirection="row" p={"$1"} mt={"$2"} alignItems="center" gap={"$2"} bgColor="$white">
+            <Checkbox
+              value={hasVice}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasVice === false ? setHasVice(true) : setHasVice(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá vice?</Text>
+            <Checkbox
+              value={hasParty}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasParty === false ? setHasParty(true) : setHasParty(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá chapa?</Text>
+            <Checkbox
+              value={hasImage}
+              style={{backgroundColor:"white"}}
+              onValueChange={() =>
+                hasImage === false ? setHasImage(true) : setHasImage(false)
+              }
+            />
+            <Text fontSize={"$lg"} fontWeight="$bold">Candidato terá foto?</Text>
+          </Box>
+
           <Box
             flexDirection="row"
             alignItems="flex-end"
             justifyContent="space-between"
             w={"100%"}
-            //mt={"$8"}
+            mt={"4%"}
           >
             <FontAwesome
               name="chevron-left"

@@ -1,10 +1,12 @@
 import { Header } from "../../components/Header";
+import { useEffect } from "react";
+import { Picker } from "@react-native-picker/picker";
 import { BoxContainer } from "../../components/BoxContainer";
 import {
   Text,
   GluestackUIProvider,
   Box,
-  Image,
+  
   HStack,
   Button,
   ButtonText,
@@ -14,24 +16,165 @@ import { useState } from "react";
 import { DInput } from "../../components/DInput";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
+import { Election } from "../../models/Election";
+import ElectionService from "../../services/ElectionService";
+import { Alert, Image, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import CandidateService from "../../services/CandidateService";
+import { Candidate } from "../../models/Candidate";
 
 export const RealizarEleicao = ({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) => {
-  const [eleicao, setEleicao] = useState([
-    {
-      label: "Turma 901",
-      value: "1",
-      cargos: ["Presidente", "Professor Representante"],
-    },
-    {
-      label: "Grêmio sala 204",
-      value: "2",
-      cargos: ["Representante", "Conselheiro"],
-    },
-  ]);
+  const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
+  const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
+  const [NumberVoted, setNumberVoted] = useState<string | any>("");
+  const [candidatePicture, setCandidatePicture] = useState('');
+  const [candidateName, setCandidateName] = useState('');
+  const [candidateViceName, setCandidateViceName ]= useState<string | null>('');
+  const [candidateParty, setCandidateParty]= useState<string | null>('');
+  const [candidateId, setCandidateId] = useState<number | null>(0);
+
+
+  const [candidates, setCandidates] = useState<Array<Candidate>>([]);
+  const styles = StyleSheet.create({
+    CandidatePicture: {width: 115,height: 120}
+  })
+
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
+
+  const [password, setPassword] = useState("");
+
+  var arrSetE: Array<{
+    label: string;
+    value: string | number;
+  }> = [{ label: "", value: "" }];
+  var arrSetE2: Array<{
+    label: string;
+    value: string | number;
+  }> = [];
+
+  const [eleicao, setEleicao] = useState(arrSetE);
+
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
+      arrSetE2.push({
+        label: "selecionar eleição",
+        value: 0,
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {
+        arrSetE2.push({
+          label: elections[i].name,
+          value: elections[i].id,
+        });
+      }
+      setEleicao(arrSetE2);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
+        console.log(e.label);
+      });
+    });
+  };
+
+  const checkCrendentials = async (password: string, id: number) => {
+    let confirm = await ElectionService.checkElectionCredential(id, password);
+
+    if (confirm) {
+      Alert.alert(password + "/" + id);
+      SetScreen(2);
+    } else {
+      Alert.alert("Senha incorreta!");
+    }
+  };
+
+  function handleVotes(num: string) {
+    if (firstNumberVoted === "") {
+      setFistNumberVoted(num);
+      setNumberVoted(num);
+    } else if (firstNumberVoted != "" && secondNumberVoted === "") {
+      setSecondNumberVoted(num);
+      setNumberVoted(NumberVoted + num);
+      //Alert.alert(NumberVoted);
+    }
+  }
+
+  const computeVote = async(id:number) =>{
+    if(id != 0){
+      let voteWasComputed = await ElectionService.computeVote(id);
+      if(voteWasComputed){
+        clear();
+        Alert.alert("Voto Confirmado!");      
+      }
+    }else{
+      Alert.alert("Falha ao computar voto");
+    }
+   
+  }
+
+  const computeWhiteVote = async(electionId:number) =>{
+    
+  }
+
+
+
+  useEffect(() => {
+    setNumberVoted(firstNumberVoted + secondNumberVoted);
+
+    if(secondNumberVoted != ""){
+      let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
+      
+
+      if(c.length > 0){
+        setCandidateName(c[0].name);
+        setCandidateId(c[0].id);
+
+        if(c[0].picture_path != ""){
+          setCandidatePicture(c[0].picture_path);
+        }
+  
+        if(c[0].vice_name != ""){
+          setCandidateViceName(c[0].vice_name);
+        }
+  
+        if(c[0].party != ""){
+          setCandidateParty(c[0].party);
+        }
+      }else{
+        Alert.alert("Candidato inválido!");
+      }
+    }
+    
+    
+  }, [secondNumberVoted]);
+
+
+  function clear() {
+    setFistNumberVoted("");
+    setSecondNumberVoted("");
+    setNumberVoted("");
+    setCandidateName('');
+    setCandidateViceName('');
+    setCandidateParty('');
+    setCandidatePicture('');
+  }
+
+  useEffect(() => {
+    findAllElections();
+    async function findAllCandidates() {
+      let c = await CandidateService.findAll();
+      console.log("Eleição selecionada: "+selectedOption);
+      console.log("Candidatos:"+c);
+      setCandidates(c);
+    }
+
+    findAllCandidates();
+  }, []);
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -39,11 +182,36 @@ export const RealizarEleicao = ({
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
           <Header title="Realizar Eleição" />
-          <DSelect items={eleicao} text="Escolher eleição*" />
+          <Text fontSize={"$lg"} fontWeight="bold" mb={"$1"}>
+            Selecionar Eleição*
+          </Text>
+          <Picker
+            style={{
+              height: "10%",
+              width: "100%",
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            selectedValue={selectedOption}
+            onValueChange={(itemValue: string) => {
+              setSelectedOption(itemValue);
+            }}
+          >
+            {eleicao.map((item) => {
+              return (
+                <Picker.Item
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              );
+            })}
+          </Picker>
           <DInput
             placeholder="Senha"
             showIcon={true}
             text="Senha da eleição*"
+            onChange={setPassword}
           />
           <Box
             flexDirection="row"
@@ -67,19 +235,15 @@ export const RealizarEleicao = ({
               name="check"
               size={32}
               color="green"
-              onPress={() => SetScreen(3)}
+              onPress={() =>
+                checkCrendentials(password, Number(selectedOption))
+              }
             />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>
     );
   } else if (screen === 2) {
-    return (
-      <BoxContainer>
-        <Button></Button>
-      </BoxContainer>
-    );
-  } else if (screen === 3) {
     return (
       <BoxContainer alignItems={"center"} flexDirection={"row"} gap={"$2"}>
         <Box w={"50%"} h={"100%"} bg="#f0f0f0" flexDirection="column">
@@ -110,7 +274,7 @@ export const RealizarEleicao = ({
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    1
+                    {firstNumberVoted}
                   </Text>
                 </Box>
                 <Box
@@ -126,57 +290,83 @@ export const RealizarEleicao = ({
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
                   >
-                    0
+                    {secondNumberVoted}
                   </Text>
                 </Box>
               </Box>
             </Box>
             <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
               <Box borderColor="$black" borderWidth={"$2"} h={"90%"} w={"$24"}>
-                <Text>Imagem</Text>
+              {candidatePicture != '' ? <Image source={{uri: candidatePicture}} alt="Foto Candidato" style={styles.CandidatePicture} /> :  <Text>Imagem</Text>}
               </Box>
             </Box>
           </Box>
-          <Box pl={"$2"} pt={"$2"} flexDirection={"column"}>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Nome
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-              Candidato
-            </Text>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Vice
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-             Vice Candidato
-            </Text>
-            <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-              Chapa
-            </Text>
-            <Text
-              fontSize={"$xl"}
-              lineHeight={"$xl"}
-              fontWeight="$bold"
-              color="$blueGray600"
-            >
-              Chapa 1
-            </Text>
-            
+          <Box flexDirection="row">
+            <Box pl={"$2"} pt={"$2"} flexDirection={"column"} w={"50%"}>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Nome
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                {candidateName}
+              </Text>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Vice
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                {candidateViceName}
+              </Text>
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+                Chapa
+              </Text>
+              <Text
+                fontSize={"$xl"}
+                lineHeight={"$xl"}
+                fontWeight="$bold"
+                color="$blueGray600"
+              >
+                {candidateParty}
+              </Text>
+            </Box>
+            <Box w={"50%"} alignItems="center" justifyContent="flex-end">
+              <Ionicons name="exit-outline" size={60} color="black" />
+              <Text fontSize={"$xl"} fontWeight="bold">
+                Pressione a tecla
+              </Text>
+              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">
+                Verde{" "}
+                <Text fontSize={"$lg"} fontWeight="bold">
+                  para{" "}
+                </Text>
+                confirmar
+              </Text>
+              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">
+                Laranja{" "}
+                <Text fontSize={"$lg"} fontWeight="bold">
+                  para{" "}
+                </Text>
+                corrigir
+              </Text>
+            </Box>
           </Box>
         </Box>
         <Box w={"50%"} bg="#f0f0f0" h={"100%"} bgColor="black">
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("1")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -186,7 +376,12 @@ export const RealizarEleicao = ({
                 1
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("2")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -196,7 +391,12 @@ export const RealizarEleicao = ({
                 2
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("3")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -207,8 +407,13 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("4")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -218,7 +423,12 @@ export const RealizarEleicao = ({
                 4
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("5")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -228,7 +438,12 @@ export const RealizarEleicao = ({
                 5
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("6")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -239,8 +454,13 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("7")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -250,7 +470,12 @@ export const RealizarEleicao = ({
                 7
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("8")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -260,7 +485,12 @@ export const RealizarEleicao = ({
                 8
               </ButtonText>
             </Button>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("9")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -271,8 +501,13 @@ export const RealizarEleicao = ({
               </ButtonText>
             </Button>
           </HStack>
-          <HStack justifyContent="center" gap={"$1"} mt={"$1"} h={"18%"}>
-            <Button bg="$coolGray300" w={"30%"} h={"100%"}>
+          <HStack justifyContent="center" gap={"$2"} mt={"$1"} h={"18%"}>
+            <Button
+              bg="$coolGray300"
+              w={"28%"}
+              h={"100%"}
+              onPress={() => handleVotes("0")}
+            >
               <ButtonText
                 color="black"
                 fontSize={"$4xl"}
@@ -300,7 +535,7 @@ export const RealizarEleicao = ({
                 Branco
               </ButtonText>
             </Button>
-            <Button bg="$amber500" w={"30%"} h={"90%"}>
+            <Button bg="$amber500" w={"30%"} h={"90%"} onPress={() => clear()}>
               <ButtonText
                 color="black"
                 fontSize={"$xl"}
@@ -316,6 +551,7 @@ export const RealizarEleicao = ({
                 fontSize={"$lg"}
                 fontWeight="bold"
                 lineHeight={"$lg"}
+                onPress={() => computeVote(candidateId != null ? candidateId : 0)}
               >
                 Confirma
               </ButtonText>

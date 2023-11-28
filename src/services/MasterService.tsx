@@ -6,9 +6,9 @@ const table = "master";
 const db = DatabaseConnection.getConnection();
 
 export default class MasterService{
-    static findAll(){
+    static async findAll(){
         let master = false;
-        new Promise((resolve, reject)=> db.transaction(
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
                     if(rows._array.length > 0){
@@ -22,11 +22,11 @@ export default class MasterService{
         return master;
      }
 
-    static checkMasterPass(password:string){
+    static async checkMasterPass(password:string){
         
         let master = new Master();
 
-        new Promise((resolve, reject)=> db.transaction(
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
                     resolve(rows._array);
@@ -36,17 +36,17 @@ export default class MasterService{
                 }             
             }        
         ))
-        
-        if(master.password = password){
+             
+        if(master.password === password){
             return true;
         }else{
             return false;
         }
     }
 
-    static addMaster(password:string){
+    static async addMaster(password:string){
         let master = false;
-        master =  this.findAll();
+        master =  await this.findAll();
         let msg = '';           
 
         if(!master){

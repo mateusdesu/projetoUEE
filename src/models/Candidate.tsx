@@ -1,12 +1,13 @@
 export class Candidate{
     name: string;
     vice_name: string | null;
-    number: number;
-    picture_path: string | null;
+    number: string;
+    picture_path: string;
     party: string | null;
     id: number | null;
     electionId:number;
-    private votes: number; //a pensar
+    position:string;
+    private votes: number; 
 
     get _votes():number{
         return this.votes;
@@ -18,10 +19,12 @@ export class Candidate{
 
 
 
-    constructor(name:string, number:number, electionId:number, party:string | null, picture_path:string | null, vice_name:string |null, id:number | null){
+    constructor(name:string, number:string, electionId:number, position:string,party:string | null, picture_path:string, vice_name:string |null, id:number | null){
         this.name = name;
         this.number = number;
         this.electionId = electionId;
+        this.position = position;
+        this.picture_path = picture_path;
         this.votes = 0;
 
 
@@ -30,12 +33,7 @@ export class Candidate{
         }else{
             this.party = party;
         }
-
-        if(picture_path === '' || picture_path === null){
-            this.picture_path = null;
-        }else{
-            this.picture_path = picture_path;
-        }
+           
 
         if(vice_name === '' || vice_name === null){
             this.vice_name = null;

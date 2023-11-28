@@ -23,16 +23,21 @@ export default class DatabaseInit{
                         'name text not null,'+
                         'vice_name text,'+
                         'party text,'+
-                        'number integer not null,'+
+                        'number text not null,'+
+                        'position text not null,'+
                         'picture_path text,'+
-                        'votes integer not null'
+                        'votes integer not null,'+
+                        'FOREIGN KEY(electionId) REFERENCES election(id)'
                         +');',
 
+                    //criar campo eleiçãoEncerrada
                     'create table if not exists election'+
                         '(id integer primary key autoincrement,'+                       
                         'name text not null,'+
                         'password text not null,'+
-                        'positions text not null'+                      
+                        'positions text not null,'+   
+                        'white_votes integer not null,'+  
+                        'closed boolean not null'+                 
                         ');',
 
                     'create table if not exists master'+

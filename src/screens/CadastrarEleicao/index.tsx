@@ -20,10 +20,12 @@ export const CadastrarEleicao = ({
 
   const cadastrarEleicao = async() => {
     if (nomeEleicao === "" || senhaEleicao === "" || cargos.length === 0) {
-      Alert.alert("Erro ⚠️", "Preencha todos os campos");
+      Alert.alert("Erro ⚠️", "Preencha todos os campos");  
     } else {
       let election = new Election(nomeEleicao,senhaEleicao,cargos,0);
-      let inserido = await ElectionService.addElection(election);
+      let inserido = false;
+      
+      inserido = await ElectionService.addElection(election);
     
       if(inserido){       
         Alert.alert(
@@ -78,6 +80,9 @@ export const CadastrarEleicao = ({
             color="black"
             onPress={() => navigation.goBack()}
           />
+          <Text fontSize={"$md"} fontWeight="$bold">
+              *Preenchimento Obrigatório
+            </Text>
 
           <FontAwesome
             name="check"
