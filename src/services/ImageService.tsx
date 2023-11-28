@@ -37,7 +37,7 @@ export default class ImageService{
     }
 
     //from -> local repository; to -> election name; imageName-> candidate number;
-    static uploadPic = async(from:string, to:string, imageName:number)=>{
+    static uploadPic = async(from:string, to:string, imageName:string)=>{
         path = `${fs.documentDirectory}images/${to}/${imageName}.jpg`
         await fs.copyAsync({
             from: from,

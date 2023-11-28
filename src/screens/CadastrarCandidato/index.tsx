@@ -38,7 +38,7 @@ export const CadastrarCandidato = ({
 
   const [name, setName] = useState("");
   const [vice_name, setViceName] = useState("");
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState("");
   let [picture_path, setPicturePath] = useState("");
   const [party, setParty] = useState("");
   const [electionId, setElectionId] = useState(0);
