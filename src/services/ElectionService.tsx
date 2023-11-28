@@ -15,8 +15,8 @@ export default class ElectionService{
         let add = false;
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`insert into ${table} (name, password, positions, white_votes) 
-                values (?,?,?,?)`, 
+                tx.executeSql(`insert into ${table} (name, password, positions, white_votes,closed) 
+                values (?,?,?,?,${election.closed})`, 
                 [election.name, election.password, election.positions,0],
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
