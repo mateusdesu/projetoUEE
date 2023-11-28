@@ -16,8 +16,8 @@ export default class ElectionService{
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`insert into ${table} (name, password, positions, white_votes,closed) 
-                values (?,?,?,?,${election.closed})`, 
-                [election.name, election.password, election.positions,0],
+                values (?,?,?,?,?)`, 
+                [election.name, election.password, election.positions,0,0],
                 (_,{rows,insertId})=>{
                     console.log("Eleição inserida: "+insertId);
                     ImageService.createDir(election.name); //OBS: fazer verificação se diretório(eleição) já existe                 
