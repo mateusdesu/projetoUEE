@@ -128,19 +128,25 @@ export const RealizarEleicao = ({
 
     if(secondNumberVoted != ""){
       let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
-      setCandidateName(c[0].name);
-      setCandidateId(c[0].id);
+      
 
-      if(c[0].picture_path != ""){
-        setCandidatePicture(c[0].picture_path);
-      }
+      if(c.length > 0){
+        setCandidateName(c[0].name);
+        setCandidateId(c[0].id);
 
-      if(c[0].vice_name != ""){
-        setCandidateViceName(c[0].vice_name);
-      }
-
-      if(c[0].party != ""){
-        setCandidateParty(c[0].party);
+        if(c[0].picture_path != ""){
+          setCandidatePicture(c[0].picture_path);
+        }
+  
+        if(c[0].vice_name != ""){
+          setCandidateViceName(c[0].vice_name);
+        }
+  
+        if(c[0].party != ""){
+          setCandidateParty(c[0].party);
+        }
+      }else{
+        Alert.alert("Candidato inválido!");
       }
     }
     
