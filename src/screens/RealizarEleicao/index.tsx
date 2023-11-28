@@ -110,16 +110,24 @@ export const RealizarEleicao = ({
       if(voteWasComputed){
         clear();
         Alert.alert("Voto Confirmado!");      
+      }else{
+        Alert.alert("Falha ao computar voto");
       }
-    }else{
-      Alert.alert("Falha ao computar voto");
-    }
+      }
    
   }
 
-  const computeWhiteVote = async(electionId:number) =>{
-    
+  const computeWhiteVote = async(electionId:number, position:string) =>{
+    let voteWasComputed = await ElectionService.computeWhiteVotes(electionId,position);
+    if(voteWasComputed){
+      clear();
+      Alert.alert("Voto Confirmado!");      
+    }else{
+      Alert.alert("Falha ao computar voto");
+    }
+
   }
+
 
 
 
@@ -531,6 +539,7 @@ export const RealizarEleicao = ({
                 fontSize={"$2xl"}
                 fontWeight="bold"
                 lineHeight={"$2xl"}
+                onPress={() => computeWhiteVote(Number(selectedOption),"teste")} //ALTERAR APÓS IMPLEMENTAR A POSIÇÃO A SER VOTADA!
               >
                 Branco
               </ButtonText>

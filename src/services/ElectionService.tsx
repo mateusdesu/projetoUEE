@@ -38,7 +38,7 @@ export default class ElectionService{
         return add;
     }
 
-    static async sumWhiteVotes(id:number){
+    /*static async sumWhiteVotes(id:number){
         let white_votes = await this.getWhiteVotes(id);
         white_votes = white_votes + 1;
         let voteWasComputed = false;
@@ -58,9 +58,30 @@ export default class ElectionService{
         ))
         
         return voteWasComputed;
-    }
+    }*/
 
-    static async getWhiteVotes(id:number){
+    static async computeWhiteVotes(electionId:number, position:string){
+        let voteWasComputed = false;
+
+        await new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`insert into whitevotes (electionId, position) values(?,?)`,[electionId, position],(_,{rows,rowsAffected,insertId})=>{
+                    resolve(rows);
+                    if(rowsAffected = 1){
+                        voteWasComputed = true;
+                        console.log(insertId);
+                    }
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao inserir candidato: "+sqlErr);
+                    reject(false);
+                }
+            }
+        ))
+        
+        return voteWasComputed;
+    }    
+
+    /*static async getWhiteVotes(id:number){
         let white_votes = 0;
         await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
@@ -77,7 +98,7 @@ export default class ElectionService{
         ))
         return white_votes;
 
-    }
+    }*/
 
     static async hasCandidates(id:number){   
         let hasCandidate = 0; 
