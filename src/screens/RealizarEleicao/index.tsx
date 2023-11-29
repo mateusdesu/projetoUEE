@@ -35,6 +35,7 @@ export const RealizarEleicao = ({
   const [candidateViceName, setCandidateViceName] = useState<string | null>("");
   const [candidateParty, setCandidateParty] = useState<string | null>("");
   const [candidateId, setCandidateId] = useState<number | null>(0);
+  const [passToClose, setPassToClose] = useState("");
 
   const [candidates, setCandidates] = useState<Array<Candidate>>([]);
   const styles = StyleSheet.create({
@@ -131,17 +132,24 @@ export const RealizarEleicao = ({
     }
   };
 
-  const closeElection = async (electionId: number) => {
-    let electionClosed = await ElectionService.closeElection(electionId);
+  const closeElection = async (electionId: number, password:string) => {
+    let check = await ElectionService.checkElectionCredential(Number(selectedOption), password);
 
-    if (electionClosed) {
-      Alert.alert("Eleição encerrada!");
-      clear();
-      setSelectedOption("");
-      SetScreen(1);
-    } else {
-      Alert.alert("Falha ao encerrar eleição!");
+    if(check){
+      let electionClosed = await ElectionService.closeElection(electionId);
+
+      if (electionClosed) {
+        Alert.alert("Eleição encerrada!");
+        clear();
+        setSelectedOption("");
+        SetScreen(1);
+      } else {
+        Alert.alert("Falha ao encerrar eleição!");
+      }
+    }else{
+      Alert.alert("Senha Incorreta!");
     }
+    
   };
 
   useEffect(() => {
@@ -625,7 +633,7 @@ export const RealizarEleicao = ({
           placeholder="Senha"
           type={"password"}
           width="$90%"
-          onChange={() => closeElection(Number(selectedOption))}
+          onChange={setPassToClose}
           text="Senha da Eleição"
         />
         <Box
@@ -641,7 +649,7 @@ export const RealizarEleicao = ({
             color="black"
             onPress={() => SetScreen(2)}
           />
-          <FontAwesome name="check" size={32} color="green" />
+          <FontAwesome name="check" size={32} color="green" onPress={() => closeElection(Number(selectedOption), passToClose)}/>
         </Box>
       </BoxContainer>
     )

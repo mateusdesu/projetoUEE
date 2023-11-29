@@ -54,6 +54,7 @@ export const ResultadoEleicao = ({
 
     if (confirm) {
       Alert.alert(password + "/" + id);
+      await getResult(Number(selectedOption),"");
       SetScreen(2);
     } else {
       Alert.alert("Senha incorreta!");
@@ -70,6 +71,26 @@ export const ResultadoEleicao = ({
     { nome: "Candidato2", votos: "38" },
     { nome: "Bolsonaro", votos: "69" },
   ];
+
+
+  const cMdl:Array<{name:string,votes:number,position:string,key:number | null}> = [];
+  const candidates:Array<{name:string,votes:number,position:string,key:number | null}> = [];
+  const [finalResult, setFinalResult] = useState(cMdl);
+
+  const getResult = async(electionId:number,position:string)=>{
+    let result = await ElectionService.result(electionId);
+    console.log("Result length: "+result.length);
+    console.log("id da eleição: "+electionId);
+
+    if(result.length > 0){
+      result.forEach((c)=>{
+        candidates.push({name:c.name, votes:c.votes, position:c.position, key:c.id})
+      })
+    }
+
+    setFinalResult(candidates);
+    console.log("Array candidates: "+candidates);
+  }
 
   useEffect(()=>{
     findAllElections();
@@ -172,11 +193,9 @@ export const ResultadoEleicao = ({
               </Text>
             </Box>
           </HStack>
-          {TempArr.sort(
-            (a, b) => parseFloat(b.votos) - parseFloat(a.votos)
-          ).map((item: any, key = item.nome) => {
+          {finalResult.map((c) => {
             return (
-              <HStack bgColor="$white" key={key}>
+              <HStack bgColor="$white" key={c.key}>
                 <Box w={"20%"} alignItems="center" borderTopWidth={"$1"}>
                   <Text
                     fontSize={"$xl"}
@@ -184,7 +203,7 @@ export const ResultadoEleicao = ({
                     fontWeight="bold"
                     pt={"$1"}
                   >
-                    {item.votos}
+                    {c.votes}
                   </Text>
                 </Box>
                 <Box
@@ -195,7 +214,7 @@ export const ResultadoEleicao = ({
                   borderTopWidth={"$1"}
                 >
                   <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
-                    {item.nome}
+                    {c.name}
                   </Text>
                 </Box>
               </HStack>

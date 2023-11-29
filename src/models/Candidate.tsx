@@ -7,16 +7,7 @@ export class Candidate{
     id: number | null;
     electionId:number;
     position:string;
-    private votes: number; 
-
-    get _votes():number{
-        return this.votes;
-    }
-
-    /*set votes(votes:number){
-        this._votes = votes;
-    }*/
-
+    votes: number; 
 
 
     constructor(name:string, number:string, electionId:number, position:string,party:string | null, picture_path:string, vice_name:string |null, id:number | null){
