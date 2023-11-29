@@ -32,7 +32,7 @@ export const CadastrarCandidato = ({
         "Sucesso ✅",
         `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
       );
-      setLoadSecondScreen(true);
+      setScreen(2);
     }
   };
 
@@ -126,7 +126,7 @@ export const CadastrarCandidato = ({
   const [selectedCargo, setSelectedCargo] = useState(" ");
   const [cargos, setCargos] = useState([""]);
   // Novo estado
-  const [loadSecondScreen, setLoadSecondScreen] = useState(false);
+  const [screen, setScreen] = useState(1);
 
   const findSelectedElection = (value: number) => {
     let e:
@@ -166,7 +166,7 @@ export const CadastrarCandidato = ({
     });
   };
 
-  if (loadSecondScreen) {
+  if (screen === 2) {
     return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"center"}>
@@ -298,20 +298,20 @@ export const CadastrarCandidato = ({
               name="chevron-left"
               size={28}
               color="black"
-              onPress={() => setLoadSecondScreen(false)}
+              onPress={() => setScreen(1)}
             />
 
             <FontAwesome
               name="check"
               size={32}
               color="green"
-              onPress={realizarCadastro}
+              onPress={() => setScreen(3)}
             />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>
     );
-  } else {
+  } else if (screen === 1) {
     return (
       <GluestackUIProvider>
         <BoxContainer alignItems={"flex-start"}>
@@ -416,11 +416,40 @@ export const CadastrarCandidato = ({
               name="check"
               size={32}
               color="green"
-              onPress={cadastrarCandidato}
+              onPress={() => setScreen(2)}
             />
           </Box>
         </BoxContainer>
       </GluestackUIProvider>
     );
+  }
+  else if (screen === 3){
+    return(
+      <BoxContainer>
+        <Header title="Encerrar Eleição"/>
+        <DInput
+          placeholder="Senha"
+          type={"password"}
+          width="$90%"
+          onChange={() => console.log("aaa")}
+          text="Senha da Eleição"
+        />
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          w={"95%"}
+          mt={"10%"}
+        >
+          <FontAwesome
+            name="chevron-left"
+            size={28}
+            color="black"
+            onPress={() => setScreen(2)}
+          />
+          <FontAwesome name="check" size={32} color="green" onPress={cadastrarCandidato} />
+        </Box>
+      </BoxContainer>
+    )
   }
 };
