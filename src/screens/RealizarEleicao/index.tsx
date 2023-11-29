@@ -132,6 +132,19 @@ export const RealizarEleicao = ({
 
   }
 
+  const closeElection = async(electionId:number)=>{
+    let electionClosed = await ElectionService.closeElection(electionId);
+
+    if(electionClosed){
+      Alert.alert("Eleição encerrada!");
+      clear();
+      setSelectedOption('');
+      SetScreen(1);
+    }else{
+      Alert.alert("Falha ao ecerrar eleição!");
+    }
+  }
+
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
 
@@ -347,7 +360,7 @@ export const RealizarEleicao = ({
               </Text>
             </Box>
             <Box w={"50%"} alignItems="center" justifyContent="flex-end">
-              <Ionicons name="exit-outline" size={60} color="black" />
+              <Ionicons name="exit-outline" size={60} color="black" onPress={()=>closeElection(Number(selectedOption))} />
               <Text fontSize={"$xl"} fontWeight="bold">
                 Pressione a tecla
               </Text>
