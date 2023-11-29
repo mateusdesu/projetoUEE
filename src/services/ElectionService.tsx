@@ -207,13 +207,14 @@ export default class ElectionService{
 
     }
 
-    static result(electionId:number){
+    static async result(electionId:number){
         let candidates:Array<Candidate> = [];
-         new Promise((resolve, reject)=>db.transaction(
+         await new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select * from candidate where idElection = ${electionId} order by votes desc`,[],(_,{rows})=>{
+                tx.executeSql(`select * from candidate where electionId = ${electionId} order by votes desc`,[],(_,{rows})=>{
                     resolve(rows._array);
                     candidates = rows._array;
+                    console.log("rowsarr result"+rows._array);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao gerar resultado: "+sqlErr);                   
                 }
