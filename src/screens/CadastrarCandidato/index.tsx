@@ -209,6 +209,7 @@ export const CadastrarCandidato = ({
           Alert.alert("Erro", "Preencha todos os campos");
         }
       }
+      //! TODO todas as opções restantes 
     }
     
   };
