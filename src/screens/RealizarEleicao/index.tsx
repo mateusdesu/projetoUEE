@@ -46,7 +46,12 @@ export const RealizarEleicao = ({
     undefined
   );
 
+  const [positionToVote, setPositionToVote] = useState("");
+
+
   const [password, setPassword] = useState("");
+  const [positions, setPositions] = useState<Array<string>>([]);
+  var index = 0;
 
   var arrSetE: Array<{
     label: string;
@@ -90,6 +95,7 @@ export const RealizarEleicao = ({
 
     if (confirm) {
       Alert.alert(password + "/" + id);
+      electionSession();
       SetScreen(2);
     } else {
       Alert.alert("Senha incorreta!");
@@ -113,6 +119,7 @@ export const RealizarEleicao = ({
       if (voteWasComputed) {
         clear();
         Alert.alert("Voto Confirmado!");
+        electionSession();
       } else {
         Alert.alert("Falha ao computar voto");
       }
@@ -125,12 +132,36 @@ export const RealizarEleicao = ({
       position
     );
     if (voteWasComputed) {
-      clear();
+      clear(); 
       Alert.alert("Voto Em Branco Confirmado!");
     } else {
       Alert.alert("Falha ao computar voto");
     }
   };
+
+  const electionSession = ()=>{
+    let el = eleicao.find((e)=> e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);   
+    
+    console.log("index: "+index);
+
+    if(index == 0){
+      setPositionToVote(positions[0]);
+      index++;
+    }else if(index < positions.length){
+      setPositionToVote(positions[index]);
+      index++;
+    }
+    else if(index > positions.length){
+      index = 0;
+      Alert.alert("VOTAÇÃO ENCERRADA!!!");
+      electionSession();
+    }
+
+    console.log("index: "+index);
+        
+    
+  }
 
   const closeElection = async (electionId: number, password:string) => {
     let check = await ElectionService.checkElectionCredential(Number(selectedOption), password);
@@ -204,6 +235,8 @@ export const RealizarEleicao = ({
     }
 
     findAllCandidates();
+    //setPositionToVote(positions[0]);
+
   }, []);
 
   const [screen, SetScreen] = useState(1);
@@ -280,7 +313,7 @@ export const RealizarEleicao = ({
           <Box pl={"$2"} pt={"$2"} flexDirection={"row"} h={"40%"}>
             <Box w={"50%"}>
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-                Seu voto para
+                Seu voto para 
               </Text>
               <Text
                 fontSize={"$xl"}
@@ -288,7 +321,7 @@ export const RealizarEleicao = ({
                 fontWeight="$bold"
                 color="$blueGray600"
               >
-                Presidente
+                {positionToVote}
               </Text>
               <Box flexDirection="row" gap={"$1"}>
                 <Box
