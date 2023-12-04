@@ -51,7 +51,7 @@ export const RealizarEleicao = ({
 
   const [password, setPassword] = useState("");
   const [positions, setPositions] = useState<Array<string>>([]);
-  var index = 0;
+  const [index, setIndex] = useState(0);
 
   var arrSetE: Array<{
     label: string;
@@ -95,8 +95,11 @@ export const RealizarEleicao = ({
 
     if (confirm) {
       Alert.alert(password + "/" + id);
-      electionSession();
+      console.log("index antes de chamar: "+index);
+      
+      
       SetScreen(2);
+      electionSession();
     } else {
       Alert.alert("Senha incorreta!");
     }
@@ -140,27 +143,22 @@ export const RealizarEleicao = ({
   };
 
   const electionSession = ()=>{
-    let el = eleicao.find((e)=> e.value == Number(selectedOption));
-    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);   
-    
-    console.log("index: "+index);
+    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);      
 
-    if(index == 0){
-      setPositionToVote(positions[0]);
-      index++;
-    }else if(index < positions.length){
+    if(index == 0 || index < positions.length){
       setPositionToVote(positions[index]);
-      index++;
+      setIndex(index+1);
+      console.log("index: "+index);  
+    }/*else if(index < positions.length){
+      setPositionToVote(positions[index]);
+      setIndex(index+1);
+    }*/else{
+      setIndex(0);
+      setPositionToVote(positions[0]);
+      Alert.alert("FIM!");
     }
-    else if(index > positions.length){
-      index = 0;
-      Alert.alert("VOTAÇÃO ENCERRADA!!!");
-      electionSession();
-    }
-
-    console.log("index: "+index);
-        
-    
+           
   }
 
   const closeElection = async (electionId: number, password:string) => {
@@ -184,6 +182,8 @@ export const RealizarEleicao = ({
   };
 
   useEffect(() => {
+    
+
     setNumberVoted(firstNumberVoted + secondNumberVoted);
 
     if (secondNumberVoted != "") {
@@ -191,6 +191,7 @@ export const RealizarEleicao = ({
         (candidate) =>
           candidate.number == NumberVoted.toString() &&
           candidate.electionId == Number(selectedOption)
+          //&& candidate.position == positionToVote
       );
 
       if (c.length > 0) {
