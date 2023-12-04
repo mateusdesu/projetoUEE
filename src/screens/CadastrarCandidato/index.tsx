@@ -75,10 +75,26 @@ export const CadastrarCandidato = ({
     }
 
     if (inserido) {
-      Alert.alert("Sucesso ✅", "Candidato Cadastrado\nDeseja cadastrar outro candidato?", [
-        {text: 'Sim', onPress: () => setScreen(1)},
-        {text: 'Não', onPress: () => navigation.navigate("Home")},
-      ]);
+      Alert.alert(
+        "Sucesso ✅",
+        "Candidato Cadastrado\nDeseja cadastrar outro candidato?",
+        [
+          {
+            text: "Sim",
+            onPress: () => {
+              clearInputs();
+              setScreen(1);
+            },
+          },
+          {
+            text: "Não",
+            onPress: () => {
+              clearInputs();
+              navigation.navigate("Home");
+            },
+          },
+        ]
+      );
     } else {
       Alert.alert(
         "Erro ⚠️",
@@ -171,47 +187,70 @@ export const CadastrarCandidato = ({
   };
 
   const confirmNextScreen = () => {
-    const checkNameNumber = () => {
-      if ((name === "" && number === "") || number.length < 2) {
-        return false;
-      } else {
-        return true;
-      }
-    };
-    if (hasImage == false && hasParty == false && hasVice == false) {
-      if (checkNameNumber() == true) {
+    if (name !== "" && number !== "" && number.length == 2) {
+      if (!hasImage && !hasParty && !hasVice) {
         setScreen(3);
-      } else {
-        Alert.alert("Erro", "Preencha todos os campos");
+      }
+      if (hasParty && hasImage && hasVice) {
+        if (party !== "" && picture_path !== "" && vice_name !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Preencha todos os campos");
+        }
+      }
+      else if(hasParty && hasImage){
+        if (party !== "" && picture_path !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Chapa ou Imagem não preenchido");
+        }
+      }
+      else if(hasVice && hasImage){
+        if (vice_name !== "" && picture_path !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Campos Vice ou Imagem não preenchidos");
+        }
+      }
+      else if(hasVice && hasParty){
+        if (vice_name !== "" && party !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Vice ou Chapa não preenchidos");
+        }
+      }
+      else if (hasVice) {
+        if (vice_name !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Campo Vice vazio");
+        }
+      }
+      else if (hasParty) {
+        if (party !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Campo Chapa vazio");
+        }
+      }
+      else if (hasImage) {
+        if (picture_path !== "") {
+          setScreen(3);
+        } else {
+          Alert.alert("Erro ⚠️", "Campo Chapa vazio");
+        }
       }
     } else {
-      if (hasVice == true) {
-        if (checkNameNumber() == true && vice_name !== "") {
-          setScreen(3);
-        }
-        else {
-          Alert.alert("Erro", "Preencha todos os campos");
-        }
-      } 
-      else if(hasParty == true){
-        if (checkNameNumber() == true && party !== "") {
-          setScreen(3);
-        }
-        else {
-          Alert.alert("Erro", "Preencha todos os campos");
-        }
-      }
-      else if(hasImage == true){
-        if (checkNameNumber() == true && picture_path !== "") {
-          setScreen(3);
-        }
-        else {
-          Alert.alert("Erro", "Preencha todos os campos");
-        }
-      }
-      //! TODO todas as opções restantes 
+      Alert.alert("Erro ⚠️", "Preencha todos os campos corretamente");
     }
-    
+  };
+
+  const clearInputs = () => {
+    setName("");
+    setNumber("");
+    setParty("");
+    setViceName("");
+    setPicturePath("");
   };
 
   if (screen === 2) {
@@ -371,7 +410,10 @@ export const CadastrarCandidato = ({
               name="chevron-left"
               size={28}
               color="black"
-              onPress={() => setScreen(1)}
+              onPress={() => {
+                clearInputs();
+                setScreen(1);
+              }}
             />
 
             <FontAwesome
@@ -491,7 +533,10 @@ export const CadastrarCandidato = ({
               name="chevron-left"
               size={28}
               color="black"
-              onPress={() => navigation.goBack()}
+              onPress={() => {
+                clearInputs();
+                navigation.goBack();
+              }}
             />
 
             <Text fontSize={"$md"} fontWeight="$bold">
@@ -530,7 +575,10 @@ export const CadastrarCandidato = ({
             name="chevron-left"
             size={28}
             color="black"
-            onPress={() => setScreen(2)}
+            onPress={() => {
+              clearInputs();
+              setScreen(2);
+            }}
           />
           <FontAwesome
             name="check"
