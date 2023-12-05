@@ -172,6 +172,7 @@ export const RealizarEleicao = ({
         clear();
         setSelectedOption("");
         SetScreen(1);
+        setIndex(0);
       } else {
         Alert.alert("Falha ao encerrar eleição!");
       }
@@ -191,7 +192,7 @@ export const RealizarEleicao = ({
         (candidate) =>
           candidate.number == NumberVoted.toString() &&
           candidate.electionId == Number(selectedOption)
-          //&& candidate.position == positionToVote
+          && candidate.position == positionToVote
       );
 
       if (c.length > 0) {
