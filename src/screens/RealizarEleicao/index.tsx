@@ -51,7 +51,7 @@ export const RealizarEleicao = ({
 
   const [password, setPassword] = useState("");
   const [positions, setPositions] = useState<Array<string>>([]);
-  const [index, setIndex] = useState(0);
+  
 
   var arrSetE: Array<{
     label: string;
@@ -82,11 +82,7 @@ export const RealizarEleicao = ({
           positions: elections[i].positions.split(","),
         });
       }
-      setEleicao(arrSetE2);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
+      setEleicao(arrSetE2);     
     });
   };
 
@@ -94,11 +90,9 @@ export const RealizarEleicao = ({
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
     if (confirm) {
-      Alert.alert(password + "/" + id);
-      console.log("index antes de chamar: "+index);
-      
-      
+      Alert.alert(password + "/" + id);  
       SetScreen(2);
+      
       electionSession();
     } else {
       Alert.alert("Senha incorreta!");
@@ -142,21 +136,27 @@ export const RealizarEleicao = ({
     }
   };
 
-  const electionSession = ()=>{
-    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
-    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);      
 
+
+  const [index, setIndex] = useState(0);
+
+  const electionSession = ()=>{ 
+    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);
+     
+    
     if(index == 0 || index < positions.length){
-      setPositionToVote(positions[index]);
-      setIndex(index+1);
+      setPositionToVote(positions[index]);    
+      setIndex((prevIndex)=>prevIndex + 1);       
       console.log("index: "+index);  
-    }/*else if(index < positions.length){
-      setPositionToVote(positions[index]);
-      setIndex(index+1);
-    }*/else{
-      setIndex(0);
-      setPositionToVote(positions[0]);
-      Alert.alert("FIM!");
+    }
+    else{    
+      console.log(index);
+      Alert.alert("FIM!",'',[{text: "PRÓXIMO", onPress:()=>{
+        setPositionToVote(positions[0]);
+        setIndex(1);
+      }}]);
+      
     }
            
   }
@@ -228,6 +228,9 @@ export const RealizarEleicao = ({
 
   useEffect(() => {
     findAllElections();
+
+    
+
     async function findAllCandidates() {
       let c = await CandidateService.findAll();
       console.log("Eleição selecionada: " + selectedOption);
@@ -239,6 +242,13 @@ export const RealizarEleicao = ({
     //setPositionToVote(positions[0]);
 
   }, []);
+
+  useEffect(()=>{
+    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]); 
+    if(index == 0){ setPositionToVote(positions[0])}
+     console.log("EFFECT EXECUTADO!");
+  },[selectedOption]);
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
