@@ -23,8 +23,6 @@ export const SenhaMaster = ({
   const addMaster = async()=>{
     let msg = ""
 
-    let master = await MasterService.findAll();
-       
       if(senhaMaster != "" && confirmSenhaMaster != ""){
         if(senhaMaster == confirmSenhaMaster){
           msg = await MasterService.addMaster(senhaMaster);
@@ -35,7 +33,6 @@ export const SenhaMaster = ({
          msg = "Preencha todos os campos!";
       }
     
-
     Alert.alert(msg);
   }
 
