@@ -35,10 +35,12 @@ export const ResultadoEleicao = ({
       });
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
-        arrSetE2.push({
-          label: elections[i].name,
-          value: elections[i].id,
-        });
+        if(elections[i].closed){
+          arrSetE2.push({
+            label: elections[i].name,
+            value: elections[i].id,
+          });
+        }  
       }
       setEleicao(arrSetE2);
       console.log("ArrSetE:" + eleicao);
