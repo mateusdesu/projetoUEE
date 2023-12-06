@@ -128,9 +128,10 @@ export const RealizarEleicao = ({
       electionId,
       position
     );
-    if (voteWasComputed) {
+    if (voteWasComputed) {     
       clear(); 
       Alert.alert("Voto Em Branco Confirmado!");
+      electionSession();
     } else {
       Alert.alert("Falha ao computar voto");
     }
@@ -636,7 +637,7 @@ export const RealizarEleicao = ({
                 fontWeight="bold"
                 lineHeight={"$2xl"}
                 onPress={() =>
-                  computeWhiteVote(Number(selectedOption), "teste")
+                  computeWhiteVote(Number(selectedOption), positionToVote)
                 } //ALTERAR APÓS IMPLEMENTAR A POSIÇÃO A SER VOTADA!
               >
                 Branco
