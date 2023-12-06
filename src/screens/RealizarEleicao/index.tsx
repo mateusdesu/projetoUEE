@@ -76,11 +76,13 @@ export const RealizarEleicao = ({
       });
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
-        arrSetE2.push({
-          label: elections[i].name,
-          value: elections[i].id,
-          positions: elections[i].positions.split(","),
-        });
+        if(!elections[i].closed){
+          arrSetE2.push({
+            label: elections[i].name,
+            value: elections[i].id,
+            positions: elections[i].positions.split(","),
+          });
+        } 
       }
       setEleicao(arrSetE2);     
     });
