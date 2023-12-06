@@ -45,14 +45,14 @@ export const SenhaMaster = ({
         <Header title="Senha Master"></Header>
         <DInput
           placeholder="Senha Master"
-          type={"password"}
+          showIcon={true}
           width="$90%"
           onChange={setSenhaMaster}
           text="Cadastre a Senha Master*"
         />
         <DInput
           placeholder="Senha Master"
-          type={"password"}
+          showIcon={true}
           width="$90%"
           onChange={setConfirmSenhaMaster}
           text="Repita a Senha Master*"

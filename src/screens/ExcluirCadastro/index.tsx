@@ -10,6 +10,7 @@ import { useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
 import { View, StyleSheet } from "react-native";
 import React from "react";
+import { Picker } from "@react-native-picker/picker";
 
 export const ExcluirCadastro = ({
   navigation,
@@ -20,6 +21,13 @@ export const ExcluirCadastro = ({
     { label: "Eleições", value: "1" },
     { label: "Candidatos", value: "2" },
   ]);
+
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
+  const CargosEleicoes = [{ nome: "Eleição" }, { nome: "Candidato" }];
+  const Eleicoes = ["Teste", "Turma 3001","Vaticano"];
+  const Candidatos = ["Junin","CandTeste","AAAA"]
   return (
     <GluestackUIProvider>
       <BoxContainer alignItems={"flex-start"}>
@@ -27,12 +35,52 @@ export const ExcluirCadastro = ({
         <Text fontSize="$md" fontWeight="$bold">
           Qual tipo de dado deseja excluir?*
         </Text>
-        <DSelect
-          items={exclusao.map((option) => ({
-            label: option.label,
-            value: option.value,
-          }))}
-        />
+        <Picker
+          style={{
+            height: "10%",
+            width: "100%",
+            backgroundColor: "white",
+            borderColor: "black",
+          }}
+          selectedValue={selectedOption}
+          onValueChange={(itemValue: string) => {
+            setSelectedOption(itemValue);
+          }}
+        >
+          {CargosEleicoes.map((item) => {
+            return (
+              <Picker.Item
+                key={item.nome}
+                label={item.nome}
+                value={item.nome}
+              />
+            );
+          })}
+        </Picker>
+        {selectedOption === "Candidato" && (
+           <Picker
+           style={{
+             height: "10%",
+             width: "100%",
+             backgroundColor: "white",
+             borderColor: "black",
+           }}
+           selectedValue={selectedOption}
+           onValueChange={(itemValue: string) => {
+             setSelectedOption(itemValue);
+           }}
+         >
+           {Candidatos.map((item) => {
+             return (
+               <Picker.Item
+                 key={item}
+                 label={item}
+                 value={item}
+               />
+             );
+           })}
+         </Picker>
+        )}
 
         <Box
           flexDirection="row"

@@ -71,7 +71,7 @@ export const ResultadoEleicao = ({
   const TempArr = [
     { nome: "Candidato1", votos: "50" },
     { nome: "Candidato2", votos: "38" },
-    { nome: "Bolsonaro", votos: "69" },
+    { nome: "Teste", votos: "68" },
   ];
 
 
