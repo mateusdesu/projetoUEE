@@ -11,6 +11,7 @@ export default class MasterService{
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
+                    resolve(rows);
                     if(rows._array.length > 0){
                         master = true;
                     }
@@ -50,7 +51,7 @@ export default class MasterService{
         let msg = '';           
 
         if(!master){
-            new Promise((resolve, reject)=> db.transaction(
+            await new Promise((resolve, reject)=> db.transaction(
                 tx=>{
                     tx.executeSql(`insert into ${table} (password) 
                         values (?)`, 
