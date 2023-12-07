@@ -51,7 +51,13 @@ export const CadastrarCandidato = ({
     let inserido = false;
     let realPicPath = "";
 
-    const election = eleicao.find((e) => e.value === electionId);
+    let numCad = await CandidateService.findByNumber(number, Number(selectedOption));
+    console.log("NumCad: "+numCad);
+
+    if(numCad){
+      Alert.alert("Este número ja foi cadastrado para esta eleição!");
+    }else{
+      const election = eleicao.find((e) => e.value === Number(selectedOption));
     const eName = election != undefined ? election.label : "";
 
     if (picture_path != "") {
@@ -100,6 +106,7 @@ export const CadastrarCandidato = ({
         "Erro ⚠️",
         "Falha ao cadastrar candidato! \nTente novamente!"
       );
+    }
     }
   };
 
