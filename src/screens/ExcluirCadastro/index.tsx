@@ -32,7 +32,10 @@ export const ExcluirCadastro = ({
     <GluestackUIProvider>
       <BoxContainer alignItems={"flex-start"}>
         <Header title="Excluir Cadastro"></Header>
-        <Text fontSize="$md" fontWeight="$bold">
+        
+        {selectedOption == "Candidato" ? (
+          <>
+          <Text fontSize="$md" fontWeight="$bold">
           Qual tipo de dado deseja excluir?*
         </Text>
         <Picker
@@ -43,7 +46,7 @@ export const ExcluirCadastro = ({
             borderColor: "black",
           }}
           selectedValue={selectedOption}
-          onValueChange={(itemValue: string) => {
+          onValueChange={(itemValue) => {
             setSelectedOption(itemValue);
           }}
         >
@@ -57,8 +60,10 @@ export const ExcluirCadastro = ({
             );
           })}
         </Picker>
-        {selectedOption === "Candidato" && (
-           <Picker
+        <Text fontSize="$md" fontWeight="$bold">
+         Escolha a eleição de que quer excluir um candidato*
+        </Text>
+          <Picker
            style={{
              height: "10%",
              width: "100%",
@@ -80,6 +85,61 @@ export const ExcluirCadastro = ({
              );
            })}
          </Picker>
+           
+         </>
+        ):(
+          <>
+          <Text fontSize="$md" fontWeight="$bold">
+          Qual tipo de dado deseja excluir?*
+        </Text>
+        <Picker
+          style={{
+            height: "10%",
+            width: "100%",
+            backgroundColor: "white",
+            borderColor: "black",
+          }}
+          selectedValue={selectedOption}
+          onValueChange={(itemValue) => {
+            setSelectedOption(itemValue);
+          }}
+        >
+          {CargosEleicoes.map((item) => {
+            return (
+              <Picker.Item
+                key={item.nome}
+                label={item.nome}
+                value={item.nome}
+              />
+            );
+          })}
+        </Picker>
+        <Text fontSize="$md" fontWeight="$bold">
+         Escolha a eleição de que quer excluir um candidato*
+        </Text>
+          <Picker
+           style={{
+             height: "10%",
+             width: "100%",
+             backgroundColor: "white",
+             borderColor: "black",
+           }}
+           selectedValue={selectedOption}
+           onValueChange={(itemValue: string) => {
+             setSelectedOption(itemValue);
+           }}
+         >
+           {Candidatos.map((item) => {
+             return (
+               <Picker.Item
+                 key={item}
+                 label={item}
+                 value={item}
+               />
+             );
+           })}
+         </Picker>
+         </>
         )}
 
         <Box
