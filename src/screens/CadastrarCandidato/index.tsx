@@ -62,22 +62,22 @@ export const CadastrarCandidato = ({
       Alert.alert("Número já cadastrado para este cargo!");
     }else{
       const election = eleicao.find((e) => e.value === Number(selectedOption));
-    const eName = election != undefined ? election.label : "";
+      const eName = election != undefined ? election.label : "";
 
-    if (picture_path != "") {
+      if (picture_path != "") {
       realPicPath = await ImageService.uploadPic(picture_path, eName, number);
-    }
+      }
 
-    let candidate = new Candidate(
-      name,
-      number,
-      Number(selectedOption),
-      selectedCargo,
-      party,
-      realPicPath,
-      vice_name,
-      null
-    );
+      let candidate = new Candidate(
+        name,
+        number,
+        Number(selectedOption),
+        selectedCargo,
+        party,
+        realPicPath,
+        vice_name,
+        null
+      );
 
     if (eName != "") {
       inserido = await CandidateService.addCandidate(candidate);
