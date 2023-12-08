@@ -1,4 +1,4 @@
-import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
+import { Box, GluestackUIProvider, HStack, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
@@ -25,17 +25,18 @@ export const ExcluirCadastro = ({
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
-  const CargosEleicoes = [{ nome: "Eleição" }, { nome: "Candidato" }];
-  const Eleicoes = ["Teste", "Turma 3001","Vaticano"];
-  const Candidatos = ["Junin","CandTeste","AAAA"]
+
+  const [eleicoes, setEleicoes] = useState(["1", "2", "3"]);
+  const [candidatos, setCandidatos] = useState(["Teste1", "Teste2", "Teste3"]);
+
+  const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
+    false
+  );
   return (
     <GluestackUIProvider>
       <BoxContainer alignItems={"flex-start"}>
         <Header title="Excluir Cadastro"></Header>
-        
-        {selectedOption == "Candidato" ? (
-          <>
-          <Text fontSize="$md" fontWeight="$bold">
+        <Text fontSize="$md" fontWeight="$bold">
           Qual tipo de dado deseja excluir?*
         </Text>
         <Picker
@@ -44,102 +45,87 @@ export const ExcluirCadastro = ({
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",
+            marginBottom: "1%"
           }}
           selectedValue={selectedOption}
           onValueChange={(itemValue) => {
             setSelectedOption(itemValue);
+            setLoadSecondPicker(() =>
+              LoadSecondPicker === false
+                ? setLoadSecondPicker(true)
+                : setLoadSecondPicker(false)
+            );
           }}
         >
-          {CargosEleicoes.map((item) => {
+          {exclusao.map((item) => {
             return (
               <Picker.Item
-                key={item.nome}
-                label={item.nome}
-                value={item.nome}
+                key={item.label}
+                label={item.label}
+                value={item.label}
               />
             );
           })}
         </Picker>
-        <Text fontSize="$md" fontWeight="$bold">
-         Escolha a eleição de que quer excluir um candidato*
-        </Text>
-          <Picker
-           style={{
-             height: "10%",
-             width: "100%",
-             backgroundColor: "white",
-             borderColor: "black",
-           }}
-           selectedValue={selectedOption}
-           onValueChange={(itemValue: string) => {
-             setSelectedOption(itemValue);
-           }}
-         >
-           {Candidatos.map((item) => {
-             return (
-               <Picker.Item
-                 key={item}
-                 label={item}
-                 value={item}
-               />
-             );
-           })}
-         </Picker>
-           
-         </>
-        ):(
+
+        {LoadSecondPicker == false ? (
           <>
-          <Text fontSize="$md" fontWeight="$bold">
-          Qual tipo de dado deseja excluir?*
-        </Text>
-        <Picker
+            <Picker
           style={{
             height: "10%",
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",
+            marginBottom: "1%"
           }}
-          selectedValue={selectedOption}
+          selectedValue={candidatos}
           onValueChange={(itemValue) => {
-            setSelectedOption(itemValue);
+            setCandidatos(itemValue);
           }}
         >
-          {CargosEleicoes.map((item) => {
+          {candidatos.map((item) => {
             return (
               <Picker.Item
-                key={item.nome}
-                label={item.nome}
-                value={item.nome}
+                key={item}
+                label={item}
+                value={item}
               />
             );
           })}
         </Picker>
-        <Text fontSize="$md" fontWeight="$bold">
-         Escolha a eleição de que quer excluir um candidato*
-        </Text>
-          <Picker
-           style={{
-             height: "10%",
-             width: "100%",
-             backgroundColor: "white",
-             borderColor: "black",
-           }}
-           selectedValue={selectedOption}
-           onValueChange={(itemValue: string) => {
-             setSelectedOption(itemValue);
-           }}
-         >
-           {Candidatos.map((item) => {
-             return (
-               <Picker.Item
-                 key={item}
-                 label={item}
-                 value={item}
-               />
-             );
-           })}
-         </Picker>
-         </>
+          </>
+        ) : (
+          <>
+            {eleicoes.map((c) => {
+              return (
+                <HStack bgColor="$white" key={c}>
+                  <Box
+                    w={"80%"}
+                    alignItems="center"
+                    borderRightWidth={"$1"}
+                    borderLeftWidth={"$1"}
+                    pt={"$1"}
+                    borderTopWidth={"$1"}
+                    borderBottomWidth={"$1"}
+                  >
+                    <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
+                      {c}
+                    </Text>
+                  </Box>
+                  <Box w={"20%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
+                    <Text
+                      fontSize={"$xl"}
+                      color="$amber700"
+                      fontWeight="bold"
+                      pt={"$1"}
+                    >
+                      X
+                    </Text>
+                  </Box>
+                </HStack>
+              );
+            })}
+          </>
         )}
 
         <Box
