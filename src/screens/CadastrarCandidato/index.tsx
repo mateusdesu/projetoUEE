@@ -137,11 +137,13 @@ export const CadastrarCandidato = ({
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
         let positions = elections[i].positions.split(",");
-        arrSetE2.push({
-          label: elections[i].name,
-          value: elections[i].id,
-          cargos: positions,
-        });
+        if(!elections[i].closed){
+          arrSetE2.push({
+            label: elections[i].name,
+            value: elections[i].id,
+            cargos: positions,
+          });
+        }
       }
       setEleicao(arrSetE2);
       console.log("ArrSetE:" + eleicao);
