@@ -107,4 +107,19 @@ export default class CandidateService{
         return candidates;
         
     }
+
+    static async findByNumber(number:string, electionId:number){
+        let numCad = false;
+        
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from ${table} where electionId = ${electionId} and number = ${number}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    candidates = rows._array;
+                    console.log("findbynbr: "+number+" ecId: "+electionId);
+                })
+            }
+        ));
+        return numCad;
+    }
 }

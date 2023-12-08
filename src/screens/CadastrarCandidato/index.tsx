@@ -51,7 +51,17 @@ export const CadastrarCandidato = ({
     let inserido = false;
     let realPicPath = "";
 
-    const election = eleicao.find((e) => e.value === electionId);
+    let candidates = await CandidateService.findAll();
+
+    let numCad = candidates.find((c) => c.number == number && c.electionId == Number(selectedOption) && c.position == selectedCargo);
+
+    //let numCad = await CandidateService.findByNumber(number, Number(selectedOption));
+    console.log("NumCad: "+numCad);
+
+    if(numCad != undefined){
+      Alert.alert("Número já cadastrado para este cargo!");
+    }else{
+      const election = eleicao.find((e) => e.value === Number(selectedOption));
     const eName = election != undefined ? election.label : "";
 
     if (picture_path != "") {
@@ -100,6 +110,7 @@ export const CadastrarCandidato = ({
         "Erro ⚠️",
         "Falha ao cadastrar candidato! \nTente novamente!"
       );
+    }
     }
   };
 
