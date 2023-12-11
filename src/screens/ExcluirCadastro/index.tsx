@@ -1,14 +1,9 @@
 import { Box, GluestackUIProvider, HStack, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
-import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
-import { DInput } from "../../components/DInput";
-import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
-import { DSelect } from "../../components/DSelect";
 import { useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
-import { View, StyleSheet } from "react-native";
 import React from "react";
 import { Picker } from "@react-native-picker/picker";
 
@@ -25,9 +20,12 @@ export const ExcluirCadastro = ({
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
+  const [selectedCandidate, setSelectedCandidate] = useState<string[] | undefined>(
+    undefined
+  );
 
   const [eleicoes, setEleicoes] = useState(["1", "2", "3"]);
-  const [candidatos, setCandidatos] = useState(["Teste1", "Teste2", "Teste3"]);
+  const [candidatos, setCandidatos] = useState(["a","b"]);
 
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
     false
@@ -78,21 +76,51 @@ export const ExcluirCadastro = ({
             borderColor: "black",
             marginBottom: "1%"
           }}
-          selectedValue={candidatos}
+          selectedValue={selectedCandidate}
           onValueChange={(itemValue) => {
-            setCandidatos(itemValue);
+            setSelectedCandidate(itemValue);
           }}
         >
-          {candidatos.map((item) => {
+          {eleicoes.map((candidato) => {
             return (
               <Picker.Item
-                key={item}
-                label={item}
-                value={item}
+                key={candidato}
+                label={candidato}
+                value={candidato}
               />
+              
             );
           })}
         </Picker>
+        {eleicoes.map((c) => {
+              return (
+                <HStack bgColor="$white" key={c}>
+                  <Box
+                    w={"80%"}
+                    alignItems="center"
+                    borderRightWidth={"$1"}
+                    borderLeftWidth={"$1"}
+                    pt={"$1"}
+                    borderTopWidth={"$1"}
+                    borderBottomWidth={"$1"}
+                  >
+                    <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
+                      {c}
+                    </Text>
+                  </Box>
+                  <Box w={"20%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
+                    <Text
+                      fontSize={"$xl"}
+                      color="$amber700"
+                      fontWeight="bold"
+                      pt={"$1"}
+                    >
+                      X
+                    </Text>
+                  </Box>
+                </HStack>
+              );
+            })}
           </>
         ) : (
           <>
