@@ -56,16 +56,24 @@ export default class CandidateService{
         return candidates;
     }*/
 
-    static deleteCandidate(id:number){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async deleteCandidate(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
-                    resolve(rows.item(0).id);
-                }),(sqlError:SQLError)=>{
-                    console.log("Erro ao excluir candidato: "+sqlError);
-                }
+                if(id != null){
+                    tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rows);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
+                }               
             }
-        ))
+        ));
+
+        return del;
     }
 
     /*static async findAll(electionId: number){

@@ -10,6 +10,7 @@ import ElectionService from "../../services/ElectionService";
 import { Election } from "../../models/Election";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
+import { Alert } from "react-native";
 
 export const ExcluirCadastro = ({
   navigation,
@@ -45,7 +46,7 @@ export const ExcluirCadastro = ({
 
   const [eleicao, setEleicao] = useState(arrSetE);
   const [electionList, setElectionList] = useState(arrSetE);
-
+  const [canWasDeleted, setCanWasDeleted] = useState(false);
   const findAllElections = async () => {
     let i: number;
     await ElectionService.findAll().then((response: any) => {
@@ -73,6 +74,23 @@ export const ExcluirCadastro = ({
     });
   };
 
+  async function findAllCandidates() {
+    let c = await CandidateService.findAll();
+    console.log("Eleição selecionada: " + selectedOption);
+    console.log("Candidatos:" + c);
+    setCandidates(c);
+  }
+
+  const deleteCandidate = async(id:number|null) =>{
+    let del = false;
+    
+    if(id != null){
+      del = await CandidateService.deleteCandidate(id);
+    } 
+    
+    del ? Alert.alert("Candidato excluído com sucesso!") : Alert.alert("Falha ao excluir candidato!");  
+  }
+
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
     false
   );
@@ -81,26 +99,26 @@ export const ExcluirCadastro = ({
   const [candidates, setCandidates] = useState<Array<Candidate>>([]);
   const[candidatesList, setCandidatesList] = useState<Array<Candidate>>([]);
 
-  
+  const [candidateId, setCandidateId] = useState<number | null>(null);
 
   useEffect(()=>{
     findAllElections();
 
-    async function findAllCandidates() {
-      let c = await CandidateService.findAll();
-      console.log("Eleição selecionada: " + selectedOption);
-      console.log("Candidatos:" + c);
-      setCandidates(c);
-    }
+    
 
     findAllCandidates();
   },[]);
+
+  useEffect(()=>{
+    findAllCandidates();
+  },[canWasDeleted])
 
   useEffect(()=>{
     let c = candidates.filter((c) => c.electionId == selectedElection);
     setCandidatesList(c);
     
   },[selectedElection])
+  
   
   return (
     <GluestackUIProvider>
@@ -195,6 +213,8 @@ export const ExcluirCadastro = ({
                       color="$amber700"
                       fontWeight="bold"
                       pt={"$1"}
+                      
+                      onPress={() => deleteCandidate(c.id)}
                     >
                       X
                     </Text>
