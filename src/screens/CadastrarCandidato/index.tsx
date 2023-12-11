@@ -37,7 +37,8 @@ export const CadastrarCandidato = ({
     }
   };
 
-  const [name, setName] = useState("");
+  
+  const [name, setName] = useState(""); 
   const [vice_name, setViceName] = useState("");
   const [number, setNumber] = useState("");
   let [picture_path, setPicturePath] = useState("");

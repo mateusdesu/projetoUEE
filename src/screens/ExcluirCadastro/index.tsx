@@ -2,10 +2,14 @@ import { Box, GluestackUIProvider, HStack, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
 import { FontAwesome } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
 import React from "react";
 import { Picker } from "@react-native-picker/picker";
+import ElectionService from "../../services/ElectionService";
+import { Election } from "../../models/Election";
+import CandidateService from "../../services/CandidateService";
+import { Candidate } from "../../models/Candidate";
 
 export const ExcluirCadastro = ({
   navigation,
@@ -20,16 +24,84 @@ export const ExcluirCadastro = ({
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
-  const [selectedCandidate, setSelectedCandidate] = useState<string[] | undefined>(
-    undefined
-  );
+  const [selectedElection, setSelectedElection] = useState(0);
 
   const [eleicoes, setEleicoes] = useState(["1", "2", "3"]);
-  const [candidatos, setCandidatos] = useState(["a","b"]);
+ 
+  const [candidatos, setCandidatos] = useState([]);
+
+  var arrSetE: Array<{
+    label: string;
+    value: string | number;
+  }> = [{ label: "", value: "" }];
+  var arrSetE2: Array<{
+    label: string;
+    value: string | number;
+  }> = [];
+  var arrSetE3: Array<{
+    label: string;
+    value: string | number;
+  }> = [];
+
+  const [eleicao, setEleicao] = useState(arrSetE);
+  const [electionList, setElectionList] = useState(arrSetE);
+
+  const findAllElections = async () => {
+    let i: number;
+    await ElectionService.findAll().then((response: any) => {
+      arrSetE2.push({
+        label: "selecionar eleição",
+        value: 0,
+      });
+      let elections: Array<Election> = response._array;
+      for (i = 0; i < elections.length; i++) {
+        arrSetE2.push({
+          label: elections[i].name,
+          value: elections[i].id,
+        });
+        arrSetE3.push({
+          label: elections[i].name,
+          value: elections[i].id,
+        }); 
+      }
+      setEleicao(arrSetE2);
+      setElectionList(arrSetE3);
+      console.log("ArrSetE:" + eleicao);
+      eleicao.map((e) => {
+        console.log(e.label);
+      });
+    });
+  };
 
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
     false
   );
+
+
+  const [candidates, setCandidates] = useState<Array<Candidate>>([]);
+  const[candidatesList, setCandidatesList] = useState<Array<Candidate>>([]);
+
+  
+
+  useEffect(()=>{
+    findAllElections();
+
+    async function findAllCandidates() {
+      let c = await CandidateService.findAll();
+      console.log("Eleição selecionada: " + selectedOption);
+      console.log("Candidatos:" + c);
+      setCandidates(c);
+    }
+
+    findAllCandidates();
+  },[]);
+
+  useEffect(()=>{
+    let c = candidates.filter((c) => c.electionId == selectedElection);
+    setCandidatesList(c);
+    
+  },[selectedElection])
+  
   return (
     <GluestackUIProvider>
       <BoxContainer alignItems={"flex-start"}>
@@ -66,7 +138,7 @@ export const ExcluirCadastro = ({
           })}
         </Picker>
 
-        {LoadSecondPicker == false ? (
+        {LoadSecondPicker == true ? (
           <>
             <Picker
           style={{
@@ -76,25 +148,25 @@ export const ExcluirCadastro = ({
             borderColor: "black",
             marginBottom: "1%"
           }}
-          selectedValue={selectedCandidate}
+          selectedValue={selectedElection}
           onValueChange={(itemValue) => {
-            setSelectedCandidate(itemValue);
+            setSelectedElection(itemValue);
           }}
         >
-          {eleicoes.map((candidato) => {
+          {eleicao.map((e) => {
             return (
               <Picker.Item
-                key={candidato}
-                label={candidato}
-                value={candidato}
+                key={e.value}
+                label={e.label}
+                value={e.value}
               />
               
             );
           })}
         </Picker>
-        {eleicoes.map((c) => {
+        {candidatesList.map((c) => {
               return (
-                <HStack bgColor="$white" key={c}>
+                <HStack bgColor="$white" key={c.id}>
                   <Box
                     w={"80%"}
                     alignItems="center"
@@ -105,10 +177,19 @@ export const ExcluirCadastro = ({
                     borderBottomWidth={"$1"}
                   >
                     <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
-                      {c}
+                      {c.name} 
                     </Text>
                   </Box>
-                  <Box w={"20%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
+                  <Box w={"10%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
+                    <Text
+                      fontSize={"$xl"}
+                      fontWeight="bold"
+                      pt={"$1"}
+                    >
+                      {c.number}
+                    </Text>
+                  </Box>
+                  <Box w={"10%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
                     <Text
                       fontSize={"$xl"}
                       color="$amber700"
@@ -124,9 +205,9 @@ export const ExcluirCadastro = ({
           </>
         ) : (
           <>
-            {eleicoes.map((c) => {
+            {electionList.map((c) => {
               return (
-                <HStack bgColor="$white" key={c}>
+                <HStack bgColor="$white" key={c.value}>
                   <Box
                     w={"80%"}
                     alignItems="center"
@@ -137,7 +218,7 @@ export const ExcluirCadastro = ({
                     borderBottomWidth={"$1"}
                   >
                     <Text fontSize={"$xl"} color="$blue900" fontWeight="bold">
-                      {c}
+                      {c.label}
                     </Text>
                   </Box>
                   <Box w={"20%"} alignItems="center" borderTopWidth={"$1"} borderRightWidth = {"$1"} borderBottomWidth={"$1"}>
