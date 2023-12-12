@@ -28,9 +28,11 @@ export const ExcluirCadastro = ({
   );
   const [selectedElection, setSelectedElection] = useState(0);
 
-  const [eleicoes, setEleicoes] = useState(["1", "2", "3"]);
 
   const [candidatos, setCandidatos] = useState([]);
+
+  const[masterPassword, setMasterPassword] = useState("");
+  const[elecToExclude, setElecToExclude] = useState(0);
 
   var arrSetE: Array<{
     label: string;
@@ -131,6 +133,9 @@ export const ExcluirCadastro = ({
     } else {
       Alert.alert("Falha ao excluir eleição!");
     }
+    
+    navigation.navigate("ExcluirCadastro");
+    setScreen(1);
   };
 
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
@@ -298,7 +303,10 @@ export const ExcluirCadastro = ({
                         color="$amber700"
                         fontWeight="bold"
                         pt={"$1"}
-                        onPress={() => deleteElection(Number(c.value))}
+                        onPress={() => {
+                          setScreen(2);
+                          setElecToExclude(Number(c.value))                     
+                        }/*deleteElection(Number(c.value))*/}
                       >
                         X
                       </Text>
@@ -335,8 +343,8 @@ export const ExcluirCadastro = ({
           placeholder="Senha"
           type={"password"}
           width="$90%"
-          onChange={() => console.log("aaa")}
-          text="Senha da Eleição"
+          onChange={() => setMasterPassword}
+          text="Senha Master"
         />
         <Box
           flexDirection="row"
@@ -349,11 +357,13 @@ export const ExcluirCadastro = ({
             name="chevron-left"
             size={28}
             color="black"
+            onPress={() => setScreen(1)}
+          />
+          <FontAwesome name="check" size={32} color="green" 
             onPress={() => {
-              setScreen(1);
+              deleteElection(elecToExclude);
             }}
           />
-          <FontAwesome name="check" size={32} color="green" />
         </Box>
       </BoxContainer>
     );
