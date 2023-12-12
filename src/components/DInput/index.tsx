@@ -18,6 +18,7 @@ type DefaultInputProps = {
   type?: any;
   showIcon?: boolean;
   text?: string;
+  sx?: any;
 };
 
 import { useState } from "react";
@@ -31,9 +32,19 @@ export const DInput = (props: DefaultInputProps) => {
 
   return (
     <GluestackUIProvider>
-      <Box alignItems="flex-start" justifyContent="center">
-        <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600">{props.text}</Text>
-      <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900" h={"$12"}>
+      <Box alignItems="flex-start" justifyContent="center" sx={{"@lg":{
+            h: "20%"
+          }}}>
+        <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600"
+        sx={{"@lg":{
+          fontSize: "$2xl",
+          lineHeight:"$2xl"
+        }}}>{props.text}</Text>
+      <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900" h={"$12"}
+      sx={{"@lg":{
+        h: "50%"
+      }}}
+      >
         <InputField
           backgroundColor="$white"
           padding={"$2"}
