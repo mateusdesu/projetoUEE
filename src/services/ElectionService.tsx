@@ -137,16 +137,63 @@ export default class ElectionService{
         return hasCandidate;
     }
 
-    static deleteElection(id:number){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async deleteElection(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
-                    resolve(rows.item(0).id);
-                }),(sqlError:SQLError)=>{
-                    console.log("Erro ao excluir candidato: "+sqlError);
+                if(id != null){
+                    tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rowsAffected);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+    
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
                 }
             }
         ))
+        return del
+    }
+
+
+    static async deleteWhiteVotes(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                if(id != null){
+                    tx.executeSql(`delete from whitevotes where electionId = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rowsAffected);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+    
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
+                }
+            }
+        ))
+        return del
+    }
+
+    static async checkWhiteVotes(electionId:number){
+        let numCad = false;
+        
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from whitevotes where electionId = ${electionId}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+
+                    if(rows._array.length >= 1){
+                        numCad = true;
+                    }
+                    
+                })
+            }
+        ));
+        return numCad;
     }
 
     static async checkElectionCredential(id:number, pass:string){

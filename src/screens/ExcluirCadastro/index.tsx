@@ -91,6 +91,37 @@ export const ExcluirCadastro = ({
     del ? Alert.alert("Candidato excluído com sucesso!") : Alert.alert("Falha ao excluir candidato!");  
   }
 
+  const deleteElection = async(electionId:number)=>{
+    let hasCandidate = await CandidateService.findByElectionId(electionId);
+    let hasWhiteVotes = await ElectionService.checkWhiteVotes(electionId);
+
+    let delWv = false;
+    let delCnd = false;
+    let delElec = false;
+
+    if(hasCandidate){
+     delCnd = await CandidateService.deleteCandidatesByElectionId(electionId);
+    }
+
+    if(hasWhiteVotes){
+      delWv = await ElectionService.deleteWhiteVotes(electionId);
+    }
+
+
+    if(!hasWhiteVotes && !hasCandidate){
+      delElec = await ElectionService.deleteElection(electionId);
+      delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+    }else  if((hasWhiteVotes && delWv) && (hasCandidate && delCnd)){
+      delElec = await ElectionService.deleteElection(electionId);
+      delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+    }else  if((hasWhiteVotes && delWv && !hasCandidate) || (hasCandidate && delCnd && !hasWhiteVotes)){
+      delElec = await ElectionService.deleteElection(electionId);
+      delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+    }else{
+      Alert.alert("Falha ao excluir eleição!");
+    }
+  }
+
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
     false
   );
@@ -247,6 +278,7 @@ export const ExcluirCadastro = ({
                       color="$amber700"
                       fontWeight="bold"
                       pt={"$1"}
+                      onPress={() => deleteElection(Number(c.value))}
                     >
                       X
                     </Text>
