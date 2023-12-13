@@ -33,7 +33,7 @@ export const DInput = (props: DefaultInputProps) => {
   return (
     <GluestackUIProvider>
       <Box alignItems="flex-start" justifyContent="center" sx={{"@lg":{
-            h: "20%"
+            h: "15%"
           }}}>
         <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600"
         >{props.text}</Text>
