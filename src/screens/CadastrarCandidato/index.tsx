@@ -570,7 +570,7 @@ export const CadastrarCandidato = ({
   } else if (screen === 3) {
     return (
       <BoxContainer>
-        <Header title="Encerrar Eleição" />
+        <Header title="Cadastrar Candidato" />
         <DInput
           placeholder="Senha"
           type={"password"}

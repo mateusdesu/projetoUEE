@@ -180,7 +180,7 @@ export const ResultadoEleicao = ({
   } else if (screen == 2) {
     return (
       <BoxContainer>
-        <ScrollView>
+        <ScrollView w={"100%"}>
         <Header title={"Resultado Eleição"} />
         <Text
           color="$blue900"
@@ -275,12 +275,7 @@ export const ResultadoEleicao = ({
             color="black"
             onPress={() => SetScreen(1)}
           />
-          <FontAwesome
-            name="check"
-            size={32}
-            color="green"
-            onPress={() => console.log("aa")}
-          />
+          
         </Box>
         </ScrollView>
       </BoxContainer>
@@ -363,12 +358,7 @@ export const ResultadoEleicao = ({
             color="black"
             onPress={() => SetScreen(2)}
           />
-          <FontAwesome
-            name="check"
-            size={32}
-            color="green"
-            onPress={() => console.log("aa")}
-          />
+          
         </Box>
       </BoxContainer>
     );
