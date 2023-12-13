@@ -30,15 +30,17 @@ export default class MasterService{
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
-                    resolve(rows._array);
+                    resolve(rows);
                     master = rows._array[0];
+                    console.log("Senha master: "+master.password);
+                    console.log("Senha recebida: "+password);
                 }),(sqlError:SQLError)=>{
                     console.log("Erro ao buscar master: "+sqlError);
                 }             
             }        
         ))
              
-        if(master.password === password){
+        if(master.password == password){
             return true;
         }else{
             return false;
