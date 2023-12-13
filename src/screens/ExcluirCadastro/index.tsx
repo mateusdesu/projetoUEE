@@ -1,4 +1,4 @@
-import { Box, GluestackUIProvider, HStack, Text,ScrollView } from "@gluestack-ui/themed";
+import { Box, GluestackUIProvider, HStack, Text,ScrollView,Center } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
 import { FontAwesome } from "@expo/vector-icons";
@@ -174,8 +174,11 @@ export const ExcluirCadastro = ({
   if (screen === 1) {
     return (
       <GluestackUIProvider>
+        
         <BoxContainer alignItems={"flex-start"}>
-          <ScrollView>
+        <ScrollView w={"100%"}>
+          
+            
           <Header title="Excluir Cadastro"></Header>
           <Text fontSize="$md" fontWeight="$bold">
             Qual tipo de dado deseja excluir?*
@@ -344,8 +347,11 @@ export const ExcluirCadastro = ({
             />
             <FontAwesome name="check" size={32} color="green" />
           </Box>
+          
           </ScrollView>
         </BoxContainer>
+        
+      
       </GluestackUIProvider>
     );
   } else {
