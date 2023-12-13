@@ -48,10 +48,8 @@ export const RealizarEleicao = ({
 
   const [positionToVote, setPositionToVote] = useState("");
 
-
   const [password, setPassword] = useState("");
   const [positions, setPositions] = useState<Array<string>>([]);
-  
 
   var arrSetE: Array<{
     label: string;
@@ -76,15 +74,15 @@ export const RealizarEleicao = ({
       });
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
-        if(!elections[i].closed){
+        if (!elections[i].closed) {
           arrSetE2.push({
             label: elections[i].name,
             value: elections[i].id,
             positions: elections[i].positions.split(","),
           });
-        } 
+        }
       }
-      setEleicao(arrSetE2);     
+      setEleicao(arrSetE2);
     });
   };
 
@@ -92,9 +90,9 @@ export const RealizarEleicao = ({
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
     if (confirm) {
-      Alert.alert(password + "/" + id);  
+      Alert.alert(password + "/" + id);
       SetScreen(2);
-      
+
       electionSession();
     } else {
       Alert.alert("Senha incorreta!");
@@ -130,8 +128,8 @@ export const RealizarEleicao = ({
       electionId,
       position
     );
-    if (voteWasComputed) {     
-      clear(); 
+    if (voteWasComputed) {
+      clear();
       Alert.alert("Voto Em Branco Confirmado!");
       electionSession();
     } else {
@@ -139,35 +137,37 @@ export const RealizarEleicao = ({
     }
   };
 
-
-
   const [index, setIndex] = useState(0);
 
-  const electionSession = ()=>{ 
-    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
+  const electionSession = () => {
+    let el = eleicao.find((e) => e.value == Number(selectedOption));
     el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);
-     
-    
-    if(index == 0 || index < positions.length){
-      setPositionToVote(positions[index]);    
-      setIndex((prevIndex)=>prevIndex + 1);       
-      console.log("index: "+index);  
-    }
-    else{    
+
+    if (index == 0 || index < positions.length) {
+      setPositionToVote(positions[index]);
+      setIndex((prevIndex) => prevIndex + 1);
+      console.log("index: " + index);
+    } else {
       console.log(index);
-      Alert.alert("FIM!",'',[{text: "PRÓXIMO", onPress:()=>{
-        setPositionToVote(positions[0]);
-        setIndex(1);
-      }}]);
-      
+      Alert.alert("FIM!", "", [
+        {
+          text: "PRÓXIMO",
+          onPress: () => {
+            setPositionToVote(positions[0]);
+            setIndex(1);
+          },
+        },
+      ]);
     }
-           
-  }
+  };
 
-  const closeElection = async (electionId: number, password:string) => {
-    let check = await ElectionService.checkElectionCredential(Number(selectedOption), password);
+  const closeElection = async (electionId: number, password: string) => {
+    let check = await ElectionService.checkElectionCredential(
+      Number(selectedOption),
+      password
+    );
 
-    if(check){
+    if (check) {
       let electionClosed = await ElectionService.closeElection(electionId);
 
       if (electionClosed) {
@@ -179,23 +179,20 @@ export const RealizarEleicao = ({
       } else {
         Alert.alert("Falha ao encerrar eleição!");
       }
-    }else{
+    } else {
       Alert.alert("Senha Incorreta!");
     }
-    
   };
 
   useEffect(() => {
-    
-
     setNumberVoted(firstNumberVoted + secondNumberVoted);
 
     if (secondNumberVoted != "") {
       let c = candidates.filter(
         (candidate) =>
           candidate.number == NumberVoted.toString() &&
-          candidate.electionId == Number(selectedOption)
-          && candidate.position == positionToVote
+          candidate.electionId == Number(selectedOption) &&
+          candidate.position == positionToVote
       );
 
       if (c.length > 0) {
@@ -227,13 +224,11 @@ export const RealizarEleicao = ({
     setCandidateViceName("");
     setCandidateParty("");
     setCandidatePicture("");
-    setCandidateId(null)
+    setCandidateId(null);
   }
 
   useEffect(() => {
     findAllElections();
-
-    
 
     async function findAllCandidates() {
       let c = await CandidateService.findAll();
@@ -244,15 +239,16 @@ export const RealizarEleicao = ({
 
     findAllCandidates();
     //setPositionToVote(positions[0]);
-
   }, []);
 
-  useEffect(()=>{
-    let el =  eleicao.find((e)=> e.value == Number(selectedOption));
-    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]); 
-    if(index == 0){ setPositionToVote(positions[0])}
-     console.log("EFFECT EXECUTADO!");
-  },[selectedOption]);
+  useEffect(() => {
+    let el = eleicao.find((e) => e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);
+    if (index == 0) {
+      setPositionToVote(positions[0]);
+    }
+    console.log("EFFECT EXECUTADO!");
+  }, [selectedOption]);
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -328,7 +324,7 @@ export const RealizarEleicao = ({
           <Box pl={"$2"} pt={"$2"} flexDirection={"row"} h={"40%"}>
             <Box w={"50%"}>
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-                Seu voto para 
+                Seu voto para
               </Text>
               <Text
                 fontSize={"$xl"}
@@ -346,11 +342,23 @@ export const RealizarEleicao = ({
                   w={"$10"}
                   alignItems="center"
                   justifyContent="center"
+                  sx={{
+                    "@lg": {
+                      h: "$24",
+                      w: "$16",
+                    },
+                  }}
                 >
                   <Text
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                        lineHeight: "$4xl",
+                      },
+                    }}
                   >
                     {firstNumberVoted}
                   </Text>
@@ -362,11 +370,23 @@ export const RealizarEleicao = ({
                   w={"$10"}
                   alignItems="center"
                   justifyContent="center"
+                  sx={{
+                    "@lg": {
+                      h: "$24",
+                      w: "$16",
+                    },
+                  }}
                 >
                   <Text
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                        lineHeight: "$4xl",
+                      },
+                    }}
                   >
                     {secondNumberVoted}
                   </Text>
@@ -672,11 +692,10 @@ export const RealizarEleicao = ({
         </Box>
       </BoxContainer>
     );
-  }
-  else if(screen === 3){
-    return(
+  } else if (screen === 3) {
+    return (
       <BoxContainer>
-        <Header title="Encerrar Eleição"/>
+        <Header title="Encerrar Eleição" />
         <DInput
           placeholder="Senha"
           type={"password"}
@@ -697,9 +716,14 @@ export const RealizarEleicao = ({
             color="black"
             onPress={() => SetScreen(2)}
           />
-          <FontAwesome name="check" size={32} color="green" onPress={() => closeElection(Number(selectedOption), passToClose)}/>
+          <FontAwesome
+            name="check"
+            size={32}
+            color="green"
+            onPress={() => closeElection(Number(selectedOption), passToClose)}
+          />
         </Box>
       </BoxContainer>
-    )
+    );
   }
 };
