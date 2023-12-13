@@ -282,7 +282,7 @@ export const CadastrarCandidato = ({
           >
             {hasVice && hasParty && (
               <>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"}  alignItems="flex-start" justifyContent="center">
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"

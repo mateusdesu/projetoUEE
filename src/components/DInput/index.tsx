@@ -36,14 +36,9 @@ export const DInput = (props: DefaultInputProps) => {
             h: "20%"
           }}}>
         <Text fontSize={"$lg"} fontWeight={"$bold"} color="$blueGray600"
-        sx={{"@lg":{
-          fontSize: "$2xl",
-          lineHeight:"$2xl"
-        }}}>{props.text}</Text>
+        >{props.text}</Text>
       <Input width={props.width} my="$2" borderRadius={"$2xl"} borderColor="$blue900" h={"$12"}
-      sx={{"@lg":{
-        h: "50%"
-      }}}
+      
       >
         <InputField
           backgroundColor="$white"

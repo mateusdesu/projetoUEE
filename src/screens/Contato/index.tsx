@@ -1,4 +1,4 @@
-import { Box, GluestackUIProvider } from "@gluestack-ui/themed";
+import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
@@ -16,6 +16,16 @@ export const Contato = ({
     <GluestackUIProvider>
       <BoxContainer alignItems={"center"}>
         <Header title="Contato"></Header>
+        <Box bgColor="white" p={"$2"}>
+          <Text>
+            Adriana da Silva Lisboa Tomaz E-mail: atomaz@unicarioca.edu.br 
+            Telefone: 21 97056-2595 
+          </Text>
+          <Text>
+            Augusto Schwager de Carvalho E-mail: augustoschwager@yahoo.com.br 
+            Telefone: 21 98208-5344 
+          </Text>
+        </Box>
         <Box
           flexDirection="row"
           justifyContent="space-between"
