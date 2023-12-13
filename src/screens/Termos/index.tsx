@@ -1,4 +1,4 @@
-import { Box, GluestackUIProvider,Text } from "@gluestack-ui/themed";
+import { Box, GluestackUIProvider,Text,ScrollView } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
@@ -11,6 +11,7 @@ export function Termos({ navigation }: { navigation: NavigationProp<any> }) {
   return (
     <GluestackUIProvider>
       <BoxContainer alignItems={"center"}>
+        <ScrollView>
         <Header title="Termos"></Header>
         <Box bgColor="white" p={"$1"} mb={"$2"}>
           <Text>
@@ -68,6 +69,7 @@ Esta política é efetiva a partir de setembro de 2023.
             onPress={() => navigation.navigate("MenuConfig")}
           />
         </Box>
+        </ScrollView>
       </BoxContainer>
     </GluestackUIProvider>
   );
