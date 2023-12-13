@@ -12,6 +12,7 @@ import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
 import { Alert } from "react-native";
 import { DInput } from "../../components/DInput";
+import MasterService from "../../services/MasterService";
 
 export const ExcluirCadastro = ({
   navigation,
@@ -32,7 +33,9 @@ export const ExcluirCadastro = ({
   const [candidatos, setCandidatos] = useState([]);
 
   const[masterPassword, setMasterPassword] = useState("");
+  const [masterCredential, setMasterCredential] = useState(false);
   const[elecToExclude, setElecToExclude] = useState(0);
+  const [candToExclude, setCandToExclude] = useState<number | null>(0);
 
   var arrSetE: Array<{
     label: string;
@@ -84,6 +87,15 @@ export const ExcluirCadastro = ({
     setCandidates(c);
   }
 
+  const checkMasterPass = async(pass:string)=>{
+    let equal = false;
+    equal = await MasterService.checkMasterPass(pass);
+    console.log("Equal: "+equal);
+
+    setMasterCredential(equal);
+
+  }
+
   const deleteCandidate = async (id: number | null) => {
     let del = false;
 
@@ -91,51 +103,47 @@ export const ExcluirCadastro = ({
       del = await CandidateService.deleteCandidate(id);
     }
 
-    del
-      ? Alert.alert("Candidato excluído com sucesso!")
-      : Alert.alert("Falha ao excluir candidato!");
+    del ? Alert.alert("Candidato excluído com sucesso!") : Alert.alert("Falha ao excluir candidato!");
+    navigation.navigate("ExcluirCadastro");
+    setScreen(1);  
+    setCandToExclude(0);
   };
 
+  
+
   const deleteElection = async (electionId: number) => {
-    let hasCandidate = await CandidateService.findByElectionId(electionId);
-    let hasWhiteVotes = await ElectionService.checkWhiteVotes(electionId);
-
-    let delWv = false;
-    let delCnd = false;
-    let delElec = false;
-
-    if (hasCandidate) {
-      delCnd = await CandidateService.deleteCandidatesByElectionId(electionId);
-    }
-
-    if (hasWhiteVotes) {
-      delWv = await ElectionService.deleteWhiteVotes(electionId);
-    }
-
-    if (!hasWhiteVotes && !hasCandidate) {
-      delElec = await ElectionService.deleteElection(electionId);
-      delElec
-        ? Alert.alert("Eleição Excluída com sucesso!")
-        : Alert.alert("Falha ao excluir eleição!");
-    } else if (hasWhiteVotes && delWv && hasCandidate && delCnd) {
-      delElec = await ElectionService.deleteElection(electionId);
-      delElec
-        ? Alert.alert("Eleição Excluída com sucesso!")
-        : Alert.alert("Falha ao excluir eleição!");
-    } else if (
-      (hasWhiteVotes && delWv && !hasCandidate) ||
-      (hasCandidate && delCnd && !hasWhiteVotes)
-    ) {
-      delElec = await ElectionService.deleteElection(electionId);
-      delElec
-        ? Alert.alert("Eleição Excluída com sucesso!")
-        : Alert.alert("Falha ao excluir eleição!");
-    } else {
-      Alert.alert("Falha ao excluir eleição!");
-    }
     
-    navigation.navigate("ExcluirCadastro");
-    setScreen(1);
+      let hasCandidate = await CandidateService.findByElectionId(electionId);
+      let hasWhiteVotes = await ElectionService.checkWhiteVotes(electionId);
+
+      let delWv = false;
+      let delCnd = false;
+      let delElec = false;
+
+      if (hasCandidate) {
+        delCnd = await CandidateService.deleteCandidatesByElectionId(electionId);
+      }
+
+      if (hasWhiteVotes) {
+        delWv = await ElectionService.deleteWhiteVotes(electionId);
+      }
+
+      if (!hasWhiteVotes && !hasCandidate) {
+        delElec = await ElectionService.deleteElection(electionId);
+        delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+      } else if (hasWhiteVotes && delWv && hasCandidate && delCnd) {
+          delElec = await ElectionService.deleteElection(electionId);
+          delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+      } else if ((hasWhiteVotes && delWv && !hasCandidate) || (hasCandidate && delCnd && !hasWhiteVotes)){
+          delElec = await ElectionService.deleteElection(electionId);
+          delElec ? Alert.alert("Eleição Excluída com sucesso!") : Alert.alert("Falha ao excluir eleição!");
+      } else {
+        Alert.alert("Falha ao excluir eleição!");
+      }
+    
+      navigation.navigate("ExcluirCadastro");
+      setScreen(1);   
+      setElecToExclude(0);
   };
 
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
@@ -264,7 +272,10 @@ export const ExcluirCadastro = ({
                         color="$amber700"
                         fontWeight="bold"
                         pt={"$1"}
-                        onPress={() => deleteCandidate(c.id)}
+                        onPress={() => {
+                          setCandToExclude(c.id); 
+                          setScreen(2);                                                                    
+                        }}
                       >
                         X
                       </Text>
@@ -343,7 +354,7 @@ export const ExcluirCadastro = ({
           placeholder="Senha"
           type={"password"}
           width="$90%"
-          onChange={() => setMasterPassword}
+          onChange={setMasterPassword}
           text="Senha Master"
         />
         <Box
@@ -360,8 +371,18 @@ export const ExcluirCadastro = ({
             onPress={() => setScreen(1)}
           />
           <FontAwesome name="check" size={32} color="green" 
-            onPress={() => {
-              deleteElection(elecToExclude);
+            onPress={async() => {
+              await checkMasterPass(masterPassword);
+              if(masterCredential){
+                if(elecToExclude != 0){
+                  deleteElection(elecToExclude);
+                }
+                else if(candToExclude != 0){
+                  deleteCandidate(candToExclude);
+                }
+              }else{
+                Alert.alert("Senha incorreta!");
+              }              
             }}
           />
         </Box>
