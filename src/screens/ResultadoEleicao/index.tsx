@@ -283,6 +283,7 @@ export const ResultadoEleicao = ({
   }else if(screen == 3){
     return (
       <BoxContainer>
+        <ScrollView w={"100%"}>
         <Header title={"Resultado Eleição"} />
         <Text
           color="$blue900"
@@ -291,7 +292,7 @@ export const ResultadoEleicao = ({
           lineHeight={"$2xl"}
           mr={"10%"}
         >
-          Nome eleição
+          Votos em branco
         </Text>
         <Box
           backgroundColor="white"
@@ -360,6 +361,7 @@ export const ResultadoEleicao = ({
           />
           
         </Box>
+        </ScrollView>
       </BoxContainer>
     );
   }
