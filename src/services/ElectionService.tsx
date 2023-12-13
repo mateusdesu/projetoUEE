@@ -100,14 +100,14 @@ export default class ElectionService{
 
     }*/
 
-    static async getWhiteVotes(electionId:number, position:string){
-        let white_votes = 0;
+    static async getWhiteVotes(electionId:number/*,position:string*/){
+        let white_votes:Array<{total:number, position:string}> = [];
         await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select count(electionId) as whitevotes from whitevotes where electionId = ${electionId} AND position = ${position}`,[],(_,{rows})=>{
+                tx.executeSql(`select position, count(*) as total from whitevotes where electionId = ${electionId} group by position`,[],(_,{rows})=>{
                     resolve(rows);
 
-                    white_votes= rows.item(0).whitevotes;
+                    white_votes= rows._array;
                     console.log("Votos em Branco: "+white_votes);
 
                 }),(sqlErr:SQLError)=>{
@@ -258,7 +258,7 @@ export default class ElectionService{
         let candidates:Array<Candidate> = [];
          await new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select * from candidate where electionId = ${electionId} order by votes desc`,[],(_,{rows})=>{
+                tx.executeSql(`select * from candidate where electionId = ${electionId} order by position, votes desc`,[],(_,{rows})=>{
                     resolve(rows._array);
                     candidates = rows._array;
                     console.log("rowsarr result"+rows._array);
