@@ -11,9 +11,10 @@ import {ScrollView} from "react-native"
 export function Termos({ navigation }: { navigation: NavigationProp<any> }) {
   return (
     <GluestackUIProvider>
+      <ScrollView>
       <BoxContainer alignItems={"center"}>
         <Header title="Termos"></Header>
-        <Box>
+        <Box bgColor="$white" p={"$3"}>
           <Text fontWeight="$bold">1. Termos</Text>
           <Text>Ao acessar a “UEE – Urna Eletrônica Escolar”, concordo em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis e concordo em ser responsável pelo cumprimento de todas as leis locais aplicáveis. Se você não concordar com algum desses termos, está proibido de usar este aplicativo. Os materiais contidos neste aplicativo são protegidos pelas leis de direitos autorais e marcas comerciais aplicáveis.</Text>
 
@@ -47,6 +48,7 @@ export function Termos({ navigation }: { navigation: NavigationProp<any> }) {
           <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("MenuConfig")}/>
         </Box>
       </BoxContainer>
+      </ScrollView>
     </GluestackUIProvider>
   );
 }
