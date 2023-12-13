@@ -1,6 +1,6 @@
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
-import { Box, GluestackUIProvider, Text, HStack } from "@gluestack-ui/themed";
+import { Box, GluestackUIProvider, Text, HStack,ScrollView } from "@gluestack-ui/themed";
 import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { DInput } from "../../components/DInput";
@@ -165,6 +165,7 @@ export const ResultadoEleicao = ({
   } else if (screen == 2) {
     return (
       <BoxContainer>
+        <ScrollView>
         <Header title={"Resultado Eleição"} />
         <Text
           color="$blue900"
@@ -243,6 +244,7 @@ export const ResultadoEleicao = ({
             onPress={() => console.log("aa")}
           />
         </Box>
+        </ScrollView>
       </BoxContainer>
     );
   }
