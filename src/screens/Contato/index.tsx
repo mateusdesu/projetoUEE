@@ -19,16 +19,14 @@ export const Contato = ({
           <Text fontSize={"$lg"} fontWeight="$bold">Autores:</Text>
           <Text>
             Adriana da Silva Lisboa Tomaz E-mail: atomaz@unicarioca.edu.br 
-            Telefone: 21 97056-2595 
           </Text>
           <Text>
             Augusto Schwager de Carvalho E-mail: augustoschwager@yahoo.com.br 
-            Telefone: 21 98208-5344 
           </Text>
           <Text fontSize={"$lg"} fontWeight="$bold">Desenvolvedores:</Text>
           <Text fontSize={"$md"} fontWeight="$bold">Programação</Text>
           <Text>Mateus Lopes da Silva E-mail: mateuslopes1717@gmail.com</Text>
-          <Text>Victor Revers Kasnowski E-mail: victor.kasnowski@gmai.com</Text>
+          <Text>Victor Revers Kasnowski E-mail: victor.kasnowski@gmail.com</Text>
           <Text>Nathalia Gorito da Silva E-mail: natgorito@gmail.com</Text>
           <Text fontSize={"$md"} fontWeight="$bold">Design</Text>
           <Text>Gustavo Souza Caetano Lima: E-mail: caetanogustavo2000@gmail.com</Text>

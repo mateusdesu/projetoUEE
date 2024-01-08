@@ -10,6 +10,7 @@ import { NavigationProp } from "@react-navigation/native";
 import React from "react";
 import MasterService from "../../services/MasterService";
 import { Alert } from "react-native";
+import { Home } from "../Home";
 
 export const SenhaMaster = ({
   navigation,
@@ -34,6 +35,7 @@ export const SenhaMaster = ({
       }
     
     Alert.alert(msg);
+    navigation.navigate("Home");
   }
 
   return (

@@ -37,6 +37,7 @@ export const CadastrarEleicao = ({
             " | Cargos: " +
             cargos
         );
+          navigation.goBack();      
       }else{
         Alert.alert("Erro ⚠️","Falha ao cadastrar eleição! \nTente novamente!");
       }
