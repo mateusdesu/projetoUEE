@@ -47,6 +47,17 @@ export const CadastrarCandidato = ({
   const [hasImage, setHasImage] = useState(false);
   const [hasParty, setHasParty] = useState(false);
   const [hasVice, setHasVice] = useState(false);
+  const [electionPass, setElectionPass] = useState("");
+
+  const checkElectionCredential = async ()=>{
+    let authorized = await ElectionService.checkElectionCredential(Number(selectedOption), electionPass);
+
+    if(authorized){
+      realizarCadastro();
+    }else{
+      Alert.alert("Senha incorreta!");
+    }
+  }
 
   const realizarCadastro = async () => {
     let inserido = false;
@@ -575,7 +586,7 @@ export const CadastrarCandidato = ({
           placeholder="Senha"
           type={"password"}
           width="$90%"
-          onChange={() => console.log("aaa")}
+          onChange={setElectionPass}
           text="Senha da Eleição"
         />
         <Box
@@ -598,7 +609,7 @@ export const CadastrarCandidato = ({
             name="check"
             size={32}
             color="green"
-            onPress={() => realizarCadastro()}
+            onPress={() => checkElectionCredential()}
           />
         </Box>
       </BoxContainer>
