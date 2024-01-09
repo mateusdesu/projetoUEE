@@ -21,6 +21,7 @@ import { Alert, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
+import {Audio} from 'expo-av';
 
 export const RealizarEleicao = ({
   navigation,
@@ -63,6 +64,14 @@ export const RealizarEleicao = ({
   }> = [];
 
   const [eleicao, setEleicao] = useState(arrSetE);
+
+  async function playSound() {  
+    const sound  = new Audio.Sound();
+    
+    await sound.loadAsync(require('../../assets/SomUrna.mp3'));
+    
+    await sound.playAsync();
+  }
 
   const findAllElections = async () => {
     let i: number;
@@ -113,9 +122,10 @@ export const RealizarEleicao = ({
   const computeVote = async (id: number) => {
     if (id != 0) {
       let voteWasComputed = await ElectionService.computeVote(id);
-      if (voteWasComputed) {
+      if (voteWasComputed) {          
         clear();
-        Alert.alert("Voto Confirmado!");
+        await playSound();   
+        Alert.alert("Voto Confirmado!");        
         electionSession();
       } else {
         Alert.alert("Falha ao computar voto");
