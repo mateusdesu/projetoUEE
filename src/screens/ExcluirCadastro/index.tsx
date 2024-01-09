@@ -33,7 +33,7 @@ export const ExcluirCadastro = ({
   const [candidatos, setCandidatos] = useState([]);
 
   const[masterPassword, setMasterPassword] = useState("");
-  const [masterCredential, setMasterCredential] = useState(false);
+  const [masterCredential, setMasterCredential] = useState<Boolean>(false);
   const[elecToExclude, setElecToExclude] = useState(0);
   const [candToExclude, setCandToExclude] = useState<number | null>(0);
 
@@ -88,12 +88,29 @@ export const ExcluirCadastro = ({
   }
 
   const checkMasterPass = async(pass:string)=>{
-    let equal = false;
-    equal = await MasterService.checkMasterPass(pass);
+    let equal = await MasterService.checkMasterPass(pass);
     console.log("Equal: "+equal);
 
-    setMasterCredential(equal);
+    if(equal){
+      if(elecToExclude != 0){
+        deleteElection(elecToExclude);
+      }
+      else if(candToExclude != 0){
+        deleteCandidate(candToExclude);
+      }
+    }else{
+      Alert.alert("Senha incorreta!");               
+    }   
+  }
 
+  const checkIfMasterWasCreated= async()=>{
+    let master = await MasterService.findAll();
+
+    if(master){
+      setScreen(2); 
+    }else{
+      Alert.alert("SENHA MASTER NÃO FOI CADASTRADA!");
+    }
   }
 
   const deleteCandidate = async (id: number | null) => {
@@ -107,6 +124,7 @@ export const ExcluirCadastro = ({
     navigation.navigate("ExcluirCadastro");
     setScreen(1);  
     setCandToExclude(0);
+    navigation.navigate("Home");
   };
 
   
@@ -144,6 +162,7 @@ export const ExcluirCadastro = ({
       navigation.navigate("ExcluirCadastro");
       setScreen(1);   
       setElecToExclude(0);
+      navigation.navigate("Home");
   };
 
   const [LoadSecondPicker, setLoadSecondPicker] = useState<boolean | void>(
@@ -277,8 +296,9 @@ export const ExcluirCadastro = ({
                         fontWeight="bold"
                         pt={"$1"}
                         onPress={() => {
-                          setCandToExclude(c.id); 
-                          setScreen(2);                                                                    
+                          setCandToExclude(c.id);
+                          checkIfMasterWasCreated();
+                          //setScreen(2);                                                                    
                         }}
                       >
                         X
@@ -319,7 +339,8 @@ export const ExcluirCadastro = ({
                         fontWeight="bold"
                         pt={"$1"}
                         onPress={() => {
-                          setScreen(2);
+                          //setScreen(2);
+                          checkIfMasterWasCreated();
                           setElecToExclude(Number(c.value))                     
                         }/*deleteElection(Number(c.value))*/}
                       >
@@ -379,18 +400,8 @@ export const ExcluirCadastro = ({
             onPress={() => setScreen(1)}
           />
           <FontAwesome name="check" size={32} color="green" 
-            onPress={async() => {
-              await checkMasterPass(masterPassword);
-              if(masterCredential){
-                if(elecToExclude != 0){
-                  deleteElection(elecToExclude);
-                }
-                else if(candToExclude != 0){
-                  deleteCandidate(candToExclude);
-                }
-              }else{
-                Alert.alert("Senha incorreta!");
-              }              
+            onPress={() => {
+              checkMasterPass(masterPassword);
             }}
           />
         </Box>

@@ -21,7 +21,7 @@ export default class MasterService{
             }        
         ))
         return master;
-     }
+    }
 
     static async checkMasterPass(password:string){
         
@@ -40,10 +40,10 @@ export default class MasterService{
             }        
         ))
              
-        if(master.password == password){
+        if(master.password == password){          
             return true;
-        }else{
-            return false;
+        }else{          
+            return false;         
         }
     }
 
