@@ -404,17 +404,16 @@ export const RealizarEleicao = ({
               </Box>
             </Box>
             <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
-              <Box borderColor="$black" borderWidth={"$2"}>
-                {candidatePicture != "" ? (
+              {candidatePicture != "" ? (
+                <Box borderColor="$black" borderWidth={"$2"}>
                   <Image
                     source={{ uri: candidatePicture }}
                     alt="Foto Candidato"
                     style={styles.CandidatePicture}
                   />
-                ) : (
-                  <Text>Imagem</Text>
-                )}
               </Box>
+              ): (<></>)}
+              
             </Box>
           </Box>
           <Box flexDirection="row">
