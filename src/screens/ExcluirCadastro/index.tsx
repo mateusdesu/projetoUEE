@@ -89,7 +89,6 @@ export const ExcluirCadastro = ({
 
   const checkMasterPass = async(pass:string)=>{
     let equal = await MasterService.checkMasterPass(pass);
-    console.log("Equal: "+equal);
 
     if(equal){
       if(elecToExclude != 0){
