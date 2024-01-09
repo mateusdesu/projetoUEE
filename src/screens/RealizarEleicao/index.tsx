@@ -67,9 +67,7 @@ export const RealizarEleicao = ({
 
   async function playSound() {  
     const sound = new Audio.Sound();
-    
     await sound.loadAsync(require('../../assets/SomUrna.mp3'));
-    
     await sound.playAsync();
   }
 
