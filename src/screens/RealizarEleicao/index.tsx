@@ -6,7 +6,6 @@ import {
   Text,
   GluestackUIProvider,
   Box,
-  
   HStack,
   Button,
   ButtonText,
@@ -22,6 +21,7 @@ import { Alert, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
+import {Audio} from 'expo-av';
 
 export const RealizarEleicao = ({
   navigation,
@@ -31,34 +31,47 @@ export const RealizarEleicao = ({
   const [firstNumberVoted, setFistNumberVoted] = useState<string | any>("");
   const [secondNumberVoted, setSecondNumberVoted] = useState<string | any>("");
   const [NumberVoted, setNumberVoted] = useState<string | any>("");
-  const [candidatePicture, setCandidatePicture] = useState('');
-  const [candidateName, setCandidateName] = useState('');
-  const [candidateViceName, setCandidateViceName ]= useState<string | null>('');
-  const [candidateParty, setCandidateParty]= useState<string | null>('');
+  const [candidatePicture, setCandidatePicture] = useState("");
+  const [candidateName, setCandidateName] = useState("");
+  const [candidateViceName, setCandidateViceName] = useState<string | null>("");
+  const [candidateParty, setCandidateParty] = useState<string | null>("");
   const [candidateId, setCandidateId] = useState<number | null>(0);
-
+  const [passToClose, setPassToClose] = useState("");
 
   const [candidates, setCandidates] = useState<Array<Candidate>>([]);
   const styles = StyleSheet.create({
-    CandidatePicture: {width: 115,height: 120}
-  })
+    CandidatePicture: { width: 115, height: 120 },
+  });
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
 
+  const [positionToVote, setPositionToVote] = useState("");
+
   const [password, setPassword] = useState("");
+  const [positions, setPositions] = useState<Array<string>>([]);
 
   var arrSetE: Array<{
     label: string;
     value: string | number;
-  }> = [{ label: "", value: "" }];
+    positions: Array<string>;
+  }> = [{ label: "", value: "", positions: [] }];
   var arrSetE2: Array<{
     label: string;
     value: string | number;
+    positions: Array<string>;
   }> = [];
 
   const [eleicao, setEleicao] = useState(arrSetE);
+
+  async function playSound() {  
+    const sound = new Audio.Sound();
+    
+    await sound.loadAsync(require('../../assets/SomUrna.mp3'));
+    
+    await sound.playAsync();
+  }
 
   const findAllElections = async () => {
     let i: number;
@@ -66,19 +79,19 @@ export const RealizarEleicao = ({
       arrSetE2.push({
         label: "selecionar eleição",
         value: 0,
+        positions: [],
       });
       let elections: Array<Election> = response._array;
       for (i = 0; i < elections.length; i++) {
-        arrSetE2.push({
-          label: elections[i].name,
-          value: elections[i].id,
-        });
+        if (!elections[i].closed) {
+          arrSetE2.push({
+            label: elections[i].name,
+            value: elections[i].id,
+            positions: elections[i].positions.split(","),
+          });
+        }
       }
       setEleicao(arrSetE2);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
     });
   };
 
@@ -88,6 +101,8 @@ export const RealizarEleicao = ({
     if (confirm) {
       Alert.alert(password + "/" + id);
       SetScreen(2);
+
+      electionSession();
     } else {
       Alert.alert("Senha incorreta!");
     }
@@ -104,77 +119,146 @@ export const RealizarEleicao = ({
     }
   }
 
-  const computeVote = async(id:number) =>{
-    if(id != 0){
+  const computeVote = async (id: number) => {
+    if (id != 0) {
       let voteWasComputed = await ElectionService.computeVote(id);
-      if(voteWasComputed){
+      if (voteWasComputed) {          
         clear();
-        Alert.alert("Voto Confirmado!");      
+        await playSound();   
+        Alert.alert("Voto Confirmado!");        
+        electionSession();
+      } else {
+        Alert.alert("Falha ao computar voto");
       }
-    }else{
+    }
+  };
+
+  const computeWhiteVote = async (electionId: number, position: string) => {
+    let voteWasComputed = await ElectionService.computeWhiteVotes(
+      electionId,
+      position
+    );
+    if (voteWasComputed) {
+      clear();
+      Alert.alert("Voto Em Branco Confirmado!");
+      electionSession();
+    } else {
       Alert.alert("Falha ao computar voto");
     }
-   
-  }
+  };
 
-  const computeWhiteVote = async(electionId:number) =>{
-    
-  }
+  const [index, setIndex] = useState(0);
 
+  const electionSession = () => {
+    let el = eleicao.find((e) => e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);
 
+    if (index == 0 || index < positions.length) {
+      setPositionToVote(positions[index]);
+      setIndex((prevIndex) => prevIndex + 1);
+      console.log("index: " + index);
+    } else {
+      console.log(index);
+      Alert.alert("FIM!", "", [
+        {
+          text: "PRÓXIMO",
+          onPress: () => {
+            setPositionToVote(positions[0]);
+            setIndex(1);
+          },
+        },
+      ]);
+    }
+  };
+
+  const closeElection = async (electionId: number, password: string) => {
+    let check = await ElectionService.checkElectionCredential(
+      Number(selectedOption),
+      password
+    );
+
+    if (check) {
+      let electionClosed = await ElectionService.closeElection(electionId);
+
+      if (electionClosed) {
+        Alert.alert("Eleição encerrada!");
+        clear();
+        setSelectedOption("");
+        SetScreen(1);
+        setIndex(0);
+      } else {
+        Alert.alert("Falha ao encerrar eleição!");
+      }
+    } else {
+      Alert.alert("Senha Incorreta!");
+    }
+  };
 
   useEffect(() => {
     setNumberVoted(firstNumberVoted + secondNumberVoted);
 
-    if(secondNumberVoted != ""){
-      let c = candidates.filter((candidate)=> candidate.number == NumberVoted.toString() && candidate.electionId == Number(selectedOption));
-      
+    if (secondNumberVoted != "") {
+      let c = candidates.filter(
+        (candidate) =>
+          candidate.number == NumberVoted.toString() &&
+          candidate.electionId == Number(selectedOption) &&
+          candidate.position == positionToVote
+      );
 
-      if(c.length > 0){
+      if (c.length > 0) {
         setCandidateName(c[0].name);
         setCandidateId(c[0].id);
 
-        if(c[0].picture_path != ""){
+        if (c[0].picture_path != "") {
           setCandidatePicture(c[0].picture_path);
         }
-  
-        if(c[0].vice_name != ""){
+
+        if (c[0].vice_name != "") {
           setCandidateViceName(c[0].vice_name);
         }
-  
-        if(c[0].party != ""){
+
+        if (c[0].party != "") {
           setCandidateParty(c[0].party);
         }
-      }else{
+      } else {
         Alert.alert("Candidato inválido!");
       }
     }
-    
-    
   }, [secondNumberVoted]);
-
 
   function clear() {
     setFistNumberVoted("");
     setSecondNumberVoted("");
     setNumberVoted("");
-    setCandidateName('');
-    setCandidateViceName('');
-    setCandidateParty('');
-    setCandidatePicture('');
+    setCandidateName("");
+    setCandidateViceName("");
+    setCandidateParty("");
+    setCandidatePicture("");
+    setCandidateId(null);
   }
 
   useEffect(() => {
     findAllElections();
+
     async function findAllCandidates() {
       let c = await CandidateService.findAll();
-      console.log("Eleição selecionada: "+selectedOption);
-      console.log("Candidatos:"+c);
+      console.log("Eleição selecionada: " + selectedOption);
+      console.log("Candidatos:" + c);
       setCandidates(c);
     }
 
     findAllCandidates();
+    //setPositionToVote(positions[0]);
   }, []);
+
+  useEffect(() => {
+    let el = eleicao.find((e) => e.value == Number(selectedOption));
+    el != undefined ? setPositions(el.positions) : setPositions(["INDEFINIDO"]);
+    if (index == 0) {
+      setPositionToVote(positions[0]);
+    }
+    console.log("EFFECT EXECUTADO!");
+  }, [selectedOption]);
 
   const [screen, SetScreen] = useState(1);
   if (screen === 1) {
@@ -258,7 +342,7 @@ export const RealizarEleicao = ({
                 fontWeight="$bold"
                 color="$blueGray600"
               >
-                Presidente
+                {positionToVote}
               </Text>
               <Box flexDirection="row" gap={"$1"}>
                 <Box
@@ -268,11 +352,23 @@ export const RealizarEleicao = ({
                   w={"$10"}
                   alignItems="center"
                   justifyContent="center"
+                  sx={{
+                    "@lg": {
+                      h: "$24",
+                      w: "$16",
+                    },
+                  }}
                 >
                   <Text
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                        lineHeight: "$4xl",
+                      },
+                    }}
                   >
                     {firstNumberVoted}
                   </Text>
@@ -284,11 +380,23 @@ export const RealizarEleicao = ({
                   w={"$10"}
                   alignItems="center"
                   justifyContent="center"
+                  sx={{
+                    "@lg": {
+                      h: "$24",
+                      w: "$16",
+                    },
+                  }}
                 >
                   <Text
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                        lineHeight: "$4xl",
+                      },
+                    }}
                   >
                     {secondNumberVoted}
                   </Text>
@@ -296,9 +404,16 @@ export const RealizarEleicao = ({
               </Box>
             </Box>
             <Box justifyContent="flex-start" alignItems="center" w={"50%"}>
-              <Box borderColor="$black" borderWidth={"$2"} h={"90%"} w={"$24"}>
-              {candidatePicture != '' ? <Image source={{uri: candidatePicture}} alt="Foto Candidato" style={styles.CandidatePicture} /> :  <Text>Imagem</Text>}
+              {candidatePicture != "" ? (
+                <Box borderColor="$black" borderWidth={"$2"}>
+                  <Image
+                    source={{ uri: candidatePicture }}
+                    alt="Foto Candidato"
+                    style={styles.CandidatePicture}
+                  />
               </Box>
+              ): (<></>)}
+              
             </Box>
           </Box>
           <Box flexDirection="row">
@@ -314,31 +429,52 @@ export const RealizarEleicao = ({
               >
                 {candidateName}
               </Text>
-              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-                Vice
-              </Text>
-              <Text
-                fontSize={"$xl"}
-                lineHeight={"$xl"}
-                fontWeight="$bold"
-                color="$blueGray600"
-              >
-                {candidateViceName}
-              </Text>
-              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
-                Chapa
-              </Text>
-              <Text
-                fontSize={"$xl"}
-                lineHeight={"$xl"}
-                fontWeight="$bold"
-                color="$blueGray600"
-              >
-                {candidateParty}
-              </Text>
+              {candidateViceName && (
+                <>
+                  <Text
+                    fontSize={"$2xl"}
+                    lineHeight={"$2xl"}
+                    fontWeight="$bold"
+                  >
+                    Vice
+                  </Text>
+                  <Text
+                    fontSize={"$xl"}
+                    lineHeight={"$xl"}
+                    fontWeight="$bold"
+                    color="$blueGray600"
+                  >
+                    {candidateViceName}
+                  </Text>
+                </>
+              )}
+              {candidateParty && (
+                <>
+                  <Text
+                    fontSize={"$2xl"}
+                    lineHeight={"$2xl"}
+                    fontWeight="$bold"
+                  >
+                    Chapa
+                  </Text>
+                  <Text
+                    fontSize={"$xl"}
+                    lineHeight={"$xl"}
+                    fontWeight="$bold"
+                    color="$blueGray600"
+                  >
+                    {candidateParty}
+                  </Text>
+                </>
+              )}
             </Box>
             <Box w={"50%"} alignItems="center" justifyContent="flex-end">
-              <Ionicons name="exit-outline" size={60} color="black" />
+              <Ionicons
+                name="exit-outline"
+                size={60}
+                color="black"
+                onPress={() => SetScreen(3)}
+              />
               <Text fontSize={"$xl"} fontWeight="bold">
                 Pressione a tecla
               </Text>
@@ -531,6 +667,9 @@ export const RealizarEleicao = ({
                 fontSize={"$2xl"}
                 fontWeight="bold"
                 lineHeight={"$2xl"}
+                onPress={() =>
+                  computeWhiteVote(Number(selectedOption), positionToVote)
+                } //ALTERAR APÓS IMPLEMENTAR A POSIÇÃO A SER VOTADA!
               >
                 Branco
               </ButtonText>
@@ -551,12 +690,47 @@ export const RealizarEleicao = ({
                 fontSize={"$lg"}
                 fontWeight="bold"
                 lineHeight={"$lg"}
-                onPress={() => computeVote(candidateId != null ? candidateId : 0)}
+                onPress={() =>
+                  computeVote(candidateId != null ? candidateId : 0)
+                }
               >
                 Confirma
               </ButtonText>
             </Button>
           </HStack>
+        </Box>
+      </BoxContainer>
+    );
+  } else if (screen === 3) {
+    return (
+      <BoxContainer>
+        <Header title="Encerrar Eleição" />
+        <DInput
+          placeholder="Senha"
+          type={"password"}
+          width="$90%"
+          onChange={setPassToClose}
+          text="Senha da Eleição"
+        />
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          w={"95%"}
+          mt={"10%"}
+        >
+          <FontAwesome
+            name="chevron-left"
+            size={28}
+            color="black"
+            onPress={() => SetScreen(2)}
+          />
+          <FontAwesome
+            name="check"
+            size={32}
+            color="green"
+            onPress={() => closeElection(Number(selectedOption), passToClose)}
+          />
         </Box>
       </BoxContainer>
     );

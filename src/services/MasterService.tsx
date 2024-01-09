@@ -11,6 +11,7 @@ export default class MasterService{
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
+                    resolve(rows);
                     if(rows._array.length > 0){
                         master = true;
                     }
@@ -20,7 +21,7 @@ export default class MasterService{
             }        
         ))
         return master;
-     }
+    }
 
     static async checkMasterPass(password:string){
         
@@ -29,18 +30,20 @@ export default class MasterService{
         await new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
-                    resolve(rows._array);
+                    resolve(rows);
                     master = rows._array[0];
+                    console.log("Senha master: "+master.password);
+                    console.log("Senha recebida: "+password);
                 }),(sqlError:SQLError)=>{
                     console.log("Erro ao buscar master: "+sqlError);
                 }             
             }        
         ))
              
-        if(master.password === password){
+        if(master.password == password){          
             return true;
-        }else{
-            return false;
+        }else{          
+            return false;         
         }
     }
 
@@ -50,7 +53,7 @@ export default class MasterService{
         let msg = '';           
 
         if(!master){
-            new Promise((resolve, reject)=> db.transaction(
+            await new Promise((resolve, reject)=> db.transaction(
                 tx=>{
                     tx.executeSql(`insert into ${table} (password) 
                         values (?)`, 

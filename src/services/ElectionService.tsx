@@ -38,7 +38,7 @@ export default class ElectionService{
         return add;
     }
 
-    static async sumWhiteVotes(id:number){
+    /*static async sumWhiteVotes(id:number){
         let white_votes = await this.getWhiteVotes(id);
         white_votes = white_votes + 1;
         let voteWasComputed = false;
@@ -58,9 +58,30 @@ export default class ElectionService{
         ))
         
         return voteWasComputed;
-    }
+    }*/
 
-    static async getWhiteVotes(id:number){
+    static async computeWhiteVotes(electionId:number, position:string){
+        let voteWasComputed = false;
+
+        await new Promise((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`insert into whitevotes (electionId, position) values(?,?)`,[electionId, position],(_,{rows,rowsAffected,insertId})=>{
+                    resolve(rows);
+                    if(rowsAffected = 1){
+                        voteWasComputed = true;
+                        console.log(insertId);
+                    }
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao inserir candidato: "+sqlErr);
+                    reject(false);
+                }
+            }
+        ))
+        
+        return voteWasComputed;
+    }    
+
+    /*static async getWhiteVotes(id:number){
         let white_votes = 0;
         await new Promise ((resolve, reject)=>db.transaction(
             tx=>{
@@ -77,6 +98,25 @@ export default class ElectionService{
         ))
         return white_votes;
 
+    }*/
+
+    static async getWhiteVotes(electionId:number/*,position:string*/){
+        let white_votes:Array<{total:number, position:string}> = [];
+        await new Promise ((resolve, reject)=>db.transaction(
+            tx=>{
+                tx.executeSql(`select position, count(*) as total from whitevotes where electionId = ${electionId} group by position`,[],(_,{rows})=>{
+                    resolve(rows);
+
+                    white_votes= rows._array;
+                    console.log("Votos em Branco: "+white_votes);
+
+                }),(sqlErr:SQLError)=>{
+                    console.log("Erro ao contabilizar votos brancos: "+sqlErr);
+                    reject(false);
+                }
+            }
+        ))
+        return white_votes;
     }
 
     static async hasCandidates(id:number){   
@@ -97,16 +137,63 @@ export default class ElectionService{
         return hasCandidate;
     }
 
-    static deleteElection(id:number){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async deleteElection(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
-                    resolve(rows.item(0).id);
-                }),(sqlError:SQLError)=>{
-                    console.log("Erro ao excluir candidato: "+sqlError);
+                if(id != null){
+                    tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rowsAffected);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+    
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
                 }
             }
         ))
+        return del
+    }
+
+
+    static async deleteWhiteVotes(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                if(id != null){
+                    tx.executeSql(`delete from whitevotes where electionId = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rowsAffected);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+    
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
+                }
+            }
+        ))
+        return del
+    }
+
+    static async checkWhiteVotes(electionId:number){
+        let numCad = false;
+        
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from whitevotes where electionId = ${electionId}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+
+                    if(rows._array.length >= 1){
+                        numCad = true;
+                    }
+                    
+                })
+            }
+        ));
+        return numCad;
     }
 
     static async checkElectionCredential(id:number, pass:string){
@@ -167,13 +254,14 @@ export default class ElectionService{
 
     }
 
-    static result(electionId:number){
+    static async result(electionId:number){
         let candidates:Array<Candidate> = [];
-         new Promise((resolve, reject)=>db.transaction(
+         await new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`select * from candidate where idElection = ${electionId} order by votes desc`,[],(_,{rows})=>{
+                tx.executeSql(`select * from candidate where electionId = ${electionId} order by position, votes desc`,[],(_,{rows})=>{
                     resolve(rows._array);
                     candidates = rows._array;
+                    console.log("rowsarr result"+rows._array);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao gerar resultado: "+sqlErr);                   
                 }

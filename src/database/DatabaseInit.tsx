@@ -42,7 +42,14 @@ export default class DatabaseInit{
 
                     'create table if not exists master'+
                     '(id integer primary key autoincrement,'+
-                    'password text not null);'
+                    'password text not null);',
+
+                    'create table if not exists whitevotes'+
+                        '(id integer primary key autoincrement,'+
+                        'electionId integer not null,'+
+                        'position text not null,'+
+                        'FOREIGN KEY(electionId) REFERENCES election(id)'+
+                        ');'
                 ] 
         
         

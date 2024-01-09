@@ -15,7 +15,13 @@ export const Header = (props: HeaderProps) => {
       >
         <Box w={"20%" || props.headerWidth}></Box>
         <Box alignItems="center" justifyContent="center">
-        <Text fontSize="$4xl" fontWeight="$bold" lineHeight={"$4xl"} alignSelf="center" color="$blue900">
+        <Text fontSize="$4xl" fontWeight="$bold" lineHeight={"$4xl"} alignSelf="center" color="$blue900"
+        sx={{
+          "@lg":{
+            fontSize: "$6xl",
+            lineHeight:"$6xl"
+          }
+        }}>
           {props.title}
         </Text>
         </Box>

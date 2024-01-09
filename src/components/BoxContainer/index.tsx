@@ -10,8 +10,8 @@ type BoxProps = {
 export const BoxContainer = (props: BoxProps) => {
   return (
     <GluestackUIProvider>
-      <ImageBackground source={require("../../assets/bg.png")} resizeMode="cover" style={{flex: 1, justifyContent: "center", padding: 0, margin: 0}}>
-        <Box p={"$4"} justifyContent="center" alignItems={props.alignItems || "center"} flexDirection={props.flexDirection} gap={props.gap}>
+      <ImageBackground source={require("../../assets/bg.png")} resizeMode="cover" style={{flex: 1, justifyContent: "center", padding: 0, margin: 0, height: "100%"}}>
+        <Box p={"$4"} flex={1} justifyContent="center" alignItems={props.alignItems || "center"} flexDirection={props.flexDirection} gap={props.gap} h={"100%"}>
           {props.children}
         </Box>
         </ImageBackground>

@@ -19,8 +19,6 @@ export default class CandidateService{
                 [candidate.name, candidate.vice_name, candidate.number,candidate.picture_path, candidate.electionId, candidate.party, candidate.position,0],
                 (_,{rows,insertId})=>{
                     console.log("Candidato inserido: "+insertId);
-
-                    console.log(insertId);
                     
                     if(insertId !== undefined){
                         add = true;
@@ -56,17 +54,27 @@ export default class CandidateService{
         return candidates;
     }*/
 
-    static deleteCandidate(id:number){
-        return new Promise((resolve, reject)=> db.transaction(
+    static async deleteCandidate(id:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
             tx=>{
-                tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows})=>{
-                    resolve(rows.item(0).id);
-                }),(sqlError:SQLError)=>{
-                    console.log("Erro ao excluir candidato: "+sqlError);
-                }
+                if(id != null){
+                    tx.executeSql(`delete from ${table} where id = ${id}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rows);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
+                }               
             }
-        ))
-    }
+        ));
+
+        return del;
+    }   
+
+  
 
     /*static async findAll(electionId: number){
         await new Promise((resolve, reject)=> db.transaction(
@@ -95,9 +103,6 @@ export default class CandidateService{
                     console.log("Finda all: "+rows.length);
                     resolve(rows._array);
                     candidates = rows._array;
-                    console.log(candidates);
-
-
                 }),(sqlErr:SQLError)=>{
                     console.log("Falha na busca de candidatos: "+sqlErr);
                 }
@@ -106,5 +111,60 @@ export default class CandidateService{
         
         return candidates;
         
+    }
+
+
+
+    static async findByNumber(number:string, electionId:number){
+        let numCad = false;
+        
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from ${table} where electionId = ${electionId} and number = ${number}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    candidates = rows._array;
+                })
+            }
+        ));
+        return numCad;
+    }
+
+    static async findByElectionId(electionId:number){
+        let numCad = false;
+        
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                tx.executeSql(`select * from ${table} where electionId = ${electionId}`,[],(_,{rows})=>{
+                    resolve(rows._array);
+                    candidates = rows._array;
+
+                    if(rows._array.length >= 1){
+                        numCad = true;
+                    }
+                    
+                })
+            }
+        ));
+        return numCad;
+    }
+
+    static async deleteCandidatesByElectionId(electionId:number|null){
+        let del = false;
+        await new Promise((resolve, reject)=> db.transaction(
+            tx=>{
+                if(electionId != null){
+                    tx.executeSql(`delete from ${table} where electionId = ${electionId}`,[],(_,{rows,rowsAffected})=>{
+                        resolve(rows);
+                        if(rowsAffected >= 1){
+                            del = true;
+                        }
+                    }),(sqlError:SQLError)=>{
+                        console.log("Erro ao excluir candidato: "+sqlError);
+                    }
+                }               
+            }
+        ));
+
+        return del;
     }
 }
