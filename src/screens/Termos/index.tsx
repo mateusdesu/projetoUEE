@@ -1,14 +1,13 @@
 
 import { Box, GluestackUIProvider,Text,ScrollView } from "@gluestack-ui/themed";
 
-import {Box, Text, GluestackUIProvider } from "@gluestack-ui/themed";
 
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import React from "react";
-import {ScrollView} from "react-native"
+
 
 export function Termos({ navigation }: { navigation: NavigationProp<any> }) {
   return (
@@ -73,7 +72,7 @@ Esta política é efetiva a partir de setembro de 2023.    {"\n"}
             color="black"
             onPress={() => navigation.navigate("MenuConfig")}
           />
-
+        </Box>
         <Box bgColor="$white" p={"$3"}>
           <Text fontWeight="$bold">1. Termos</Text>
           <Text>Ao acessar a “UEE – Urna Eletrônica Escolar”, concordo em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis e concordo em ser responsável pelo cumprimento de todas as leis locais aplicáveis. Se você não concordar com algum desses termos, está proibido de usar este aplicativo. Os materiais contidos neste aplicativo são protegidos pelas leis de direitos autorais e marcas comerciais aplicáveis.</Text>
@@ -105,7 +104,8 @@ Esta política é efetiva a partir de setembro de 2023.    {"\n"}
         </Box>
 
         <Box flexDirection="row" justifyContent="space-between" alignItems="center" w={"95%"}>
-          <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("MenuConfig")}/>
+          <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("MenuConfig")}
+          />
 
         </Box>
         </ScrollView>
