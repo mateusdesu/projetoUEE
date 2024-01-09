@@ -63,7 +63,7 @@ export const CadastrarCandidato = ({
     let inserido = false;
     let realPicPath = "";
 
-    let candidates = await CandidateService.findAll();
+    let candidates =  await CandidateService.findAll();
 
     let numCad = candidates.find((c) => c.number == number && c.electionId == Number(selectedOption) && c.position == selectedCargo);
 
