@@ -284,7 +284,12 @@ export const CadastrarCandidato = ({
           >
             {hasVice && hasParty && (
               <>
-                <Box w={"50%"}  alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"}  alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
@@ -298,7 +303,12 @@ export const CadastrarCandidato = ({
                     onChange={setParty}
                   />
                 </Box>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: 55"
                     keyType={"numeric"}
@@ -341,7 +351,11 @@ export const CadastrarCandidato = ({
             )}
             {hasParty && (
               <>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center" sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
@@ -369,7 +383,12 @@ export const CadastrarCandidato = ({
             )}
             {hasVice && (
               <>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
