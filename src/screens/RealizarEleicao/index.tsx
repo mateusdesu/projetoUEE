@@ -10,7 +10,6 @@ import {
   Button,
   ButtonText,
 } from "@gluestack-ui/themed";
-import { DSelect } from "../../components/DSelect";
 import { useState } from "react";
 import { DInput } from "../../components/DInput";
 import { FontAwesome } from "@expo/vector-icons";
@@ -97,7 +96,6 @@ export const RealizarEleicao = ({
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
     if (confirm) {
-      Alert.alert(password + "/" + id);
       SetScreen(2);
 
       electionSession();
@@ -113,7 +111,6 @@ export const RealizarEleicao = ({
     } else if (firstNumberVoted != "" && secondNumberVoted === "") {
       setSecondNumberVoted(num);
       setNumberVoted(NumberVoted + num);
-      //Alert.alert(NumberVoted);
     }
   }
 
@@ -154,9 +151,7 @@ export const RealizarEleicao = ({
     if (index == 0 || index < positions.length) {
       setPositionToVote(positions[index]);
       setIndex((prevIndex) => prevIndex + 1);
-      console.log("index: " + index);
     } else {
-      console.log(index);
       Alert.alert("FIM!", "", [
         {
           text: "PRÓXIMO",
@@ -240,8 +235,6 @@ export const RealizarEleicao = ({
 
     async function findAllCandidates() {
       let c = await CandidateService.findAll();
-      console.log("Eleição selecionada: " + selectedOption);
-      console.log("Candidatos:" + c);
       setCandidates(c);
     }
 
@@ -255,7 +248,6 @@ export const RealizarEleicao = ({
     if (index == 0) {
       setPositionToVote(positions[0]);
     }
-    console.log("EFFECT EXECUTADO!");
   }, [selectedOption]);
 
   const [screen, SetScreen] = useState(1);

@@ -78,17 +78,11 @@ export const ExcluirCadastro = ({
       }
       setEleicao(arrSetE2);
       setElectionList(arrSetE3);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
     });
   };
 
   async function findAllCandidates() {
     let c = await CandidateService.findAll();
-    console.log("Eleição selecionada: " + selectedOption);
-    console.log("Candidatos:" + c);
     setCandidates(c);
   }
 

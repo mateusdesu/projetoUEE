@@ -2,7 +2,6 @@ import { Box, GluestackUIProvider } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
 import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
-import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 

@@ -14,7 +14,7 @@ import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
 import { Picker } from "@react-native-picker/picker";
 import Checkbox from "expo-checkbox";
-import { Home } from "../Home";
+
 export const CadastrarCandidato = ({
   navigation,
 }: {
@@ -29,10 +29,6 @@ export const CadastrarCandidato = ({
     ) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
-      Alert.alert(
-        "Sucesso ✅",
-        `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
-      );
       setScreen(2);
     }
   };
@@ -68,8 +64,6 @@ export const CadastrarCandidato = ({
     let numCad = candidates.find((c) => c.number == number && c.electionId == Number(selectedOption) && c.position == selectedCargo);
 
     //let numCad = await CandidateService.findByNumber(number, Number(selectedOption));
-    console.log("NumCad: "+numCad);
-
     if(numCad != undefined){
       Alert.alert("Número já cadastrado para este cargo!");
     }else{
@@ -93,7 +87,6 @@ export const CadastrarCandidato = ({
 
     if (eName != "") {
       inserido = await CandidateService.addCandidate(candidate);
-      console.log("valor de inserido: " + inserido);
     }
 
     if (inserido) {
@@ -158,10 +151,8 @@ export const CadastrarCandidato = ({
         }
       }
       setEleicao(arrSetE2);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
+      
+      
     });
   };
 
@@ -472,7 +463,6 @@ export const CadastrarCandidato = ({
             onValueChange={(itemValue: string) => {
               setSelectedOption(itemValue);
               findSelectedElection(Number(itemValue));
-              console.log("Eleição Selecionada: " + itemValue);
             }}
           >
             {eleicao.map((item) => {
@@ -500,7 +490,6 @@ export const CadastrarCandidato = ({
             selectedValue={selectedCargo}
             onValueChange={(itemValue: string) => {
               setSelectedCargo(itemValue);
-              console.log("Cargo Selecionado: " + itemValue);
             }}
           >
             {cargos.map((item) => {

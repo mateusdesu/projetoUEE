@@ -1,7 +1,4 @@
-
 import { Box, GluestackUIProvider,Text,ScrollView } from "@gluestack-ui/themed";
-
-
 import { Header } from "../../components/Header";
 import { BoxContainer } from "../../components/BoxContainer";
 import { FontAwesome } from "@expo/vector-icons";

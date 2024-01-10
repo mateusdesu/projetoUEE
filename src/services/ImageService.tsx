@@ -7,7 +7,6 @@ export default class ImageService{
         path = `${fs.documentDirectory}images/${name}`;
 
         await fs.makeDirectoryAsync(path, {}).then(()=>{
-            console.log("DIRETÓRIO CRIADO COM SUCESSO!");
             return true;
         }).catch((err)=>{
             console.log("FALHA AO CRIAR DIRETÓRIO: "+err);
@@ -43,7 +42,6 @@ export default class ImageService{
             from: from,
             to: path
            }).then(()=>{    
-            console.log("Upload concluido");
             return path;
            }).catch((err)=>{
             console.log("Erro ao carregar imagem: "+err);
