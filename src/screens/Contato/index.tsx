@@ -14,31 +14,109 @@ export const Contato = ({navigation,}: {navigation: NavigationProp<any>;}) =>
         <ScrollView>
         <Header title="Contato"></Header>
         <Box bgColor="white" p={"$2"}>
-          <Text fontSize={"$lg"} fontWeight="$bold">Autores:</Text>
-          <Text>
+          <Text fontSize={"$lg"} fontWeight="$bold"
+           sx={{
+            "@lg": {
+              fontSize: "$3xl",
+            lineHeight: "$3xl"
+            },
+          }}>Autores:</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}
+          >
             Adriana da Silva Lisboa Tomaz E-mail: atomaz@unicarioca.edu.br 
           </Text>
-          <Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}
+          >
             Augusto Schwager de Carvalho E-mail: augustoschwager@yahoo.com.br 
           </Text>
-          <Text fontSize={"$lg"} fontWeight="$bold">Desenvolvedores:</Text>
-          <Text fontSize={"$md"} fontWeight="$bold">Programação</Text>
-          <Text>Mateus Lopes da Silva E-mail: mateuslopes1717@gmail.com</Text>
-          <Text>Victor Revers Kasnowski E-mail: victor.kasnowski@gmail.com</Text>
-          <Text>Nathalia Gorito da Silva E-mail: natgorito@gmail.com</Text>
-          <Text fontSize={"$md"} fontWeight="$bold">Design</Text>
-          <Text>Gustavo Souza Caetano Lima: E-mail: caetanogustavo2000@gmail.com</Text>
-          <Text>Isabel Marchon Trota E-mail: isabelmarchontt2@gmail.com</Text>
-          <Text>Daniel Farias Vinhas Paiva E-mail: daninhoworks@gmail.com</Text>
-          <Text fontSize={"$lg"} fontWeight="$bold">Links:</Text>
-          <Text>Mestrado Unicarioca: https://unicarioca.edu.br/cursos/mestrado/novas-tecnologias-digitais-na-educacao</Text>
-          <Text>Grupo EduTech Unicarioca : https://edutechunicarioca.blogspot.com/</Text>
+          <Text fontSize={"$lg"} fontWeight="$bold"
+          sx={{
+            "@lg": {
+              fontSize: "$3xl",
+            lineHeight: "$3xl"
+            },
+          }}>Desenvolvedores:</Text>
+          <Text fontSize={"$md"} fontWeight="$bold" 
+          sx={{
+            "@lg": {
+              fontSize: "$3xl",
+            lineHeight: "$3xl"
+            },
+          }}>Programação</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}>Mateus Lopes da Silva E-mail: mateuslopes1717@gmail.com</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}>Victor Revers Kasnowski E-mail: victor.kasnowski@gmail.com</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}>Nathalia Gorito da Silva E-mail: natgorito@gmail.com</Text>
+          <Text fontSize={"$md"} fontWeight="$bold"
+          sx={{
+            "@lg": {
+              fontSize: "$3xl",
+            lineHeight: "$3xl"
+            },
+          }}>Design</Text>
+          <Text
+          >Gustavo Souza Caetano Lima: E-mail: caetanogustavo2000@gmail.com</Text>
+          <Text
+          >Isabel Marchon Trota E-mail: isabelmarchontt2@gmail.com</Text>
+          <Text
+          >Daniel Farias Vinhas Paiva E-mail: daninhoworks@gmail.com</Text>
+          <Text fontSize={"$lg"} fontWeight="$bold"
+          sx={{
+            "@lg": {
+              fontSize: "$3xl",
+            lineHeight: "$3xl"
+            },
+          }}>Links:</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}>Mestrado Unicarioca: https://unicarioca.edu.br/cursos/mestrado/novas-tecnologias-digitais-na-educacao</Text>
+          <Text
+          sx={{
+            "@lg": {
+              fontSize: "$2xl",
+            lineHeight: "$2xl"
+            },
+          }}>Grupo EduTech Unicarioca : https://edutechunicarioca.blogspot.com/</Text>
         </Box>
         <Box
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
           w={"95%"}
+          mt={"$2"}
         >
           <FontAwesome
             name="chevron-left"
@@ -47,27 +125,7 @@ export const Contato = ({navigation,}: {navigation: NavigationProp<any>;}) =>
             onPress={() => navigation.navigate("MenuConfig")}
           />
         </Box>
-      <Box flexDirection="row" justifyContent="space-between">
-        <Box>
-          <Text fontWeight="$bold">Adriana da Silva Lisboa Tomaz</Text>
-          <Box flexDirection="column">
-            <FontAwesome name="envelope" size={28} color={"black"}/>
-            <Text>atomaz@unicarioca.edu.br</Text>
-          </Box>
-        </Box>
-
-        <Box>
-          <Text fontWeight="$bold">Augusto Schwager de Carvalho</Text>
-          <Box>
-            <FontAwesome name="envelope" size={28} color={"black"}/>
-            <Text>augustoschwager@yahoo.com.br</Text>
-          </Box>
-        </Box>
-        </Box>
-        <Box flexDirection="row" justifyContent="space-between" alignItems="center" w={"95%"}>
-          <FontAwesome name="chevron-left" size={28} color="black" onPress={() => navigation.navigate("MenuConfig")}/>
-
-        </Box>
+     
         </ScrollView>
       </BoxContainer>
     </GluestackUIProvider>

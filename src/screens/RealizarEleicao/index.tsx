@@ -9,6 +9,7 @@ import {
   HStack,
   Button,
   ButtonText,
+  Image
 } from "@gluestack-ui/themed";
 import { useState } from "react";
 import { DInput } from "../../components/DInput";
@@ -16,7 +17,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
-import { Alert, Image, StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
@@ -326,7 +327,8 @@ export const RealizarEleicao = ({
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold"
               sx={{
                 "@lg": {
-                  fontSize: "$3xl",
+                  fontSize: "$5xl",
+                  lineHeight: "$5xl"
                 },
               }}>
                 Seu voto para
@@ -338,7 +340,8 @@ export const RealizarEleicao = ({
                 color="$blueGray600"
                 sx={{
                   "@lg": {
-                    fontSize: "$2xl",
+                    fontSize: "$4xl",
+                    lineHeight: "$4xl"
                   },
                 }}
               >
@@ -365,8 +368,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl",
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl",
                       },
                     }}
                   >
@@ -393,8 +396,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl",
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl",
                       },
                     }}
                   >
@@ -409,7 +412,13 @@ export const RealizarEleicao = ({
                   <Image
                     source={{ uri: candidatePicture }}
                     alt="Foto Candidato"
-                    style={styles.CandidatePicture}
+                    size="xl"
+                    sx={{
+                      "@lg": {
+                        h :"100%",
+                        w :"$72"
+                      },
+                    }}
                   />
               </Box>
               ): (<></>)}
@@ -421,8 +430,8 @@ export const RealizarEleicao = ({
               <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold"
               sx={{
                 "@lg": {
-                  fontSize: "$4xl",
-                  lineHeight: "$4xl"
+                  fontSize: "$5xl",
+                  lineHeight: "$5xl"
                 },
               }}>
                 Nome
@@ -434,7 +443,8 @@ export const RealizarEleicao = ({
                 color="$blueGray600"
                 sx={{
                   "@lg": {
-                    fontSize: "$2xl",
+                    fontSize: "$4xl",
+                    lineHeight: "$4xl"
                   },
                 }}
               >
@@ -448,8 +458,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl"
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl"
                       },
                     }}
                   >
@@ -462,7 +472,8 @@ export const RealizarEleicao = ({
                     color="$blueGray600"
                     sx={{
                       "@lg": {
-                        fontSize: "$2xl",
+                        fontSize: "$4xl",
+                    lineHeight: "$4xl"
                       },
                     }}
                   >
@@ -478,8 +489,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl"
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl"
                       },
                     }}
                   >
@@ -492,7 +503,8 @@ export const RealizarEleicao = ({
                     color="$blueGray600"
                     sx={{
                       "@lg": {
-                        fontSize: "$2xl",
+                        fontSize: "$4xl",
+                    lineHeight: "$4xl"
                       },
                     }}
                   >
@@ -508,19 +520,49 @@ export const RealizarEleicao = ({
                 color="black"
                 onPress={() => SetScreen(3)}
               />
-              <Text fontSize={"$xl"} fontWeight="bold">
+              <Text fontSize={"$xl"} fontWeight="bold"
+               sx={{
+                "@lg": {
+                  fontSize: "$4xl",
+              lineHeight: "$4xl"
+                },
+              }}>
                 Pressione a tecla
               </Text>
-              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">
+              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400"
+               sx={{
+                "@lg": {
+                  fontSize: "$3xl",
+              lineHeight: "$3xl"
+                },
+              }}>
                 Verde{" "}
-                <Text fontSize={"$lg"} fontWeight="bold">
+                <Text fontSize={"$lg"} fontWeight="bold"
+                 sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                lineHeight: "$3xl"
+                  },
+                }}>
                   para{" "}
                 </Text>
                 confirmar
               </Text>
-              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">
+              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500"
+               sx={{
+                "@lg": {
+                  fontSize: "$3xl",
+              lineHeight: "$3xl"
+                },
+              }}>
                 Laranja{" "}
-                <Text fontSize={"$lg"} fontWeight="bold">
+                <Text fontSize={"$lg"} fontWeight="bold"
+                 sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                lineHeight: "$3xl"
+                  },
+                }}>
                   para{" "}
                 </Text>
                 corrigir
