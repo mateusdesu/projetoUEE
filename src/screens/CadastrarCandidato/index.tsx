@@ -71,7 +71,7 @@ export const CadastrarCandidato = ({
       const eName = election != undefined ? election.label : "";
 
       if (picture_path != "") {
-      realPicPath = await ImageService.uploadPic(picture_path, eName, number);
+      realPicPath = await ImageService.uploadPic(picture_path, eName, number+"_"+selectedCargo);
       }
 
       let candidate = new Candidate(
