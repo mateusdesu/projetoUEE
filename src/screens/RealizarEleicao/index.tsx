@@ -136,6 +136,7 @@ export const RealizarEleicao = ({
     );
     if (voteWasComputed) {
       clear();
+      await playSound();
       Alert.alert("Voto Em Branco Confirmado!");
       electionSession();
     } else {
