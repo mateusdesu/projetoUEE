@@ -1,0 +1,1 @@
+Códigos do aplicativo mobile Urna Eletrônica Escolar, desenvolvido pelo Núcleo de Computação Aplicada (NUCAP) e utilizado como Trabalho de Conclusão de Curso (TCC) do Centro Universitário Carioca (UniCarioca).
