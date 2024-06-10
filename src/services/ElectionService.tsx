@@ -243,7 +243,7 @@ export default class ElectionService{
 
         await new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`update ${table} set closed = 1`,[],(_,{rows})=>{
+                tx.executeSql(`update ${table} set closed = 1 where id = ${electionId}`,[],(_,{rows})=>{
                     resolve(rows);
                     closed = true;
                 }),(sqlErr:SQLError)=>{
