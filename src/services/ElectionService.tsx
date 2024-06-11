@@ -3,11 +3,9 @@ import { DatabaseConnection } from "../database/DatabaseConnection";
 import { SQLError } from "expo-sqlite";
 import ImageService from "./ImageService";
 import { Candidate } from "../models/Candidate";
-import CandidateService  from "./CandidateService"; 
 
 const db = DatabaseConnection.getConnection();
 const table = "election";
-var elections: Array<Election> = [];
 
 export default class ElectionService{
     
@@ -19,7 +17,6 @@ export default class ElectionService{
                 values (?,?,?,?,?)`, 
                 [election.name, election.password, election.positions,0,0],
                 (_,{rows,insertId})=>{
-                    console.log("Eleição inserida: "+insertId);
                     ImageService.createDir(election.name); //OBS: fazer verificação se diretório(eleição) já existe                 
                     
 
@@ -38,28 +35,6 @@ export default class ElectionService{
         return add;
     }
 
-    /*static async sumWhiteVotes(id:number){
-        let white_votes = await this.getWhiteVotes(id);
-        white_votes = white_votes + 1;
-        let voteWasComputed = false;
-
-        await new Promise((resolve, reject)=>db.transaction(
-            tx=>{
-                tx.executeSql(`update election set white_votes = ${white_votes} where id = ${id}`,[],(_,{rows,rowsAffected})=>{
-                    resolve(rows);
-                    if(rowsAffected = 1){
-                        voteWasComputed = true;
-                    }
-                }),(sqlErr:SQLError)=>{
-                    console.log("Erro ao inserir candidato: "+sqlErr);
-                    reject(false);
-                }
-            }
-        ))
-        
-        return voteWasComputed;
-    }*/
-
     static async computeWhiteVotes(electionId:number, position:string){
         let voteWasComputed = false;
 
@@ -69,7 +44,6 @@ export default class ElectionService{
                     resolve(rows);
                     if(rowsAffected = 1){
                         voteWasComputed = true;
-                        console.log(insertId);
                     }
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao inserir candidato: "+sqlErr);
@@ -81,25 +55,6 @@ export default class ElectionService{
         return voteWasComputed;
     }    
 
-    /*static async getWhiteVotes(id:number){
-        let white_votes = 0;
-        await new Promise ((resolve, reject)=>db.transaction(
-            tx=>{
-                tx.executeSql(`select white_votes from ${table} where id = ${id}`,[],(_,{rows})=>{
-                     resolve(rows);
-
-                    white_votes= rows.item(0).white_votes;
-
-                }),(sqlErr:SQLError)=>{
-                    console.log("Erro ao contabilizar votos brancos: "+sqlErr);
-                    reject(false);
-                }
-            }
-        ))
-        return white_votes;
-
-    }*/
-
     static async getWhiteVotes(electionId:number/*,position:string*/){
         let white_votes:Array<{total:number, position:string}> = [];
         await new Promise ((resolve, reject)=>db.transaction(
@@ -108,8 +63,6 @@ export default class ElectionService{
                     resolve(rows);
 
                     white_votes= rows._array;
-                    console.log("Votos em Branco: "+white_votes);
-
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao contabilizar votos brancos: "+sqlErr);
                     reject(false);
@@ -242,7 +195,6 @@ export default class ElectionService{
             tx=>{
                 tx.executeSql(`update candidate set votes = ${newVotes} where id = ${id}`,[],(_,{rows})=>{
                     resolve(rows);
-                    console.log("Voto computado!");
                     voteWasComputed = true;
                 }),(sqlErr:SQLError)=>{
                     console.log("Falha ao computar voto!"+sqlErr);                   
@@ -261,7 +213,6 @@ export default class ElectionService{
                 tx.executeSql(`select * from candidate where electionId = ${electionId} order by position, votes desc`,[],(_,{rows})=>{
                     resolve(rows._array);
                     candidates = rows._array;
-                    console.log("rowsarr result"+rows._array);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao gerar resultado: "+sqlErr);                   
                 }
@@ -292,7 +243,7 @@ export default class ElectionService{
 
         await new Promise((resolve, reject)=>db.transaction(
             tx=>{
-                tx.executeSql(`update ${table} set closed = 1`,[],(_,{rows})=>{
+                tx.executeSql(`update ${table} set closed = 1 where id = ${electionId}`,[],(_,{rows})=>{
                     resolve(rows);
                     closed = true;
                 }),(sqlErr:SQLError)=>{
@@ -308,18 +259,11 @@ export default class ElectionService{
        return new Promise((resolve, reject)=> db.transaction(
             tx=>{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
-                    //console.log("FA El: "+rows.length);
-                    //resolve(rows._array);
-                    //elections = rows._array;
                     resolve(rows);
-                    //console.log("FA ELEC: "+elections);
                 }),(sqlErr:SQLError)=>{
                     console.log("Erro ao buscar eleições: "+sqlErr);
-                    //reject(null);
                 }
             }
         ));
-
-        //return elections;
     }
 }

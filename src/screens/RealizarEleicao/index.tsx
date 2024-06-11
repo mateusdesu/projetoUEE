@@ -9,15 +9,15 @@ import {
   HStack,
   Button,
   ButtonText,
+  Image
 } from "@gluestack-ui/themed";
-import { DSelect } from "../../components/DSelect";
 import { useState } from "react";
 import { DInput } from "../../components/DInput";
 import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { Election } from "../../models/Election";
 import ElectionService from "../../services/ElectionService";
-import { Alert, Image, StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CandidateService from "../../services/CandidateService";
 import { Candidate } from "../../models/Candidate";
@@ -97,7 +97,6 @@ export const RealizarEleicao = ({
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
     if (confirm) {
-      Alert.alert(password + "/" + id);
       SetScreen(2);
 
       electionSession();
@@ -113,7 +112,6 @@ export const RealizarEleicao = ({
     } else if (firstNumberVoted != "" && secondNumberVoted === "") {
       setSecondNumberVoted(num);
       setNumberVoted(NumberVoted + num);
-      //Alert.alert(NumberVoted);
     }
   }
 
@@ -138,6 +136,7 @@ export const RealizarEleicao = ({
     );
     if (voteWasComputed) {
       clear();
+      await playSound();
       Alert.alert("Voto Em Branco Confirmado!");
       electionSession();
     } else {
@@ -154,9 +153,7 @@ export const RealizarEleicao = ({
     if (index == 0 || index < positions.length) {
       setPositionToVote(positions[index]);
       setIndex((prevIndex) => prevIndex + 1);
-      console.log("index: " + index);
     } else {
-      console.log(index);
       Alert.alert("FIM!", "", [
         {
           text: "PRÓXIMO",
@@ -240,8 +237,6 @@ export const RealizarEleicao = ({
 
     async function findAllCandidates() {
       let c = await CandidateService.findAll();
-      console.log("Eleição selecionada: " + selectedOption);
-      console.log("Candidatos:" + c);
       setCandidates(c);
     }
 
@@ -255,7 +250,6 @@ export const RealizarEleicao = ({
     if (index == 0) {
       setPositionToVote(positions[0]);
     }
-    console.log("EFFECT EXECUTADO!");
   }, [selectedOption]);
 
   const [screen, SetScreen] = useState(1);
@@ -331,7 +325,13 @@ export const RealizarEleicao = ({
         <Box w={"50%"} h={"100%"} bg="#f0f0f0" flexDirection="column">
           <Box pl={"$2"} pt={"$2"} flexDirection={"row"} h={"40%"}>
             <Box w={"50%"}>
-              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold"
+              sx={{
+                "@lg": {
+                  fontSize: "$5xl",
+                  lineHeight: "$5xl"
+                },
+              }}>
                 Seu voto para
               </Text>
               <Text
@@ -339,6 +339,12 @@ export const RealizarEleicao = ({
                 lineHeight={"$xl"}
                 fontWeight="$bold"
                 color="$blueGray600"
+                sx={{
+                  "@lg": {
+                    fontSize: "$4xl",
+                    lineHeight: "$4xl"
+                  },
+                }}
               >
                 {positionToVote}
               </Text>
@@ -363,8 +369,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl",
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl",
                       },
                     }}
                   >
@@ -391,8 +397,8 @@ export const RealizarEleicao = ({
                     fontWeight="$bold"
                     sx={{
                       "@lg": {
-                        fontSize: "$4xl",
-                        lineHeight: "$4xl",
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl",
                       },
                     }}
                   >
@@ -407,7 +413,13 @@ export const RealizarEleicao = ({
                   <Image
                     source={{ uri: candidatePicture }}
                     alt="Foto Candidato"
-                    style={styles.CandidatePicture}
+                    size="xl"
+                    sx={{
+                      "@lg": {
+                        h :"100%",
+                        w :"$72"
+                      },
+                    }}
                   />
               </Box>
               ): (<></>)}
@@ -416,7 +428,13 @@ export const RealizarEleicao = ({
           </Box>
           <Box flexDirection="row">
             <Box pl={"$2"} pt={"$2"} flexDirection={"column"} w={"50%"}>
-              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold">
+              <Text fontSize={"$2xl"} lineHeight={"$2xl"} fontWeight="$bold"
+              sx={{
+                "@lg": {
+                  fontSize: "$5xl",
+                  lineHeight: "$5xl"
+                },
+              }}>
                 Nome
               </Text>
               <Text
@@ -424,6 +442,12 @@ export const RealizarEleicao = ({
                 lineHeight={"$xl"}
                 fontWeight="$bold"
                 color="$blueGray600"
+                sx={{
+                  "@lg": {
+                    fontSize: "$4xl",
+                    lineHeight: "$4xl"
+                  },
+                }}
               >
                 {candidateName}
               </Text>
@@ -433,6 +457,12 @@ export const RealizarEleicao = ({
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl"
+                      },
+                    }}
                   >
                     Vice
                   </Text>
@@ -441,6 +471,12 @@ export const RealizarEleicao = ({
                     lineHeight={"$xl"}
                     fontWeight="$bold"
                     color="$blueGray600"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                    lineHeight: "$4xl"
+                      },
+                    }}
                   >
                     {candidateViceName}
                   </Text>
@@ -452,6 +488,12 @@ export const RealizarEleicao = ({
                     fontSize={"$2xl"}
                     lineHeight={"$2xl"}
                     fontWeight="$bold"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$5xl",
+                        lineHeight: "$5xl"
+                      },
+                    }}
                   >
                     Chapa
                   </Text>
@@ -460,6 +502,12 @@ export const RealizarEleicao = ({
                     lineHeight={"$xl"}
                     fontWeight="$bold"
                     color="$blueGray600"
+                    sx={{
+                      "@lg": {
+                        fontSize: "$4xl",
+                    lineHeight: "$4xl"
+                      },
+                    }}
                   >
                     {candidateParty}
                   </Text>
@@ -473,19 +521,49 @@ export const RealizarEleicao = ({
                 color="black"
                 onPress={() => SetScreen(3)}
               />
-              <Text fontSize={"$xl"} fontWeight="bold">
+              <Text fontSize={"$xl"} fontWeight="bold"
+               sx={{
+                "@lg": {
+                  fontSize: "$4xl",
+              lineHeight: "$4xl"
+                },
+              }}>
                 Pressione a tecla
               </Text>
-              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400">
+              <Text fontSize={"$lg"} fontWeight="bold" color="$emerald400"
+               sx={{
+                "@lg": {
+                  fontSize: "$3xl",
+              lineHeight: "$3xl"
+                },
+              }}>
                 Verde{" "}
-                <Text fontSize={"$lg"} fontWeight="bold">
+                <Text fontSize={"$lg"} fontWeight="bold"
+                 sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                lineHeight: "$3xl"
+                  },
+                }}>
                   para{" "}
                 </Text>
                 confirmar
               </Text>
-              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500">
+              <Text fontSize={"$lg"} fontWeight="bold" color="$amber500"
+               sx={{
+                "@lg": {
+                  fontSize: "$3xl",
+              lineHeight: "$3xl"
+                },
+              }}>
                 Laranja{" "}
-                <Text fontSize={"$lg"} fontWeight="bold">
+                <Text fontSize={"$lg"} fontWeight="bold"
+                 sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                lineHeight: "$3xl"
+                  },
+                }}>
                   para{" "}
                 </Text>
                 corrigir
@@ -668,6 +746,12 @@ export const RealizarEleicao = ({
                 onPress={() =>
                   computeWhiteVote(Number(selectedOption), positionToVote)
                 } //ALTERAR APÓS IMPLEMENTAR A POSIÇÃO A SER VOTADA!
+                sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                    lineHeight: "$3xl"
+                  },
+                }}
               >
                 Branco
               </ButtonText>
@@ -678,6 +762,12 @@ export const RealizarEleicao = ({
                 fontSize={"$xl"}
                 fontWeight="bold"
                 lineHeight={"$xl"}
+                sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                    lineHeight: "$3xl"
+                  },
+                }}
               >
                 Corrige
               </ButtonText>
@@ -691,6 +781,12 @@ export const RealizarEleicao = ({
                 onPress={() =>
                   computeVote(candidateId != null ? candidateId : 0)
                 }
+                sx={{
+                  "@lg": {
+                    fontSize: "$3xl",
+                    lineHeight: "$3xl"
+                  },
+                }}
               >
                 Confirma
               </ButtonText>

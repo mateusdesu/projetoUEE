@@ -43,10 +43,6 @@ export const ResultadoEleicao = ({
         }  
       }
       setEleicao(arrSetE2);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
     });
   };
 
@@ -55,7 +51,6 @@ export const ResultadoEleicao = ({
     let confirm = await ElectionService.checkElectionCredential(id, password);
 
     if (confirm) {
-      Alert.alert(password + "/" + id);
       await getResult(Number(selectedOption),"");
       SetScreen(2);
     } else {
@@ -85,8 +80,6 @@ export const ResultadoEleicao = ({
   const getResult = async(electionId:number,position:string)=>{
     let result = await ElectionService.result(electionId);
     let white_votes = await ElectionService.getWhiteVotes(electionId);
-    console.log("Result length: "+result.length);
-    console.log("id da eleição: "+electionId);
 
     if(result.length > 0){
       result.forEach((c)=>{
@@ -106,7 +99,6 @@ export const ResultadoEleicao = ({
 
     setWhiteVotes(wv2);
     setFinalResult(candidates);
-    console.log("Array candidates: "+candidates);
   }
 
   useEffect(()=>{

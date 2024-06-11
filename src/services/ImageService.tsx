@@ -7,7 +7,6 @@ export default class ImageService{
         path = `${fs.documentDirectory}images/${name}`;
 
         await fs.makeDirectoryAsync(path, {}).then(()=>{
-            console.log("DIRETÓRIO CRIADO COM SUCESSO!");
             return true;
         }).catch((err)=>{
             console.log("FALHA AO CRIAR DIRETÓRIO: "+err);
@@ -31,19 +30,18 @@ export default class ImageService{
     }
 
     //mount the image path using the file system to get the image
-    static getPic = (dirName:string, candidateNumber:number)=>{
-        path = `${fs.documentDirectory}images/${dirName}/${candidateNumber}.jpg`;
+    static getPic = (dirName:string, pictureName:string)=>{
+        path = `${fs.documentDirectory}images/${dirName}/${pictureName}.jpg`;
         return path;
     }
 
-    //from -> local repository; to -> election name; imageName-> candidate number;
+    //from -> local repository; to -> election name; imageName-> candidate number_candidate position;
     static uploadPic = async(from:string, to:string, imageName:string)=>{
         path = `${fs.documentDirectory}images/${to}/${imageName}.jpg`
         await fs.copyAsync({
             from: from,
             to: path
            }).then(()=>{    
-            console.log("Upload concluido");
             return path;
            }).catch((err)=>{
             console.log("Erro ao carregar imagem: "+err);

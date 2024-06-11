@@ -14,7 +14,7 @@ import { Election } from "../../models/Election";
 import ImageService from "../../services/ImageService";
 import { Picker } from "@react-native-picker/picker";
 import Checkbox from "expo-checkbox";
-import { Home } from "../Home";
+
 export const CadastrarCandidato = ({
   navigation,
 }: {
@@ -29,10 +29,6 @@ export const CadastrarCandidato = ({
     ) {
       Alert.alert("Erro ⚠️", "Escolha uma opção");
     } else {
-      Alert.alert(
-        "Sucesso ✅",
-        `Eleição: ${selectedOption} | Cargo: ${selectedCargo}`
-      );
       setScreen(2);
     }
   };
@@ -68,8 +64,6 @@ export const CadastrarCandidato = ({
     let numCad = candidates.find((c) => c.number == number && c.electionId == Number(selectedOption) && c.position == selectedCargo);
 
     //let numCad = await CandidateService.findByNumber(number, Number(selectedOption));
-    console.log("NumCad: "+numCad);
-
     if(numCad != undefined){
       Alert.alert("Número já cadastrado para este cargo!");
     }else{
@@ -77,7 +71,7 @@ export const CadastrarCandidato = ({
       const eName = election != undefined ? election.label : "";
 
       if (picture_path != "") {
-      realPicPath = await ImageService.uploadPic(picture_path, eName, number);
+      realPicPath = await ImageService.uploadPic(picture_path, eName, number+"_"+selectedCargo);
       }
 
       let candidate = new Candidate(
@@ -93,7 +87,6 @@ export const CadastrarCandidato = ({
 
     if (eName != "") {
       inserido = await CandidateService.addCandidate(candidate);
-      console.log("valor de inserido: " + inserido);
     }
 
     if (inserido) {
@@ -158,10 +151,8 @@ export const CadastrarCandidato = ({
         }
       }
       setEleicao(arrSetE2);
-      console.log("ArrSetE:" + eleicao);
-      eleicao.map((e) => {
-        console.log(e.label);
-      });
+      
+      
     });
   };
 
@@ -293,7 +284,12 @@ export const CadastrarCandidato = ({
           >
             {hasVice && hasParty && (
               <>
-                <Box w={"50%"}  alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"}  alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
@@ -307,7 +303,12 @@ export const CadastrarCandidato = ({
                     onChange={setParty}
                   />
                 </Box>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: 55"
                     keyType={"numeric"}
@@ -350,7 +351,11 @@ export const CadastrarCandidato = ({
             )}
             {hasParty && (
               <>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center" sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
@@ -378,7 +383,12 @@ export const CadastrarCandidato = ({
             )}
             {hasVice && (
               <>
-                <Box w={"50%"} alignItems="flex-start" justifyContent="center">
+                <Box w={"50%"} alignItems="flex-start" justifyContent="center"
+                sx={{
+                  "@lg": {
+                    gap: "$10",
+                  },
+                }}>
                   <DInput
                     placeholder="Ex: João"
                     text="Nome*"
@@ -472,7 +482,6 @@ export const CadastrarCandidato = ({
             onValueChange={(itemValue: string) => {
               setSelectedOption(itemValue);
               findSelectedElection(Number(itemValue));
-              console.log("Eleição Selecionada: " + itemValue);
             }}
           >
             {eleicao.map((item) => {
@@ -500,7 +509,6 @@ export const CadastrarCandidato = ({
             selectedValue={selectedCargo}
             onValueChange={(itemValue: string) => {
               setSelectedCargo(itemValue);
-              console.log("Cargo Selecionado: " + itemValue);
             }}
           >
             {cargos.map((item) => {

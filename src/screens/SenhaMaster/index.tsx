@@ -1,16 +1,13 @@
 import { Box, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 import { Header } from "../../components/Header";
-import { DButton } from "../../components/DButton";
 import { BoxContainer } from "../../components/BoxContainer";
 import { DInput } from "../../components/DInput";
-import { Image } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
 import React from "react";
 import MasterService from "../../services/MasterService";
 import { Alert } from "react-native";
-import { Home } from "../Home";
 
 export const SenhaMaster = ({
   navigation,

@@ -32,8 +32,6 @@ export default class MasterService{
                 tx.executeSql(`select * from ${table}`,[],(_,{rows})=>{
                     resolve(rows);
                     master = rows._array[0];
-                    console.log("Senha master: "+master.password);
-                    console.log("Senha recebida: "+password);
                 }),(sqlError:SQLError)=>{
                     console.log("Erro ao buscar master: "+sqlError);
                 }             
@@ -59,7 +57,6 @@ export default class MasterService{
                         values (?)`, 
                         [password],
                         (_,{rows,insertId})=>{
-                            console.log("Master inserido: "+insertId);
                             resolve(true);
                             msg = "Senha master cadastrada com sucesso!";
                         }),(sqlErr:SQLError)=>{
@@ -71,7 +68,6 @@ export default class MasterService{
             }else{
                 msg = "Senha master já foi cadastrada previamente!";
             }
-            console.log(msg);
             return msg;
     }    
 }
